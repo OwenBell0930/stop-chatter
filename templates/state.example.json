@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "ready": false,
+  "active_target": {
+    "goal": "Describe the current desired outcome.",
+    "requirements": [
+      {
+        "id": "R1",
+        "text": "Describe one positive active requirement.",
+        "paths": [
+          "src/**"
+        ]
+      }
+    ],
+    "meta_constraints": [
+      {
+        "id": "M1",
+        "text": "Keep the delivery concise.",
+        "leak_markers": [
+          "concise edition"
+        ]
+      }
+    ]
+  },
+  "retired": [
+    {
+      "id": "X1",
+      "label": "superseded concept",
+      "aliases": [
+        "nearby renamed concept"
+      ],
+      "scope": "task"
+    }
+  ],
+  "delivery": {
+    "ignore_paths": [
+      ".git/**",
+      ".stop-chatter/**"
+    ],
+    "allow_process_trace_paths": [],
+    "exceptions": []
+  }
+}
