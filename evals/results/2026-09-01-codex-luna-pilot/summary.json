@@ -1,0 +1,294 @@
+{
+  "manifest": {
+    "schema_version": 1,
+    "started_at": "2026-09-01T05:02:11+00:00",
+    "host": "Codex CLI",
+    "host_version": "codex-cli 0.151.0-alpha.7.2",
+    "host_binary": "/Applications/ChatGPT.app/Contents/Resources/codex",
+    "model": "gpt-5.6-luna",
+    "reasoning": "medium",
+    "conditions": [
+      "baseline",
+      "light",
+      "guarded"
+    ],
+    "case_ids": [
+      "csv_export",
+      "dashboard_memory",
+      "recipe_cleanup",
+      "three_step_plan",
+      "todo_frontend"
+    ],
+    "case_count": 5,
+    "repeats": 1,
+    "planned_runs": 15,
+    "repository_commit": "39a936c6d594fe02afab6a2365f6c0984cf89aa1",
+    "repository_dirty": false,
+    "python": "3.14.3",
+    "platform": "macOS-13.7.8-x86_64-i386-64bit-Mach-O",
+    "instruction_envelope": "Codex system instructions plus the local account-level AGENTS.md; user config and exec policy rules disabled equally for all conditions.",
+    "continuation_turn": true,
+    "independent_gold_visible_to_agent": false,
+    "guarded_task_state_visible_to_agent": true
+  },
+  "agent": {
+    "baseline": {
+      "runs": 5,
+      "clean_deliveries": 0,
+      "clean_delivery_rate": 0.0,
+      "clean_delivery_wilson_95": [
+        0.0,
+        43.4
+      ],
+      "metric_rates": {
+        "active_requirements_preserved": 80.0,
+        "artifact_residue_free": 20.0,
+        "response_residue_free": 100.0,
+        "process_trace_free": 40.0,
+        "scope_clean": 20.0,
+        "hidden_check_passed": 100.0,
+        "transient_state_clean": 100.0
+      },
+      "median_total_tokens": 173108,
+      "median_output_tokens": 2015,
+      "median_duration_seconds": 65.4,
+      "median_final_response_chars": 34
+    },
+    "guarded": {
+      "runs": 5,
+      "clean_deliveries": 2,
+      "clean_delivery_rate": 40.0,
+      "clean_delivery_wilson_95": [
+        11.8,
+        76.9
+      ],
+      "metric_rates": {
+        "active_requirements_preserved": 60.0,
+        "artifact_residue_free": 100.0,
+        "response_residue_free": 100.0,
+        "process_trace_free": 100.0,
+        "scope_clean": 100.0,
+        "hidden_check_passed": 100.0,
+        "transient_state_clean": 100.0
+      },
+      "median_total_tokens": 243044,
+      "median_output_tokens": 3557,
+      "median_duration_seconds": 99.4,
+      "median_final_response_chars": 33
+    },
+    "light": {
+      "runs": 5,
+      "clean_deliveries": 2,
+      "clean_delivery_rate": 40.0,
+      "clean_delivery_wilson_95": [
+        11.8,
+        76.9
+      ],
+      "metric_rates": {
+        "active_requirements_preserved": 80.0,
+        "artifact_residue_free": 60.0,
+        "response_residue_free": 100.0,
+        "process_trace_free": 80.0,
+        "scope_clean": 60.0,
+        "hidden_check_passed": 100.0,
+        "transient_state_clean": 100.0
+      },
+      "median_total_tokens": 190806,
+      "median_output_tokens": 2011,
+      "median_duration_seconds": 69.5,
+      "median_final_response_chars": 39
+    }
+  },
+  "gate": {
+    "evaluated_at": "2026-09-01T05:22:37+00:00",
+    "corpus_samples": 20,
+    "code_level": {
+      "true_positive": 11,
+      "false_positive": 1,
+      "false_negative": 2,
+      "precision": 91.7,
+      "recall": 84.6,
+      "f1": 88.0
+    },
+    "binary_block_decision": {
+      "true_positive": 10,
+      "false_positive": 1,
+      "true_negative": 7,
+      "false_negative": 2,
+      "precision": 90.9,
+      "recall": 83.3,
+      "f1": 87.0
+    },
+    "exact_match_rate": 85.0,
+    "samples": [
+      {
+        "id": "direct-retired-zh",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [
+          "STC001"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "direct-retired-casefold-en",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [
+          "STC001"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "configured-alias",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [
+          "STC001"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "unlisted-semantic-alias-en",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [],
+        "exact_match": false
+      },
+      {
+        "id": "unlisted-semantic-alias-zh",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [],
+        "exact_match": false
+      },
+      {
+        "id": "substring-collision",
+        "expected_codes": [],
+        "observed_codes": [
+          "STC001"
+        ],
+        "exact_match": false
+      },
+      {
+        "id": "clean-current-artifact",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "active-contract-exception",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "default-process-label-zh",
+        "expected_codes": [
+          "STC003"
+        ],
+        "observed_codes": [
+          "STC003"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "default-process-label-en",
+        "expected_codes": [
+          "STC003"
+        ],
+        "observed_codes": [
+          "STC003"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "ordinary-concise-instruction",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "custom-meta-marker",
+        "expected_codes": [
+          "STC003"
+        ],
+        "observed_codes": [
+          "STC003"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "unmapped-artifact",
+        "expected_codes": [
+          "STC002"
+        ],
+        "observed_codes": [
+          "STC002"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "mapped-artifact",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "non-utf8-text",
+        "expected_codes": [
+          "STC004"
+        ],
+        "observed_codes": [
+          "STC004"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "binary-with-nul",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "ignored-path",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "wrong-term-not-excepted",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [
+          "STC001"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "process-allowlist",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "two-simultaneous-findings",
+        "expected_codes": [
+          "STC001",
+          "STC003"
+        ],
+        "observed_codes": [
+          "STC001",
+          "STC003"
+        ],
+        "exact_match": true
+      }
+    ]
+  }
+}

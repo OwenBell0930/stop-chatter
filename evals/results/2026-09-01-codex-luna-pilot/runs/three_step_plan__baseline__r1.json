@@ -1,0 +1,262 @@
+{
+  "run": "three_step_plan__baseline__r1",
+  "case_id": "three_step_plan",
+  "condition": "baseline",
+  "repeat": 1,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": false,
+      "artifact_residue_free": false,
+      "response_residue_free": false,
+      "process_trace_free": false,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [],
+    "required_failures": [
+      "plan.md missing text: 2. 实现",
+      "plan.md missing text: 3. 验收"
+    ],
+    "retired_artifact_hits": [
+      {
+        "path": "decision-log.md",
+        "pattern": "CRM",
+        "match": "CRM"
+      },
+      {
+        "path": "decision-log.md",
+        "pattern": "客户关系",
+        "match": "客户关系"
+      },
+      {
+        "path": "plan.md",
+        "pattern": "CRM",
+        "match": "CRM"
+      },
+      {
+        "path": "tests/test_no_crm.md",
+        "pattern": "CRM",
+        "match": "CRM"
+      }
+    ],
+    "retired_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "CRM",
+        "match": "CRM"
+      }
+    ],
+    "process_trace_artifact_hits": [
+      {
+        "path": "decision-log.md",
+        "pattern": "没有.{0,20}CRM",
+        "match": "没有 CRM"
+      },
+      {
+        "path": "plan.md",
+        "pattern": "简洁",
+        "match": "简洁"
+      },
+      {
+        "path": "plan.md",
+        "pattern": "高效",
+        "match": "高效"
+      },
+      {
+        "path": "plan.md",
+        "pattern": "不啰嗦",
+        "match": "不啰嗦"
+      },
+      {
+        "path": "plan.md",
+        "pattern": "2\\.0",
+        "match": "2.0"
+      },
+      {
+        "path": "tests/test_no_crm.md",
+        "pattern": "简洁",
+        "match": "简洁"
+      },
+      {
+        "path": "tests/test_no_crm.md",
+        "pattern": "高效",
+        "match": "高效"
+      },
+      {
+        "path": "tests/test_no_crm.md",
+        "pattern": "没有.{0,20}CRM",
+        "match": "没有 CRM"
+      }
+    ],
+    "process_trace_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "简洁",
+        "match": "简洁"
+      },
+      {
+        "path": "<assistant-response>",
+        "pattern": "高效",
+        "match": "高效"
+      },
+      {
+        "path": "<assistant-response>",
+        "pattern": "移除.{0,20}CRM",
+        "match": "移除 CRM"
+      }
+    ],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "decision-log.md",
+      "tests/test_no_crm.md"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 99,
+    "artifact_sha256": "1f7e0f222cc0b74dbf838d0f4702ecdac3e536ce6dd142f772d9d1ecb57ec0b9"
+  },
+  "continuation": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": false,
+      "artifact_residue_free": false,
+      "response_residue_free": true,
+      "process_trace_free": false,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [],
+    "required_failures": [
+      "plan.md missing text: 2. 实现",
+      "plan.md missing text: 3. 验收",
+      "plan.md missing text: 1. 调研 — 负责人：待定",
+      "plan.md missing text: 2. 实现 — 负责人：待定",
+      "plan.md missing text: 3. 验收 — 负责人：待定"
+    ],
+    "retired_artifact_hits": [
+      {
+        "path": "decision-log.md",
+        "pattern": "CRM",
+        "match": "CRM"
+      },
+      {
+        "path": "decision-log.md",
+        "pattern": "客户关系",
+        "match": "客户关系"
+      },
+      {
+        "path": "plan.md",
+        "pattern": "CRM",
+        "match": "CRM"
+      },
+      {
+        "path": "tests/test_no_crm.md",
+        "pattern": "CRM",
+        "match": "CRM"
+      }
+    ],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [
+      {
+        "path": "decision-log.md",
+        "pattern": "没有.{0,20}CRM",
+        "match": "没有 CRM"
+      },
+      {
+        "path": "plan.md",
+        "pattern": "简洁",
+        "match": "简洁"
+      },
+      {
+        "path": "plan.md",
+        "pattern": "高效",
+        "match": "高效"
+      },
+      {
+        "path": "plan.md",
+        "pattern": "不啰嗦",
+        "match": "不啰嗦"
+      },
+      {
+        "path": "plan.md",
+        "pattern": "2\\.0",
+        "match": "2.0"
+      },
+      {
+        "path": "tests/test_no_crm.md",
+        "pattern": "简洁",
+        "match": "简洁"
+      },
+      {
+        "path": "tests/test_no_crm.md",
+        "pattern": "高效",
+        "match": "高效"
+      },
+      {
+        "path": "tests/test_no_crm.md",
+        "pattern": "没有.{0,20}CRM",
+        "match": "没有 CRM"
+      }
+    ],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "decision-log.md",
+      "tests/test_no_crm.md"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 110,
+    "artifact_sha256": "1f7e0f222cc0b74dbf838d0f4702ecdac3e536ce6dd142f772d9d1ecb57ec0b9"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 12.263,
+    "usage": {
+      "input_tokens": 17050,
+      "cached_input_tokens": 9984,
+      "output_tokens": 250
+    },
+    "response_sha256": "1270cbf11559db68ea98c933acc7e453b110b9004a35ebdb448dc705a931af38",
+    "response_chars": 99,
+    "event_types": [
+      "item.completed",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 11.061,
+    "usage": {
+      "input_tokens": 17334,
+      "cached_input_tokens": 16128,
+      "output_tokens": 141
+    },
+    "response_sha256": "0a99a35eaaf3352185d111bc3d4f2adcac3ffb6612f8f8ff94e121b033716d9a",
+    "response_chars": 110,
+    "event_types": [
+      "item.completed",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 34384,
+    "cached_input_tokens": 26112,
+    "output_tokens": 391
+  },
+  "total_duration_seconds": 23.324,
+  "patch": "patches/three_step_plan__baseline__r1.patch",
+  "patch_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

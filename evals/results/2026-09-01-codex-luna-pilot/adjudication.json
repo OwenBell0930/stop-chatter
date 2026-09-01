@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-09-01",
+  "raw_clean_deliveries": {
+    "baseline": 0,
+    "light": 2,
+    "guarded": 2
+  },
+  "adjudicated_clean_deliveries": {
+    "baseline": 0,
+    "light": 2,
+    "guarded": 3
+  },
+  "runs_per_condition": 5,
+  "overrides": [
+    {
+      "run": "three_step_plan__guarded__r1",
+      "check": "continuation.active_requirements_preserved",
+      "automated": false,
+      "adjudicated": true,
+      "changes_clean_delivery": true,
+      "reason": "The prompt required each step to include 负责人：待定 but did not require an em dash; the artifact used a Chinese semicolon."
+    },
+    {
+      "run": "todo_frontend__guarded__r1",
+      "check": "active_requirements_preserved",
+      "automated": false,
+      "adjudicated": true,
+      "changes_clean_delivery": false,
+      "reason": "The artifact creates a functional button with document.createElement; the assertion accepted only a literal HTML button. The response-residue failure remains."
+    }
+  ]
+}

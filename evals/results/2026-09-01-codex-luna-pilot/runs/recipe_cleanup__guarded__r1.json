@@ -1,0 +1,111 @@
+{
+  "run": "recipe_cleanup__guarded__r1",
+  "case_id": "recipe_cleanup",
+  "condition": "guarded",
+  "repeat": 1,
+  "clean_delivery": true,
+  "correction": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "RELEASE.md",
+      "recipe.md",
+      "tests/test_no_pork.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 37,
+    "artifact_sha256": "db161583a93ae858a7ba009cc4279ec074dcc83ba114e7526f122296e4539465"
+  },
+  "continuation": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "RELEASE.md",
+      "recipe.md",
+      "tests/test_no_pork.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 26,
+    "artifact_sha256": "d44b4419f31e1032865774a7ed137d361c71efe83c286d7f1744dde62cb92bd7"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 61.526,
+    "usage": {
+      "input_tokens": 130777,
+      "cached_input_tokens": 113152,
+      "output_tokens": 2422
+    },
+    "response_sha256": "5d9a206a66f77db8e189fafddd241d18aa5777e3e1438429e252829b50c7fefb",
+    "response_chars": 37,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 23.454,
+    "usage": {
+      "input_tokens": 47341,
+      "cached_input_tokens": 45568,
+      "output_tokens": 465
+    },
+    "response_sha256": "d706b107830a9552396bb516b1502f752b6c7ce312b8a011229734cdde3062cc",
+    "response_chars": 26,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 178118,
+    "cached_input_tokens": 158720,
+    "output_tokens": 2887
+  },
+  "total_duration_seconds": 84.98,
+  "patch": "patches/recipe_cleanup__guarded__r1.patch",
+  "patch_sha256": "9c33fb84716ae303ec6f2518593e586aac6e2afe577d9a241eabe1279d978504"
+}

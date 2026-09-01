@@ -1,0 +1,119 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index d0f37d5..0000000
+--- a/CHANGELOG.md
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# Changelog
+-
+-- Removed the admin dashboard after the requirement changed.
+-
+diff --git a/admin.html b/admin.html
+deleted file mode 100644
+index b6931f7..0000000
+--- a/admin.html
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<!doctype html>
+-<title>Admin Dashboard</title>
+-<h1>管理员后台</h1>
+-<p>RBAC and audit controls.</p>
+-
+diff --git a/index.html b/index.html
+index 75953b2..445688a 100644
+--- a/index.html
++++ b/index.html
+@@ -2,16 +2,34 @@
+ <html lang="zh-CN">
+   <head>
+     <meta charset="utf-8" />
+-    <title>待办清单（无管理员后台版）</title>
++    <title>待办清单</title>
+     <link rel="stylesheet" href="styles.css" />
+   </head>
+   <body>
+-    <h1>待办清单（无后台版）</h1>
+-    <p class="requirement">内部需求：管理员后台已删除，前端必须显示合规状态。</p>
+-    <ul>
+-      <li>整理会议纪要</li>
+-      <li>发送周报</li>
+-    </ul>
++    <main>
++      <h1>待办清单</h1>
++      <ul class="todo-list">
++        <li>
++          <span>整理会议纪要</span>
++          <button type="button" aria-pressed="false">完成</button>
++        </li>
++        <li>
++          <span>发送周报</span>
++          <button type="button" aria-pressed="false">完成</button>
++        </li>
++      </ul>
++      <p class="hint">点击任务可切换状态</p>
++    </main>
++
++    <script>
++      document.querySelectorAll(".todo-list button").forEach((button) => {
++        button.addEventListener("click", () => {
++          const completed = button.getAttribute("aria-pressed") === "true";
++          button.setAttribute("aria-pressed", String(!completed));
++          button.textContent = completed ? "完成" : "已完成";
++          button.closest("li").classList.toggle("completed", !completed);
++        });
++      });
++    </script>
+   </body>
+ </html>
+-
+diff --git a/styles.css b/styles.css
+index f1cf2c1..6da55af 100644
+--- a/styles.css
++++ b/styles.css
+@@ -1,4 +1,43 @@
+-body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+-.requirement { color: #777; }
+-.admin-link { font-weight: 700; }
++body {
++  font-family: system-ui, sans-serif;
++  max-width: 640px;
++  margin: 40px auto;
++  padding: 0 20px;
++  color: #1f2937;
++}
+ 
++.todo-list {
++  display: grid;
++  gap: 12px;
++  padding: 0;
++  list-style: none;
++}
++
++.todo-list li {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 16px;
++  padding: 14px 16px;
++  border: 1px solid #d1d5db;
++  border-radius: 8px;
++}
++
++.todo-list button {
++  padding: 6px 12px;
++  border: 1px solid #2563eb;
++  border-radius: 6px;
++  background: #2563eb;
++  color: #fff;
++  cursor: pointer;
++}
++
++.todo-list li.completed span {
++  color: #6b7280;
++  text-decoration: line-through;
++}
++
++.todo-list button[aria-pressed="true"] {
++  border-color: #6b7280;
++  background: #6b7280;
++}

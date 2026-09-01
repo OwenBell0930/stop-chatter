@@ -1,0 +1,168 @@
+{
+  "run": "todo_frontend__baseline__r1",
+  "case_id": "todo_frontend",
+  "condition": "baseline",
+  "repeat": 1,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": false,
+      "process_trace_free": false,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "admin.html",
+      "index.html",
+      "styles.css"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "CHANGELOG.md",
+        "pattern": "admin",
+        "match": "admin"
+      },
+      {
+        "path": "tests/test_no_admin.py",
+        "pattern": "admin",
+        "match": "admin"
+      }
+    ],
+    "retired_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "管理员",
+        "match": "管理员"
+      },
+      {
+        "path": "<assistant-response>",
+        "pattern": "后台",
+        "match": "后台"
+      }
+    ],
+    "process_trace_artifact_hits": [
+      {
+        "path": "CHANGELOG.md",
+        "pattern": "requirement",
+        "match": "requirement"
+      }
+    ],
+    "process_trace_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "内部需求",
+        "match": "内部需求"
+      }
+    ],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "CHANGELOG.md",
+      "tests/test_no_admin.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 40,
+    "artifact_sha256": "de086ba379ba4739f77222b9adf7a61a1628c3cfd3115d4629714cb4de1def3e"
+  },
+  "continuation": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": true,
+      "process_trace_free": false,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "admin.html",
+      "index.html",
+      "styles.css"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "CHANGELOG.md",
+        "pattern": "admin",
+        "match": "admin"
+      },
+      {
+        "path": "tests/test_no_admin.py",
+        "pattern": "admin",
+        "match": "admin"
+      }
+    ],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [
+      {
+        "path": "CHANGELOG.md",
+        "pattern": "requirement",
+        "match": "requirement"
+      }
+    ],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "CHANGELOG.md",
+      "tests/test_no_admin.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 34,
+    "artifact_sha256": "191da56c80d9247997eef113b6827779f9b4be4d63e0e6f711e6046625def37d"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 90.495,
+    "usage": {
+      "input_tokens": 153642,
+      "cached_input_tokens": 138240,
+      "output_tokens": 3034
+    },
+    "response_sha256": "1cfc014799881f1f201e529348d7d1c28d2002558f9dd8da372a5372d971d706",
+    "response_chars": 40,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 24.435,
+    "usage": {
+      "input_tokens": 63498,
+      "cached_input_tokens": 60672,
+      "output_tokens": 451
+    },
+    "response_sha256": "d11983f43c7700fab8ddfe735a71091a9b7f747b59e650538df9d35f870e7c57",
+    "response_chars": 34,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 217140,
+    "cached_input_tokens": 198912,
+    "output_tokens": 3485
+  },
+  "total_duration_seconds": 114.93,
+  "patch": "patches/todo_frontend__baseline__r1.patch",
+  "patch_sha256": "1bfb0bcc99e9a4e170a8cf85adf5af6aa2258d901e41647abecf20c15de04c92"
+}

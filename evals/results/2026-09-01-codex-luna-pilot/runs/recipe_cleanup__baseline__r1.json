@@ -1,0 +1,217 @@
+{
+  "run": "recipe_cleanup__baseline__r1",
+  "case_id": "recipe_cleanup",
+  "condition": "baseline",
+  "repeat": 1,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": true,
+      "process_trace_free": false,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "recipe.md"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "RELEASE.md",
+        "pattern": "东坡肉",
+        "match": "东坡肉"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "东坡肘子",
+        "match": "东坡肘子"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "肘子",
+        "match": "肘子"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "东坡肉",
+        "match": "东坡肉"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "东坡肘子",
+        "match": "东坡肘子"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "肘子",
+        "match": "肘子"
+      }
+    ],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [
+      {
+        "path": "RELEASE.md",
+        "pattern": "无东坡",
+        "match": "无东坡"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "r23",
+        "match": "r23"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "不可变发布",
+        "match": "不可变发布"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "哈希",
+        "match": "哈希"
+      }
+    ],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "RELEASE.md",
+      "tests/test_no_pork.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 34,
+    "artifact_sha256": "0d481354e7c949544980f5704a408523eca422c41d5d262ba95934957f8316d6"
+  },
+  "continuation": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": true,
+      "process_trace_free": false,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "recipe.md"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "RELEASE.md",
+        "pattern": "东坡肉",
+        "match": "东坡肉"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "东坡肘子",
+        "match": "东坡肘子"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "肘子",
+        "match": "肘子"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "东坡肉",
+        "match": "东坡肉"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "东坡肘子",
+        "match": "东坡肘子"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "肘子",
+        "match": "肘子"
+      }
+    ],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [
+      {
+        "path": "RELEASE.md",
+        "pattern": "无东坡",
+        "match": "无东坡"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "r23",
+        "match": "r23"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "不可变发布",
+        "match": "不可变发布"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "哈希",
+        "match": "哈希"
+      }
+    ],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "RELEASE.md",
+      "tests/test_no_pork.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 31,
+    "artifact_sha256": "f35c58b1bf383ac9f75b6807c1bdea51d69ac0357a588b240e57e25016a0fe4f"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 40.403,
+    "usage": {
+      "input_tokens": 89423,
+      "cached_input_tokens": 78592,
+      "output_tokens": 1035
+    },
+    "response_sha256": "f02e126054d8201ea2cde70832fc67a737ea6790ecd283dfa77b113427bdb82f",
+    "response_chars": 34,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 18.322,
+    "usage": {
+      "input_tokens": 37564,
+      "cached_input_tokens": 36352,
+      "output_tokens": 306
+    },
+    "response_sha256": "2bcb23634374411d3418249ad0258a308abd0c4a81f4395a53696f01274f9ed9",
+    "response_chars": 31,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 126987,
+    "cached_input_tokens": 114944,
+    "output_tokens": 1341
+  },
+  "total_duration_seconds": 58.725,
+  "patch": "patches/recipe_cleanup__baseline__r1.patch",
+  "patch_sha256": "5dc307d5f8e984ed933a8cdae75778541f59f3c4aea09fb0438b03c23eef3095"
+}

@@ -1,0 +1,138 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index d0f37d5..0000000
+--- a/CHANGELOG.md
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# Changelog
+-
+-- Removed the admin dashboard after the requirement changed.
+-
+diff --git a/admin.html b/admin.html
+deleted file mode 100644
+index b6931f7..0000000
+--- a/admin.html
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<!doctype html>
+-<title>Admin Dashboard</title>
+-<h1>管理员后台</h1>
+-<p>RBAC and audit controls.</p>
+-
+diff --git a/index.html b/index.html
+index 75953b2..c5cccde 100644
+--- a/index.html
++++ b/index.html
+@@ -2,16 +2,62 @@
+ <html lang="zh-CN">
+   <head>
+     <meta charset="utf-8" />
+-    <title>待办清单（无管理员后台版）</title>
++    <meta name="viewport" content="width=device-width, initial-scale=1" />
++    <title>待办清单</title>
+     <link rel="stylesheet" href="styles.css" />
+   </head>
+   <body>
+-    <h1>待办清单（无后台版）</h1>
+-    <p class="requirement">内部需求：管理员后台已删除，前端必须显示合规状态。</p>
+-    <ul>
+-      <li>整理会议纪要</li>
+-      <li>发送周报</li>
+-    </ul>
++    <main class="todo-app">
++      <header class="page-header">
++        <p class="eyebrow">TODAY</p>
++        <h1>待办清单</h1>
++        <p class="subtitle">完成一项，就向前一步。</p>
++      </header>
++      <section class="todo-card" aria-labelledby="todo-heading">
++        <div class="card-heading">
++          <h2 id="todo-heading">今天要做</h2>
++          <span id="remaining-count" class="count" aria-live="polite"></span>
++        </div>
++        <ul id="todo-list" class="todo-list"></ul>
++        <p class="usage-hint">点击任务可切换状态</p>
++      </section>
++    </main>
++    <script>
++      const storageKey = "local-todo-list";
++      const defaultTodos = [
++        { text: "整理会议纪要", completed: false },
++        { text: "发送周报", completed: false }
++      ];
++      const todoList = document.querySelector("#todo-list");
++      const remainingCount = document.querySelector("#remaining-count");
++      let todos = JSON.parse(localStorage.getItem(storageKey) || "null") || defaultTodos;
++
++      function renderTodos() {
++        todoList.innerHTML = "";
++        todos.forEach((todo, index) => {
++          const item = document.createElement("li");
++          item.className = `todo-item${todo.completed ? " is-complete" : ""}`;
++          const label = document.createElement("span");
++          label.className = "todo-text";
++          label.textContent = todo.text;
++          const toggle = document.createElement("button");
++          toggle.className = "toggle-button";
++          toggle.type = "button";
++          toggle.setAttribute("aria-pressed", String(todo.completed));
++          toggle.setAttribute("aria-label", `${todo.completed ? "标记未完成" : "标记完成"}：${todo.text}`);
++          toggle.textContent = todo.completed ? "已完成" : "完成";
++          toggle.addEventListener("click", () => {
++            todos[index].completed = !todos[index].completed;
++            localStorage.setItem(storageKey, JSON.stringify(todos));
++            renderTodos();
++          });
++          item.append(label, toggle);
++          todoList.append(item);
++        });
++        remainingCount.textContent = `${todos.filter((todo) => !todo.completed).length} 项待完成`;
++      }
++
++      renderTodos();
++    </script>
+   </body>
+ </html>
+-
+diff --git a/styles.css b/styles.css
+index f1cf2c1..0bbb9b1 100644
+--- a/styles.css
++++ b/styles.css
+@@ -1,4 +1,21 @@
+-body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+-.requirement { color: #777; }
+-.admin-link { font-weight: 700; }
+-
++:root { color: #252a34; background: #f5f7fb; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
++* { box-sizing: border-box; }
++body { margin: 0; }
++.todo-app { width: min(100% - 40px, 640px); margin: 72px auto; }
++.page-header { margin-bottom: 28px; }
++.eyebrow { margin: 0 0 8px; color: #5872d8; font-size: 12px; font-weight: 700; letter-spacing: .14em; }
++h1 { margin: 0; font-size: clamp(32px, 6vw, 48px); line-height: 1.1; }
++.subtitle { margin: 12px 0 0; color: #697386; }
++.todo-card { padding: 24px; border: 1px solid #e4e8f0; border-radius: 18px; background: #fff; box-shadow: 0 16px 40px rgb(43 56 88 / 8%); }
++.card-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
++h2 { margin: 0; font-size: 20px; }
++.count { color: #697386; font-size: 14px; }
++.todo-list { display: grid; gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; }
++.usage-hint { margin: 16px 0 0; color: #8791a3; font-size: 13px; }
++.todo-item { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border: 1px solid #edf0f5; border-radius: 12px; background: #fafbfe; }
++.todo-text { line-height: 1.5; }
++.is-complete .todo-text { color: #8791a3; text-decoration: line-through; }
++.toggle-button { flex: 0 0 auto; min-width: 68px; padding: 8px 12px; border: 1px solid #cbd4f7; border-radius: 8px; color: #4c63c8; background: #fff; font: inherit; cursor: pointer; }
++.toggle-button:hover { background: #f0f3ff; }
++.is-complete .toggle-button { border-color: #d9dee8; color: #697386; }
++@media (max-width: 520px) { .todo-app { margin: 40px auto; } .todo-card { padding: 18px; } }
+diff --git a/tests/test_no_admin.py b/tests/test_no_admin.py
+deleted file mode 100644
+index 2a196a3..0000000
+--- a/tests/test_no_admin.py
++++ /dev/null
+@@ -1,6 +0,0 @@
+-from pathlib import Path
+-
+-
+-def test_admin_is_absent():
+-    assert "admin" not in Path("index.html").read_text(encoding="utf-8").lower()
+-

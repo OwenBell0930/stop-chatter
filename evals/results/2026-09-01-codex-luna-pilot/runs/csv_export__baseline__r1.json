@@ -1,0 +1,133 @@
+{
+  "run": "csv_export__baseline__r1",
+  "case_id": "csv_export",
+  "condition": "baseline",
+  "repeat": 1,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": false,
+      "process_trace_free": true,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "README.md",
+      "exporter.py",
+      "tests/test_export.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "tests/test_no_analytics.py",
+        "pattern": "analytics",
+        "match": "analytics"
+      }
+    ],
+    "retired_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "埋点",
+        "match": "埋点"
+      }
+    ],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "tests/test_no_analytics.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 64,
+    "artifact_sha256": "5f1f5fe633b7413e1b6e9efcb43f123ffd9d123851cabf0aa58888d627ccea0f"
+  },
+  "continuation": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "README.md",
+      "exporter.py",
+      "tests/test_export.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "tests/test_no_analytics.py",
+        "pattern": "analytics",
+        "match": "analytics"
+      }
+    ],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "tests/test_no_analytics.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 47,
+    "artifact_sha256": "5f1f5fe633b7413e1b6e9efcb43f123ffd9d123851cabf0aa58888d627ccea0f"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 46.601,
+    "usage": {
+      "input_tokens": 109157,
+      "cached_input_tokens": 96768,
+      "output_tokens": 1500
+    },
+    "response_sha256": "af98091c6bc2df4557d27fe855516ac5382305748f7e989c2d5889c82e5b5c80",
+    "response_chars": 64,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 22.472,
+    "usage": {
+      "input_tokens": 73536,
+      "cached_input_tokens": 62464,
+      "output_tokens": 795
+    },
+    "response_sha256": "a03be61b9e5d6688c85cbae41e31392bc1bf6f10d24b74d6c91b0ac6334e19fe",
+    "response_chars": 47,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 182693,
+    "cached_input_tokens": 159232,
+    "output_tokens": 2295
+  },
+  "total_duration_seconds": 69.073,
+  "patch": "patches/csv_export__baseline__r1.patch",
+  "patch_sha256": "271abc26b760186fd1a1cc74b6e35fb1b368d36f35fb6cf2e0d0df8691ec641c"
+}

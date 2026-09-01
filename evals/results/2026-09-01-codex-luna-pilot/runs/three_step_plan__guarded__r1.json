@@ -1,0 +1,115 @@
+{
+  "run": "three_step_plan__guarded__r1",
+  "case_id": "three_step_plan",
+  "condition": "guarded",
+  "repeat": 1,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "decision-log.md",
+      "plan.md",
+      "tests/test_no_crm.md"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 43,
+    "artifact_sha256": "71b796bce48ff33f350fcf16b6c912da6ce438de79fe8d2331ecc14d757dff20"
+  },
+  "continuation": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": false,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "decision-log.md",
+      "plan.md",
+      "tests/test_no_crm.md"
+    ],
+    "required_failures": [
+      "plan.md missing text: 1. 调研 — 负责人：待定",
+      "plan.md missing text: 2. 实现 — 负责人：待定",
+      "plan.md missing text: 3. 验收 — 负责人：待定"
+    ],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 33,
+    "artifact_sha256": "5c7913fb3e79c98a52237e9b82e2497959982779895fac53e729052bf6ed0319"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 61.317,
+    "usage": {
+      "input_tokens": 204752,
+      "cached_input_tokens": 182016,
+      "output_tokens": 2338
+    },
+    "response_sha256": "bd3a629a5cc8d543ea52587060ba1973a0c1cc7c3bd6ceb27714d49768e39c3c",
+    "response_chars": 43,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 43.689,
+    "usage": {
+      "input_tokens": 165641,
+      "cached_input_tokens": 157184,
+      "output_tokens": 1546
+    },
+    "response_sha256": "886b8ad62ff0c7ba839d5df34519d946bc3b5c5306d933555a903fdf0b23e114",
+    "response_chars": 33,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 370393,
+    "cached_input_tokens": 339200,
+    "output_tokens": 3884
+  },
+  "total_duration_seconds": 105.006,
+  "patch": "patches/three_step_plan__guarded__r1.patch",
+  "patch_sha256": "205acac51600728ba50ad6a1d54ca2f34fac1b3e1f64e92b92872d3907d79e5c"
+}

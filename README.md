@@ -46,6 +46,24 @@ This is not just verbosity. It is **dangling negation**: content already rejecte
 | Correct direction during a long task | A nearby synonym resurrects the rejected idea | Prune the dependency cone and relevant aliases |
 | Correct one task | The example becomes a permanent user preference | Keep corrections task-local by default |
 
+## Measured pilot: useful, not reliable yet
+
+On 2026-09-01, ChatterBench ran five Chinese correction cases in three conditions on the same `gpt-5.6-luna` / Codex CLI setup. Every run contained a correction turn and a continuation turn, for 15 runs and 30 completed agent turns.
+
+| Condition | Automated clean delivery | After rubric audit | End-state artifact residue-free | End-state scope clean | Median time |
+|---|---:|---:|---:|---:|---:|
+| Baseline | 0/5 (0%) | 0/5 (0%) | 1/5 (20%) | 1/5 (20%) | 65.4s |
+| Light | 2/5 (40%) | 2/5 (40%) | 3/5 (60%) | 3/5 (60%) | 69.5s |
+| Guarded | 2/5 (40%) | 3/5 (60%) | 5/5 (100%) | 5/5 (100%) | 99.4s |
+
+**What this says:** Light fixed two cases with little median latency increase. Guarded cleaned artifact residue and scope in all five end states, but it was not a perfect end-to-end guard: two otherwise-clean cases still repeated the retired concept in the correction reply. Today, `stop-chatter` is a useful intervention—not a reliable guarantee.
+
+“Clean delivery” is deliberately all-or-nothing: active output requirements must pass, artifacts and the final reply must contain no correction residue, no extra artifact may remain, and the neutral continuation must stay clean. Manual audit corrected one overly strict punctuation check that changed Guarded from 2/5 to 3/5; a second static-HTML-only check was also too narrow but did not change its run outcome. Both the untouched automated score and the audit are published.
+
+This is a **single-repeat pilot**, not a statistically stable benchmark or a claim about Cursor, Claude Code, other models, or other languages. See the [method](evals/README.md), [raw run records and patches](evals/results/2026-09-01-codex-luna-pilot/), and [adjudication log](evals/results/2026-09-01-codex-luna-pilot/adjudication.md).
+
+The deterministic gate was evaluated separately on 20 labeled samples: code-level precision **91.7%**, recall **84.6%**, and F1 **88.0%**. Its two known misses were unlisted semantic aliases; its false positive was a substring collision. These numbers describe the checker only, not the whole Skill.
+
 ## How it works
 
 1. **Recompile the current target:** express the latest request as a positive current-state goal; delete retracted items instead of preserving them as a ban list.

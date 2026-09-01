@@ -1,0 +1,119 @@
+{
+  "run": "dashboard_memory__guarded__r1",
+  "case_id": "dashboard_memory",
+  "condition": "guarded",
+  "repeat": 1,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": false,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "MEMORY.md",
+      "app.js",
+      "index.html",
+      "styles.css"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "天气",
+        "match": "天气"
+      }
+    ],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 43,
+    "artifact_sha256": "22c04cbe75ca1cb647116b262f7e94f7cbc793b1a64a9aab40a97e7c4a61120a"
+  },
+  "continuation": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "MEMORY.md",
+      "app.js",
+      "index.html",
+      "styles.css"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 33,
+    "artifact_sha256": "061c6c7791760c6a5f2bc6f360bd787ae2afb17d561b2d027c5c8b3321d517c1"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 79.544,
+    "usage": {
+      "input_tokens": 179626,
+      "cached_input_tokens": 158720,
+      "output_tokens": 3200
+    },
+    "response_sha256": "e3662dd7f39cf5bb7081c201813b8c8346da6e208a8e1e7aafb224000fce6756",
+    "response_chars": 43,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 16.96,
+    "usage": {
+      "input_tokens": 49999,
+      "cached_input_tokens": 48640,
+      "output_tokens": 357
+    },
+    "response_sha256": "99a733471519aa5235ea9587cf36c87968c0b4e96e9af67a7eb391bce513f132",
+    "response_chars": 33,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 229625,
+    "cached_input_tokens": 207360,
+    "output_tokens": 3557
+  },
+  "total_duration_seconds": 96.504,
+  "patch": "patches/dashboard_memory__guarded__r1.patch",
+  "patch_sha256": "ae2e4f6738cb8071d2e99677e2256b72efd27ebb727d61eb56aa50486c035049"
+}

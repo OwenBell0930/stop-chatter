@@ -1,0 +1,141 @@
+{
+  "run": "todo_frontend__light__r1",
+  "case_id": "todo_frontend",
+  "condition": "light",
+  "repeat": 1,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": false,
+      "process_trace_free": false,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "CHANGELOG.md",
+      "admin.html",
+      "index.html",
+      "styles.css"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "tests/test_no_admin.py",
+        "pattern": "admin",
+        "match": "admin"
+      }
+    ],
+    "retired_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "管理员",
+        "match": "管理员"
+      }
+    ],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "内部需求",
+        "match": "内部需求"
+      }
+    ],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "tests/test_no_admin.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 49,
+    "artifact_sha256": "83025e927328ee7276c683c540acce9becf01c8ec064e3a5f21167d09c71a2a7"
+  },
+  "continuation": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "CHANGELOG.md",
+      "admin.html",
+      "index.html",
+      "styles.css"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "tests/test_no_admin.py",
+        "pattern": "admin",
+        "match": "admin"
+      }
+    ],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "tests/test_no_admin.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 39,
+    "artifact_sha256": "69e2e867b91aed2412573b2e3f49c703336f831d5e003d6307c29df7edebf7aa"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 65.367,
+    "usage": {
+      "input_tokens": 124641,
+      "cached_input_tokens": 107008,
+      "output_tokens": 2514
+    },
+    "response_sha256": "453d39442a804614fed045b47c9dc28c818ad6a65123a527c544706eebfb256b",
+    "response_chars": 49,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 25.699,
+    "usage": {
+      "input_tokens": 68989,
+      "cached_input_tokens": 66816,
+      "output_tokens": 520
+    },
+    "response_sha256": "711a62ccbb1ee17b378538f137a7a998da4bc342f4bdb18cb50fe0ddd75a498b",
+    "response_chars": 39,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 193630,
+    "cached_input_tokens": 173824,
+    "output_tokens": 3034
+  },
+  "total_duration_seconds": 91.066,
+  "patch": "patches/todo_frontend__light__r1.patch",
+  "patch_sha256": "53c6dae1f7ff83750391d703a6bf10bc9b329d29feb9fc5622ac6326c112d796"
+}
