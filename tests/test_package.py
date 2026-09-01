@@ -25,6 +25,55 @@ class PackageTest(unittest.TestCase):
         )
         self.assertIs(template["ready"], False)
 
+    def test_runtime_scripts_do_not_import_network_clients(self) -> None:
+        forbidden = (
+            "import requests",
+            "from requests",
+            "import urllib.request",
+            "from urllib.request",
+            "import http.client",
+            "from http.client",
+            "import socket",
+            "from socket",
+        )
+        for name in ("install.py", "uninstall.py", "stop_chatter.py"):
+            text = (REPO_ROOT / "scripts" / name).read_text(encoding="utf-8")
+            for marker in forbidden:
+                self.assertNotIn(marker, text, f"{name} contains network client: {marker}")
+
+    def test_published_run_records_are_artifact_only(self) -> None:
+        runs = (
+            REPO_ROOT
+            / "evals"
+            / "results"
+            / "2026-09-01-chatterbench-v2-r3"
+            / "runs"
+        )
+        paths = sorted(runs.glob("*.json"))
+        self.assertEqual(len(paths), 54)
+        forbidden_keys = {
+            "response",
+            "response_sha256",
+            "response_chars",
+            "retired_response_hits",
+            "process_trace_response_hits",
+            "session_id",
+        }
+
+        def walk(value: object) -> None:
+            if isinstance(value, dict):
+                self.assertTrue(forbidden_keys.isdisjoint(value))
+                for child in value.values():
+                    walk(child)
+            elif isinstance(value, list):
+                for child in value:
+                    walk(child)
+
+        for path in paths:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            self.assertIn("artifact_delivery", payload)
+            walk(payload)
+
 
 if __name__ == "__main__":
     unittest.main()

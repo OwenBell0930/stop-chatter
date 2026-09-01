@@ -4,14 +4,13 @@
   "case_type": "cleanup",
   "condition": "guarded",
   "repeat": 3,
-  "clean_delivery": true,
+  "artifact_delivery": true,
   "correction": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -24,23 +23,19 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 66,
     "artifact_sha256": "c6ac6208608586d3dd618aea14a3911b4b6294c4992f5064e32be673fe0ff0d8"
   },
   "continuation": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -53,14 +48,11 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 67,
     "artifact_sha256": "c6ac6208608586d3dd618aea14a3911b4b6294c4992f5064e32be673fe0ff0d8"
   },
   "correction_turn": {
@@ -72,9 +64,6 @@
       "cached_input_tokens": 110080,
       "output_tokens": 2215
     },
-    "response_sha256": "a3d0b0572dd762ec1756286b1b36987cf2bd900dbc388b24421157787e03c567",
-    "response": "已完成：项目仅保留 CSV 导出，`export_rows` 新增可选 `delimiter` 参数且默认为逗号，测试与检查均通过。",
-    "response_chars": 66,
     "event_types": [
       "item.completed",
       "item.started",
@@ -93,9 +82,6 @@
       "cached_input_tokens": 42496,
       "output_tokens": 457
     },
-    "response_sha256": "b9d16554dc823f864ec1053c7ff94277b0c08cec3d590084c597c8fd6223ce05",
-    "response": "README 已包含使用分号分隔符的 `export_rows(..., delimiter=\";\")` 调用示例，其他范围保持不变。",
-    "response_chars": 67,
     "event_types": [
       "item.completed",
       "item.started",

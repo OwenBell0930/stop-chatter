@@ -4,14 +4,13 @@
   "case_type": "preservation_control",
   "condition": "guarded",
   "repeat": 2,
-  "clean_delivery": true,
+  "artifact_delivery": true,
   "correction": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -26,23 +25,19 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 80,
     "artifact_sha256": "4f55b0ecc939ec89af6ac792c503b0da350e9f858ad0a6d43b963c83a481a5e2"
   },
   "continuation": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -57,14 +52,11 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 44,
     "artifact_sha256": "afb0b0bd771aba6eb231fb5825f0b8a98392a8a81ceaab09affc26656ffa06cf"
   },
   "correction_turn": {
@@ -76,9 +68,6 @@
       "cached_input_tokens": 115200,
       "output_tokens": 2385
     },
-    "response_sha256": "3ec9c276ffe1245b1920618ae1d8d232be0f53ed93f1609992e54eb790820c46",
-    "response": "已完成：仅保留令牌校验器，`validate_token` 会去除首尾空格并继续拒绝 `legacy-wire-token`，相关测试通过，临时状态文件已删除。",
-    "response_chars": 80,
     "event_types": [
       "item.completed",
       "item.started",
@@ -97,9 +86,6 @@
       "cached_input_tokens": 46592,
       "output_tokens": 391
     },
-    "response_sha256": "74ec5e1d4838a69d7386e598eef9b1dc9e66d9a18cfc3cdf42002e0ae89107e5",
-    "response": "已在 README 增加带首尾空格的调用示例，并说明返回值已去除空格，其他范围保持不变。",
-    "response_chars": 44,
     "event_types": [
       "item.completed",
       "item.started",

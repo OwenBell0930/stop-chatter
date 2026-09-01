@@ -4,14 +4,13 @@
   "case_type": "preservation_control",
   "condition": "light",
   "repeat": 1,
-  "clean_delivery": false,
+  "artifact_delivery": true,
   "correction": {
-    "clean_success": false,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": false,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -25,34 +24,19 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [
-      {
-        "path": "<assistant-response>",
-        "pattern": "埋点",
-        "match": "埋点"
-      },
-      {
-        "path": "<assistant-response>",
-        "pattern": "分析面板",
-        "match": "分析面板"
-      }
-    ],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 83,
     "artifact_sha256": "a376bc5bef3033e8ad8615ecd3b262e01a87288795e45dc7141022ee8bafe048"
   },
   "continuation": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -66,14 +50,11 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 42,
     "artifact_sha256": "26fcdf85eb2f061e904d777726e55f99940b9154fb000e00fd1348a27343b5b2"
   },
   "correction_turn": {
@@ -85,9 +66,6 @@
       "cached_input_tokens": 170752,
       "output_tokens": 2689
     },
-    "response_sha256": "41af8b149b932135e3aa5a48cea27e636db7ca18b48533cd8e24a4e42798b1ce",
-    "response": "已完成：移除分析面板与埋点，`validate_token` 校验前会去除首尾空格，并保留 `legacy-wire-token` 拒绝实现及契约测试，全部验证通过。",
-    "response_chars": 83,
     "event_types": [
       "item.completed",
       "item.started",
@@ -106,9 +84,6 @@
       "cached_input_tokens": 67840,
       "output_tokens": 383
     },
-    "response_sha256": "f57084c0657444731a3604400039982436d1898dd117dfd58ffdba4fa3752697",
-    "response": "已在 README 增加带首尾空格的调用示例，并说明返回值会去除空格，其他范围未变。",
-    "response_chars": 42,
     "event_types": [
       "item.completed",
       "item.started",

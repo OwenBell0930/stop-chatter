@@ -130,9 +130,9 @@ def make_hero() -> str:
     parts.append('<circle cx="70" cy="680" r="210" fill="#FF6B4A" opacity="0.055"/>')
     parts.append(logo_mark(68, 58, 72))
     parts.append(text(164, 96, "STOP CHATTER", size=24, color=WHITE, weight=800, spacing=3))
-    parts.append(text(72, 210, "让LLM只输出你要的", size=48, color=WHITE, weight=750))
-    parts.append(text(72, 274, "最终结果", size=64, color=CORAL, weight=850))
-    parts.append(text(72, 345, "避免多余解释和过程留痕！", size=28, color="#CBD2E4", weight=500))
+    parts.append(text(72, 210, "让 LLM 只交付你现在要的", size=44, color=WHITE, weight=750))
+    parts.append(text(72, 274, "交付物", size=64, color=CORAL, weight=850))
+    parts.append(text(72, 345, "避免错误扩展和过程留痕！", size=28, color="#CBD2E4", weight=500))
 
     pills = [("CURSOR", 72, 126), ("CODEX", 214, 118), ("CLAUDE CODE", 348, 174)]
     for label, x, width in pills:
@@ -179,9 +179,9 @@ def make_hero_en() -> str:
     parts.append('<circle cx="70" cy="680" r="210" fill="#FF6B4A" opacity="0.055"/>')
     parts.append(logo_mark(68, 58, 72))
     parts.append(text(164, 96, "STOP CHATTER", size=24, color=WHITE, weight=800, spacing=3))
-    parts.append(text(72, 210, "Make LLMs output only", size=44, color=WHITE, weight=750))
-    parts.append(text(72, 274, "the result you asked for", size=52, color=CORAL, weight=850))
-    parts.append(text(72, 345, "No extra explanations. No process residue.", size=24, color="#CBD2E4", weight=500))
+    parts.append(text(72, 210, "Make LLMs deliver only", size=44, color=WHITE, weight=750))
+    parts.append(text(72, 274, "what you want now", size=52, color=CORAL, weight=850))
+    parts.append(text(72, 345, "No rejected scope. No process residue.", size=24, color="#CBD2E4", weight=500))
 
     pills = [("CURSOR", 72, 126), ("CODEX", 214, 118), ("CLAUDE CODE", 348, 174)]
     for label, x, width in pills:
@@ -267,7 +267,7 @@ def make_user_story() -> str:
 
     parts.append(rect(64, 568, 512, 74, fill=NAVY, radius=14))
     parts.append(text(88, 592, "结果", size=11, color="#AAB3CB", weight=800, spacing=1))
-    parts.append(text(88, 618, "多余功能 + 多余解释 + 过程留痕", size=18, color=WHITE, weight=750))
+    parts.append(text(88, 618, "多余功能 + 交付物解释 + 过程留痕", size=18, color=WHITE, weight=750))
 
     right_steps = [
         ("1", "重编译当前正向目标", "现在只需要：番茄炒蛋"),
@@ -314,7 +314,7 @@ def make_user_story_en() -> str:
 
     parts.append(rect(64, 568, 512, 74, fill=NAVY, radius=14))
     parts.append(text(88, 592, "RESULT", size=11, color="#AAB3CB", weight=800, spacing=1))
-    parts.append(text(88, 618, "Extra scope + explanations + process residue", size=17, color=WHITE, weight=750))
+    parts.append(text(88, 618, "Extra scope + artifact commentary + process residue", size=16, color=WHITE, weight=750))
 
     right_steps = [
         ("1", "Recompile the positive target", "What is wanted now: tomato & egg"),
@@ -354,32 +354,37 @@ def benchmark_metric_row(
 
 def make_benchmark_chart(*, english: bool) -> str:
     summary = json.loads(BENCHMARK_RESULT.read_text(encoding="utf-8"))
-    agent = summary["agent"]
+    agent = summary["artifact_delivery"]["case_types"]["cleanup"]
     copy = {
-        "title": "ChatterBench v2 — strict clean delivery" if english else "ChatterBench v2 — 严格干净交付率",
+        "title": "ChatterBench — deliverable success" if english else "ChatterBench — 交付物成功率",
         "subtitle": (
-            "6 Chinese cases × 3 repeats × 3 conditions · gpt-5.6-luna / Codex CLI"
+            "5 core Chinese correction cases × 3 repeats × 3 conditions · same model and host"
             if english
-            else "6 个中文场景 × 3 次重复 × 3 个条件 · gpt-5.6-luna / Codex CLI"
+            else "5 个核心中文纠错场景 × 3 次重复 × 3 个条件 · 同模型、同宿主"
         ),
-        "badge": "54 RUNS · 108 VALID TURNS" if english else "54 次运行 · 108 个有效回合",
-        "clean": "clean deliveries" if english else "次严格通过",
-        "requirements": "Active requirements" if english else "有效需求保留",
-        "artifact": "Artifact residue-free" if english else "工件无残留",
-        "response": "Response residue-free" if english else "回复无残留",
-        "scope": "Scope clean" if english else "范围干净",
-        "median": "Median" if english else "中位耗时",
+        "badge": "45 CORE RUNS · 90 VALID TURNS" if english else "45 次核心运行 · 90 个有效回合",
+        "success": "successful deliverables" if english else "次交付物成功",
+        "requirements": "Current requirements kept" if english else "当前需求完整保留",
+        "artifact": "Rejected content absent" if english else "已撤回内容无残留",
+        "scope": "File scope correct" if english else "文件改动不越界",
+        "time": "Median time" if english else "中位耗时",
+        "tokens": "Median tokens" if english else "中位 token",
+        "baseline": "baseline" if english else "基线",
         "footer": (
-            "Light and Guarded tied on strict success. Guarded kept requirements and file scope cleaner, but took longer."
+            "Light: +60.0 points success for +7.9% tokens · Guarded: +66.7 points for +35.9% tokens"
             if english
-            else "Light 与 Guarded 严格成功率相同；Guarded 更能保住需求和文件范围，但耗时更高。"
+            else "Light：成功率 +60.0 个百分点，token +7.9% · Guarded：+66.7 个百分点，token +35.9%"
         ),
         "limit": (
-            "One model · one host · synthetic Chinese cases · not a guarantee"
+            "Reply wording is not scored · one model · one host · synthetic cases · not a guarantee"
             if english
-            else "单模型 · 单宿主 · 合成中文场景 · 不是效果保证"
+            else "回复措辞不计分 · 单模型 · 单宿主 · 合成场景 · 不是效果保证"
         ),
-        "gate": "Gate corpus: 20 · F1 88.0%" if english else "门禁语料：20 条 · F1 88.0%",
+        "control": (
+            "Preservation control: 0/3 · 2/3 · 3/3"
+            if english
+            else "保留型安全对照：0/3 · 2/3 · 3/3"
+        ),
     }
 
     parts: list[str] = []
@@ -393,20 +398,29 @@ def make_benchmark_chart(*, english: bool) -> str:
         ("light", "Light", CORAL, 450),
         ("guarded", "Guarded", GREEN, 860),
     ]
+    baseline = agent["baseline"]
     for key, label, accent, x in cards:
         values = agent[key]
         metrics = values["metric_rates"]
-        interval = values["clean_delivery_wilson_95"]
+        interval = values["artifact_delivery_wilson_95"]
+        time_delta = 100 * (
+            values["median_duration_seconds"] / baseline["median_duration_seconds"] - 1
+        )
+        token_delta = 100 * (
+            values["median_total_tokens"] / baseline["median_total_tokens"] - 1
+        )
+        time_compare = copy["baseline"] if key == "baseline" else f"+{time_delta:.1f}%"
+        token_compare = copy["baseline"] if key == "baseline" else f"+{token_delta:.1f}%"
         parts.append(rect(x, 122, 380, 472, fill=WHITE, radius=22, stroke=accent, stroke_width=2, shadow=True))
         parts.append(rect(x, 122, 380, 58, fill=accent, radius=21))
         parts.append(f'<rect x="{x}" y="158" width="380" height="22" fill="{accent}"/>')
         parts.append(text(x + 190, 151, label, size=19, color=WHITE, weight=850, anchor="middle", spacing=0.6))
-        parts.append(text(x + 28, 222, f"{values['clean_delivery_rate']:.1f}%", size=46, color=accent, weight=900))
+        parts.append(text(x + 28, 222, f"{values['artifact_delivery_rate']:.1f}%", size=46, color=accent, weight=900))
         parts.append(
             text(
                 x + 352,
                 210,
-                f"{values['clean_deliveries']} / {values['runs']} {copy['clean']}",
+                f"{values['artifact_deliveries']} / {values['runs']} {copy['success']}",
                 size=12,
                 color=INK,
                 weight=700,
@@ -425,14 +439,25 @@ def make_benchmark_chart(*, english: bool) -> str:
         )
         benchmark_metric_row(parts, x + 24, 286, copy["requirements"], metrics["active_requirements_preserved"], accent)
         benchmark_metric_row(parts, x + 24, 346, copy["artifact"], metrics["artifact_residue_free"], accent)
-        benchmark_metric_row(parts, x + 24, 406, copy["response"], metrics["response_residue_free"], accent)
-        benchmark_metric_row(parts, x + 24, 466, copy["scope"], metrics["scope_clean"], accent)
-        parts.append(rect(x + 24, 530, 332, 42, fill="#F4F5F8", radius=10))
+        benchmark_metric_row(parts, x + 24, 406, copy["scope"], metrics["scope_clean"], accent)
+        parts.append(rect(x + 24, 466, 332, 38, fill="#F4F5F8", radius=10))
         parts.append(
             text(
                 x + 190,
-                552,
-                f"{copy['median']} {values['median_duration_seconds']:.1f}s · {round(values['median_total_tokens'] / 1000)}k tokens",
+                486,
+                f"{copy['time']} {values['median_duration_seconds']:.1f}s · {time_compare}",
+                size=12,
+                color=INK,
+                weight=700,
+                anchor="middle",
+            )
+        )
+        parts.append(rect(x + 24, 516, 332, 38, fill="#F4F5F8", radius=10))
+        parts.append(
+            text(
+                x + 190,
+                536,
+                f"{copy['tokens']} {round(values['median_total_tokens'] / 1000)}k · {token_compare}",
                 size=12,
                 color=INK,
                 weight=700,
@@ -443,7 +468,7 @@ def make_benchmark_chart(*, english: bool) -> str:
     parts.append(rect(40, 620, 1200, 70, fill=NAVY, radius=16))
     parts.append(text(64, 644, copy["footer"], size=16, color=WHITE, weight=750))
     parts.append(text(64, 672, copy["limit"], size=11, color="#AAB3CB", weight=500))
-    parts.append(text(1216, 672, copy["gate"], size=11, color="#A9DFC9", weight=700, anchor="end"))
+    parts.append(text(1216, 672, copy["control"], size=11, color="#A9DFC9", weight=700, anchor="end"))
     return base_svg(1280, 720, PAPER, "".join(parts))
 
 

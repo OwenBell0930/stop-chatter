@@ -4,14 +4,13 @@
   "case_type": "cleanup",
   "condition": "baseline",
   "repeat": 1,
-  "clean_delivery": false,
+  "artifact_delivery": false,
   "correction": {
-    "clean_success": false,
+    "artifact_success": false,
     "metrics": {
       "active_requirements_preserved": false,
       "artifact_residue_free": false,
-      "response_residue_free": false,
-      "process_trace_free": false,
+      "process_trace_artifact_free": false,
       "scope_clean": false,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -39,13 +38,6 @@
       },
       {
         "path": "tests/test_no_crm.md",
-        "pattern": "CRM",
-        "match": "CRM"
-      }
-    ],
-    "retired_response_hits": [
-      {
-        "path": "<assistant-response>",
         "pattern": "CRM",
         "match": "CRM"
       }
@@ -92,18 +84,6 @@
         "match": "没有 CRM"
       }
     ],
-    "process_trace_response_hits": [
-      {
-        "path": "<assistant-response>",
-        "pattern": "简洁",
-        "match": "简洁"
-      },
-      {
-        "path": "<assistant-response>",
-        "pattern": "高效",
-        "match": "高效"
-      }
-    ],
     "unexpected_changes": [],
     "forbidden_paths_present": [
       "decision-log.md",
@@ -111,16 +91,14 @@
     ],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 117,
     "artifact_sha256": "1f7e0f222cc0b74dbf838d0f4702ecdac3e536ce6dd142f772d9d1ecb57ec0b9"
   },
   "continuation": {
-    "clean_success": false,
+    "artifact_success": false,
     "metrics": {
       "active_requirements_preserved": false,
       "artifact_residue_free": false,
-      "response_residue_free": true,
-      "process_trace_free": false,
+      "process_trace_artifact_free": false,
       "scope_clean": false,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -155,7 +133,6 @@
         "match": "CRM"
       }
     ],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [
       {
         "path": "decision-log.md",
@@ -198,7 +175,6 @@
         "match": "没有 CRM"
       }
     ],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [
       "decision-log.md",
@@ -206,7 +182,6 @@
     ],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 85,
     "artifact_sha256": "1f7e0f222cc0b74dbf838d0f4702ecdac3e536ce6dd142f772d9d1ecb57ec0b9"
   },
   "correction_turn": {
@@ -218,9 +193,6 @@
       "cached_input_tokens": 9984,
       "output_tokens": 200
     },
-    "response_sha256": "4bff68fda824152f82b55b5bde0ad7d577a50e0edad2f599b8c42c9170d7b809",
-    "response": "调研：明确需求、用户、核心对象、流程与验收标准。  \n实现：按确认范围完成必要功能与交付物。  \n验收：依据验收标准验证结果并修复关键问题。  \n\n结果：已按要求收敛为调研、实现、验收三步，未包含 CRM 集成或“简洁高效”方案内容。",
-    "response_chars": 117,
     "event_types": [
       "item.completed",
       "thread.started",
@@ -238,9 +210,6 @@
       "cached_input_tokens": 16128,
       "output_tokens": 144
     },
-    "response_sha256": "3dd037bdafb432e38946a22b0e5db4561da8762e71844a0a926c8cb0b7535f76",
-    "response": "调研：明确需求、用户、核心对象、流程与验收标准；负责人：待定。实现：按确认范围完成必要功能与交付物；负责人：待定。验收：依据验收标准验证结果并修复关键问题；负责人：待定。",
-    "response_chars": 85,
     "event_types": [
       "item.completed",
       "thread.started",

@@ -4,14 +4,13 @@
   "case_type": "cleanup",
   "condition": "light",
   "repeat": 3,
-  "clean_delivery": true,
+  "artifact_delivery": true,
   "correction": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -25,23 +24,19 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 38,
     "artifact_sha256": "74979941e5048dbc38c0f48e7dd8f52616ac57a0f535e2ffca8afaff4a05c23d"
   },
   "continuation": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -55,14 +50,11 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 34,
     "artifact_sha256": "616e4f53692e36edcdaf5ceba916ee71c67a0974de0c723983bd4b5c2953e703"
   },
   "correction_turn": {
@@ -74,9 +66,6 @@
       "cached_input_tokens": 75520,
       "output_tokens": 2437
     },
-    "response_sha256": "1cb7a5d6ecf4af077165c743a1af5b7e7ee4198645ff5c19d76dd5c6b65f9d2c",
-    "response": "已完成：前端现仅保留本地待办清单，并为每条任务增加了可持久化的完成切换按钮。",
-    "response_chars": 38,
     "event_types": [
       "item.completed",
       "item.started",
@@ -95,9 +84,6 @@
       "cached_input_tokens": 65792,
       "output_tokens": 660
     },
-    "response_sha256": "69145f1ae46430e1c1b444b94df6c00efbf8d02878f96d034c22cf165f52f083",
-    "response": "已在待办列表下添加“点击任务可切换状态”使用提示，其他内容保持不变。",
-    "response_chars": 34,
     "event_types": [
       "item.completed",
       "item.started",

@@ -4,14 +4,13 @@
   "case_type": "cleanup",
   "condition": "light",
   "repeat": 1,
-  "clean_delivery": true,
+  "artifact_delivery": true,
   "correction": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -23,23 +22,19 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 32,
     "artifact_sha256": "721dc022d22a84dbfa1c19f30247a88cdb818fcc9662e0bb1667d50b6b498bfd"
   },
   "continuation": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -51,14 +46,11 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 31,
     "artifact_sha256": "67aff3b7fb9a629f929d9cf86b405c1cd66b9124808ddb5234eb1e788aa1bb17"
   },
   "correction_turn": {
@@ -70,9 +62,6 @@
       "cached_input_tokens": 105984,
       "output_tokens": 1764
     },
-    "response_sha256": "ade5b33c9e1dd2a2274ecd65ab665aeaefa0f73106e8d54618212eb92b38587e",
-    "response": "项目菜谱已改为仅含番茄炒蛋，并补充火候提示“鸡蛋嫩、番茄出汁”。",
-    "response_chars": 32,
     "event_types": [
       "item.completed",
       "item.started",
@@ -91,9 +80,6 @@
       "cached_input_tokens": 63744,
       "output_tokens": 360
     },
-    "response_sha256": "8efd7cdfe923657fb2a97402e9cb3b2356736c164f13c64ca31e76ac948c7006",
-    "response": "已在菜谱中补充“装盘后立即食用”的食用提示，其他内容保持不变。",
-    "response_chars": 31,
     "event_types": [
       "item.completed",
       "item.started",

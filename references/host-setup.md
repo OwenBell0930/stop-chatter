@@ -24,6 +24,16 @@ Preview without writing:
 python3 scripts/install.py --host all --scope project --target /path/to/project --dry-run
 ```
 
+Remove the same project adapters:
+
+```bash
+python3 scripts/uninstall.py --host all --scope project --target /path/to/project
+```
+
+The uninstaller verifies the `stop-chatter` skill marker before removing an
+exact destination. It does not remove parent folders, sibling skills, host
+settings, or project files. Add `--dry-run` to preview the exact paths.
+
 ## User scope
 
 User-level installation is opt-in:
@@ -38,7 +48,13 @@ User-level installation is opt-in:
 python3 scripts/install.py --host all --scope user
 ```
 
-The installer refuses existing destinations and never modifies host settings, hooks, memory, or unrelated rules. Remove or upgrade an installation deliberately; there is no automatic overwrite path.
+```bash
+python3 scripts/uninstall.py --host all --scope user
+```
+
+The installer refuses existing destinations and never modifies host settings,
+hooks, memory, or unrelated rules. Installation and removal are explicit; there
+is no automatic overwrite or background update path.
 
 ## Official format references
 

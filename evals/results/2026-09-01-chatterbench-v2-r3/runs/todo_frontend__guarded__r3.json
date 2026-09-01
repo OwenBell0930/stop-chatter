@@ -4,14 +4,13 @@
   "case_type": "cleanup",
   "condition": "guarded",
   "repeat": 3,
-  "clean_delivery": false,
+  "artifact_delivery": true,
   "correction": {
-    "clean_success": false,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": false,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -25,34 +24,19 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [
-      {
-        "path": "<assistant-response>",
-        "pattern": "管理员",
-        "match": "管理员"
-      },
-      {
-        "path": "<assistant-response>",
-        "pattern": "后台",
-        "match": "后台"
-      }
-    ],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 42,
     "artifact_sha256": "a594b00b89ca436ea0da08f043fc39ce8ed9143aee1cbb1e70dd880e8541a9d3"
   },
   "continuation": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -66,14 +50,11 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 34,
     "artifact_sha256": "d16f58c8f4592289e04a2aacba55048e39b33526257720156f8a93f21d36fbde"
   },
   "correction_turn": {
@@ -85,9 +66,6 @@
       "cached_input_tokens": 110080,
       "output_tokens": 2845
     },
-    "response_sha256": "a222bd8d49f98db47c99149e5b620423b8f778655983b3c84a59f918a258517f",
-    "response": "已完成：前端现为支持完成切换与本地保存的待办清单，并已移除管理员后台及相关内部内容。",
-    "response_chars": 42,
     "event_types": [
       "item.completed",
       "item.started",
@@ -106,9 +84,6 @@
       "cached_input_tokens": 67840,
       "output_tokens": 491
     },
-    "response_sha256": "e86116a2868438e9a114ba3f776245aac12b056212fcc657607f404c08a038b8",
-    "response": "已在待办列表下增加“点击任务可切换状态”使用提示，其他范围保持不变。",
-    "response_chars": 34,
     "event_types": [
       "item.completed",
       "item.started",

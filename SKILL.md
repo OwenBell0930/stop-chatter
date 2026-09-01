@@ -12,7 +12,7 @@ Keep only what the user currently asked for. Make a correction change the workin
 - **Light mode:** Use for one correction and a small, inspectable output. Keep the target in working context and perform the workflow below without creating transient state files or other workflow artifacts. Create or edit the task's requested artifacts normally.
 - **Guarded mode:** Use for long tasks, multiple artifacts, Git changes, repeated regressions, or handoffs. Read [references/protocol.md](references/protocol.md), create the transient state, and run the checker before delivery.
 
-Do not mention Stop Chatter, a compliance mode, or the correction history in the deliverable. A short conversational acknowledgement is enough when one is useful.
+Do not mention Stop Chatter, a compliance mode, or the correction history in the deliverable. Keep the conversational completion summary useful: report material changes, checks, and known limits when the user needs them to align on what happened.
 
 ## Recompile the current target
 
@@ -71,4 +71,4 @@ For installation paths and host-specific invocation, read [references/host-setup
 
 ## Deliver the result
 
-Return the requested artifact or concise completion summary in current-state language. Do not call it a corrected, clean, concise, no-X, or final-state version. Mention removed history only when the user asks for an audit trail or the removal itself is materially relevant to migration, safety, or compatibility.
+Return the requested artifact plus enough completion information for the user to understand material changes, validation, and known limits. Do not suppress useful status merely to make the reply look clean. Keep the artifact itself in current-state language: do not call it a corrected, clean, concise, no-X, or final-state version. In the reply, mention removed history when the user asks for an audit trail or when the removal is materially relevant to scope, migration, safety, or compatibility.

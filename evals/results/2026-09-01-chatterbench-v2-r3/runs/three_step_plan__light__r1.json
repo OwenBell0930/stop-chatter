@@ -4,14 +4,13 @@
   "case_type": "cleanup",
   "condition": "light",
   "repeat": 1,
-  "clean_delivery": false,
+  "artifact_delivery": false,
   "correction": {
-    "clean_success": false,
+    "artifact_success": false,
     "metrics": {
       "active_requirements_preserved": false,
       "artifact_residue_free": false,
-      "response_residue_free": true,
-      "process_trace_free": false,
+      "process_trace_artifact_free": false,
       "scope_clean": false,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -43,7 +42,6 @@
         "match": "CRM"
       }
     ],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [
       {
         "path": "decision-log.md",
@@ -86,7 +84,6 @@
         "match": "没有 CRM"
       }
     ],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [
       "decision-log.md",
@@ -94,16 +91,14 @@
     ],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 19,
     "artifact_sha256": "1f7e0f222cc0b74dbf838d0f4702ecdac3e536ce6dd142f772d9d1ecb57ec0b9"
   },
   "continuation": {
-    "clean_success": false,
+    "artifact_success": false,
     "metrics": {
       "active_requirements_preserved": false,
       "artifact_residue_free": false,
-      "response_residue_free": true,
-      "process_trace_free": false,
+      "process_trace_artifact_free": false,
       "scope_clean": false,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -138,7 +133,6 @@
         "match": "CRM"
       }
     ],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [
       {
         "path": "decision-log.md",
@@ -181,7 +175,6 @@
         "match": "没有 CRM"
       }
     ],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [
       "decision-log.md",
@@ -189,7 +182,6 @@
     ],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 24,
     "artifact_sha256": "1f7e0f222cc0b74dbf838d0f4702ecdac3e536ce6dd142f772d9d1ecb57ec0b9"
   },
   "correction_turn": {
@@ -201,9 +193,6 @@
       "cached_input_tokens": 46336,
       "output_tokens": 681
     },
-    "response_sha256": "0fd0438c7059b39f575e95409676ea52b84b62e9bf794e5b5f86d8f94baa240c",
-    "response": "方案已按“调研、实现、验收”三步完成。",
-    "response_chars": 19,
     "event_types": [
       "item.completed",
       "item.started",
@@ -222,9 +211,6 @@
       "cached_input_tokens": 58624,
       "output_tokens": 402
     },
-    "response_sha256": "8f900afe144c96cb714b1ea9b6a902e8d0308815197c1d85eb7fb5409098ce71",
-    "response": "三步均已补充“负责人：待定”，其他范围保持不变。",
-    "response_chars": 24,
     "event_types": [
       "item.completed",
       "item.started",

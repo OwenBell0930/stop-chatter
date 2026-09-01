@@ -31,411 +31,401 @@
     "instruction_envelope": "Codex system instructions plus the local account-level AGENTS.md; user config and exec policy rules disabled equally for all conditions.",
     "continuation_turn": true,
     "independent_gold_visible_to_agent": false,
-    "guarded_task_state_visible_to_agent": true
+    "guarded_task_state_visible_to_agent": true,
+    "result_schema_version": 2,
+    "artifact_view_version": 1,
+    "quality_scope": "deliverables_only",
+    "assistant_reply_scored": false,
+    "assistant_reply_stored": false,
+    "artifact_view_derived_from_frozen_run": true
   },
-  "agent": {
-    "baseline": {
-      "runs": 18,
-      "valid_runs": 18,
-      "invalid_runs": 0,
-      "clean_deliveries": 0,
-      "clean_delivery_rate": 0.0,
-      "clean_delivery_wilson_95": [
-        0.0,
-        17.6
-      ],
-      "metric_rates": {
-        "active_requirements_preserved": 83.3,
-        "artifact_residue_free": 16.7,
-        "response_residue_free": 11.1,
-        "process_trace_free": 50.0,
-        "scope_clean": 16.7,
-        "hidden_check_passed": 100.0,
-        "transient_state_clean": 100.0
-      },
-      "median_total_tokens": 166246,
-      "median_output_tokens": 1870,
-      "median_duration_seconds": 68.6,
-      "median_final_response_chars": 37,
-      "total_usage": {
-        "input_tokens": 2762383,
-        "cached_input_tokens": 2490112,
-        "output_tokens": 39609
-      },
-      "total_duration_seconds": 1327.6
-    },
-    "light": {
-      "runs": 18,
-      "valid_runs": 18,
-      "invalid_runs": 0,
-      "clean_deliveries": 8,
-      "clean_delivery_rate": 44.4,
-      "clean_delivery_wilson_95": [
-        24.6,
-        66.3
-      ],
-      "metric_rates": {
-        "active_requirements_preserved": 77.8,
-        "artifact_residue_free": 88.9,
-        "response_residue_free": 55.6,
-        "process_trace_free": 77.8,
-        "scope_clean": 88.9,
-        "hidden_check_passed": 100.0,
-        "transient_state_clean": 100.0
-      },
-      "median_total_tokens": 187634,
-      "median_output_tokens": 2117,
-      "median_duration_seconds": 77.2,
-      "median_final_response_chars": 34,
-      "total_usage": {
-        "input_tokens": 3569823,
-        "cached_input_tokens": 3142144,
-        "output_tokens": 49492
-      },
-      "total_duration_seconds": 1575.8
-    },
-    "guarded": {
-      "runs": 18,
-      "valid_runs": 18,
-      "invalid_runs": 0,
-      "clean_deliveries": 8,
-      "clean_delivery_rate": 44.4,
-      "clean_delivery_wilson_95": [
-        24.6,
-        66.3
-      ],
-      "metric_rates": {
-        "active_requirements_preserved": 94.4,
-        "artifact_residue_free": 94.4,
-        "response_residue_free": 55.6,
-        "process_trace_free": 77.8,
-        "scope_clean": 94.4,
-        "hidden_check_passed": 100.0,
-        "transient_state_clean": 100.0
-      },
-      "median_total_tokens": 227132,
-      "median_output_tokens": 2829,
-      "median_duration_seconds": 88.0,
-      "median_final_response_chars": 34,
-      "total_usage": {
-        "input_tokens": 4299151,
-        "cached_input_tokens": 3892480,
-        "output_tokens": 59411
-      },
-      "total_duration_seconds": 1782.4
-    }
-  },
-  "cases": [
-    {
-      "case_id": "compatibility_contract",
-      "case_type": "preservation_control",
-      "conditions": {
-        "baseline": {
-          "runs": 3,
-          "clean_deliveries": 0,
-          "clean_delivery_rate": 0.0
-        },
-        "light": {
-          "runs": 3,
-          "clean_deliveries": 0,
-          "clean_delivery_rate": 0.0
-        },
-        "guarded": {
-          "runs": 3,
-          "clean_deliveries": 1,
-          "clean_delivery_rate": 33.3
-        }
-      }
-    },
-    {
-      "case_id": "csv_export",
-      "case_type": "cleanup",
-      "conditions": {
-        "baseline": {
-          "runs": 3,
-          "clean_deliveries": 0,
-          "clean_delivery_rate": 0.0
-        },
-        "light": {
-          "runs": 3,
-          "clean_deliveries": 2,
-          "clean_delivery_rate": 66.7
-        },
-        "guarded": {
-          "runs": 3,
-          "clean_deliveries": 2,
-          "clean_delivery_rate": 66.7
-        }
-      }
-    },
-    {
-      "case_id": "dashboard_memory",
-      "case_type": "cleanup",
-      "conditions": {
-        "baseline": {
-          "runs": 3,
-          "clean_deliveries": 0,
-          "clean_delivery_rate": 0.0
-        },
-        "light": {
-          "runs": 3,
-          "clean_deliveries": 0,
-          "clean_delivery_rate": 0.0
-        },
-        "guarded": {
-          "runs": 3,
-          "clean_deliveries": 0,
-          "clean_delivery_rate": 0.0
-        }
-      }
-    },
-    {
-      "case_id": "recipe_cleanup",
-      "case_type": "cleanup",
-      "conditions": {
-        "baseline": {
-          "runs": 3,
-          "clean_deliveries": 0,
-          "clean_delivery_rate": 0.0
-        },
-        "light": {
-          "runs": 3,
-          "clean_deliveries": 3,
-          "clean_delivery_rate": 100.0
-        },
-        "guarded": {
-          "runs": 3,
-          "clean_deliveries": 2,
-          "clean_delivery_rate": 66.7
-        }
-      }
-    },
-    {
-      "case_id": "three_step_plan",
-      "case_type": "cleanup",
-      "conditions": {
-        "baseline": {
-          "runs": 3,
-          "clean_deliveries": 0,
-          "clean_delivery_rate": 0.0
-        },
-        "light": {
-          "runs": 3,
-          "clean_deliveries": 0,
-          "clean_delivery_rate": 0.0
-        },
-        "guarded": {
-          "runs": 3,
-          "clean_deliveries": 3,
-          "clean_delivery_rate": 100.0
-        }
-      }
-    },
-    {
-      "case_id": "todo_frontend",
-      "case_type": "cleanup",
-      "conditions": {
-        "baseline": {
-          "runs": 3,
-          "clean_deliveries": 0,
-          "clean_delivery_rate": 0.0
-        },
-        "light": {
-          "runs": 3,
-          "clean_deliveries": 3,
-          "clean_delivery_rate": 100.0
-        },
-        "guarded": {
-          "runs": 3,
-          "clean_deliveries": 0,
-          "clean_delivery_rate": 0.0
-        }
-      }
-    }
-  ],
-  "case_types": {
-    "cleanup": {
+  "artifact_delivery": {
+    "all_cases": {
       "baseline": {
-        "runs": 15,
-        "valid_runs": 15,
+        "runs": 18,
+        "valid_runs": 18,
         "invalid_runs": 0,
-        "clean_deliveries": 0,
-        "clean_delivery_rate": 0.0,
-        "clean_delivery_wilson_95": [
-          0.0,
-          20.4
+        "artifact_deliveries": 3,
+        "artifact_delivery_rate": 16.7,
+        "artifact_delivery_wilson_95": [
+          5.8,
+          39.2
         ],
         "metric_rates": {
-          "active_requirements_preserved": 80.0,
-          "artifact_residue_free": 20.0,
-          "response_residue_free": 13.3,
-          "process_trace_free": 40.0,
-          "scope_clean": 20.0,
+          "active_requirements_preserved": 83.3,
+          "artifact_residue_free": 16.7,
+          "process_trace_artifact_free": 50.0,
+          "scope_clean": 16.7,
           "hidden_check_passed": 100.0,
           "transient_state_clean": 100.0
         },
-        "median_total_tokens": 165731,
-        "median_output_tokens": 1697,
-        "median_duration_seconds": 64.5,
-        "median_final_response_chars": 33,
+        "median_total_tokens": 166246,
+        "median_output_tokens": 1870,
+        "median_duration_seconds": 68.6,
         "total_usage": {
-          "input_tokens": 2204706,
-          "cached_input_tokens": 1991680,
-          "output_tokens": 31608
+          "input_tokens": 2762383,
+          "cached_input_tokens": 2490112,
+          "output_tokens": 39609
         },
-        "total_duration_seconds": 1053.1
+        "total_duration_seconds": 1327.6
       },
       "light": {
-        "runs": 15,
-        "valid_runs": 15,
+        "runs": 18,
+        "valid_runs": 18,
         "invalid_runs": 0,
-        "clean_deliveries": 8,
-        "clean_delivery_rate": 53.3,
-        "clean_delivery_wilson_95": [
-          30.1,
-          75.2
+        "artifact_deliveries": 14,
+        "artifact_delivery_rate": 77.8,
+        "artifact_delivery_wilson_95": [
+          54.8,
+          91.0
         ],
         "metric_rates": {
-          "active_requirements_preserved": 80.0,
-          "artifact_residue_free": 86.7,
-          "response_residue_free": 66.7,
-          "process_trace_free": 80.0,
-          "scope_clean": 86.7,
+          "active_requirements_preserved": 77.8,
+          "artifact_residue_free": 88.9,
+          "process_trace_artifact_free": 88.9,
+          "scope_clean": 88.9,
           "hidden_check_passed": 100.0,
           "transient_state_clean": 100.0
         },
-        "median_total_tokens": 178884,
-        "median_output_tokens": 2006,
-        "median_duration_seconds": 75.1,
-        "median_final_response_chars": 34,
+        "median_total_tokens": 187634,
+        "median_output_tokens": 2117,
+        "median_duration_seconds": 77.2,
         "total_usage": {
-          "input_tokens": 2758767,
-          "cached_input_tokens": 2412288,
-          "output_tokens": 40126
+          "input_tokens": 3569823,
+          "cached_input_tokens": 3142144,
+          "output_tokens": 49492
         },
-        "total_duration_seconds": 1276.1
+        "total_duration_seconds": 1575.8
       },
       "guarded": {
-        "runs": 15,
-        "valid_runs": 15,
+        "runs": 18,
+        "valid_runs": 18,
         "invalid_runs": 0,
-        "clean_deliveries": 7,
-        "clean_delivery_rate": 46.7,
-        "clean_delivery_wilson_95": [
-          24.8,
-          69.9
+        "artifact_deliveries": 16,
+        "artifact_delivery_rate": 88.9,
+        "artifact_delivery_wilson_95": [
+          67.2,
+          96.9
         ],
         "metric_rates": {
-          "active_requirements_preserved": 93.3,
-          "artifact_residue_free": 93.3,
-          "response_residue_free": 60.0,
-          "process_trace_free": 86.7,
-          "scope_clean": 93.3,
+          "active_requirements_preserved": 94.4,
+          "artifact_residue_free": 94.4,
+          "process_trace_artifact_free": 94.4,
+          "scope_clean": 94.4,
           "hidden_check_passed": 100.0,
           "transient_state_clean": 100.0
         },
-        "median_total_tokens": 225286,
-        "median_output_tokens": 2822,
+        "median_total_tokens": 227132,
+        "median_output_tokens": 2829,
         "median_duration_seconds": 88.0,
-        "median_final_response_chars": 33,
         "total_usage": {
-          "input_tokens": 3603406,
-          "cached_input_tokens": 3265280,
-          "output_tokens": 50279
+          "input_tokens": 4299151,
+          "cached_input_tokens": 3892480,
+          "output_tokens": 59411
         },
-        "total_duration_seconds": 1501.8
+        "total_duration_seconds": 1782.4
       }
     },
-    "preservation_control": {
-      "baseline": {
-        "runs": 3,
-        "valid_runs": 3,
-        "invalid_runs": 0,
-        "clean_deliveries": 0,
-        "clean_delivery_rate": 0.0,
-        "clean_delivery_wilson_95": [
-          0.0,
-          56.1
-        ],
-        "metric_rates": {
-          "active_requirements_preserved": 100.0,
-          "artifact_residue_free": 0.0,
-          "response_residue_free": 0.0,
-          "process_trace_free": 100.0,
-          "scope_clean": 0.0,
-          "hidden_check_passed": 100.0,
-          "transient_state_clean": 100.0
-        },
-        "median_total_tokens": 173228,
-        "median_output_tokens": 2274,
-        "median_duration_seconds": 87.8,
-        "median_final_response_chars": 44,
-        "total_usage": {
-          "input_tokens": 557677,
-          "cached_input_tokens": 498432,
-          "output_tokens": 8001
-        },
-        "total_duration_seconds": 274.5
+    "cases": [
+      {
+        "case_id": "compatibility_contract",
+        "case_type": "preservation_control",
+        "conditions": {
+          "baseline": {
+            "runs": 3,
+            "artifact_deliveries": 0,
+            "artifact_delivery_rate": 0.0
+          },
+          "light": {
+            "runs": 3,
+            "artifact_deliveries": 2,
+            "artifact_delivery_rate": 66.7
+          },
+          "guarded": {
+            "runs": 3,
+            "artifact_deliveries": 3,
+            "artifact_delivery_rate": 100.0
+          }
+        }
       },
-      "light": {
-        "runs": 3,
-        "valid_runs": 3,
-        "invalid_runs": 0,
-        "clean_deliveries": 0,
-        "clean_delivery_rate": 0.0,
-        "clean_delivery_wilson_95": [
-          0.0,
-          56.1
-        ],
-        "metric_rates": {
-          "active_requirements_preserved": 66.7,
-          "artifact_residue_free": 100.0,
-          "response_residue_free": 0.0,
-          "process_trace_free": 66.7,
-          "scope_clean": 100.0,
-          "hidden_check_passed": 100.0,
-          "transient_state_clean": 100.0
-        },
-        "median_total_tokens": 265936,
-        "median_output_tokens": 3072,
-        "median_duration_seconds": 99.8,
-        "median_final_response_chars": 44,
-        "total_usage": {
-          "input_tokens": 811056,
-          "cached_input_tokens": 729856,
-          "output_tokens": 9366
-        },
-        "total_duration_seconds": 299.7
+      {
+        "case_id": "csv_export",
+        "case_type": "cleanup",
+        "conditions": {
+          "baseline": {
+            "runs": 3,
+            "artifact_deliveries": 0,
+            "artifact_delivery_rate": 0.0
+          },
+          "light": {
+            "runs": 3,
+            "artifact_deliveries": 3,
+            "artifact_delivery_rate": 100.0
+          },
+          "guarded": {
+            "runs": 3,
+            "artifact_deliveries": 3,
+            "artifact_delivery_rate": 100.0
+          }
+        }
       },
-      "guarded": {
-        "runs": 3,
-        "valid_runs": 3,
-        "invalid_runs": 0,
-        "clean_deliveries": 1,
-        "clean_delivery_rate": 33.3,
-        "clean_delivery_wilson_95": [
-          6.1,
-          79.2
-        ],
-        "metric_rates": {
-          "active_requirements_preserved": 100.0,
-          "artifact_residue_free": 100.0,
-          "response_residue_free": 33.3,
-          "process_trace_free": 33.3,
-          "scope_clean": 100.0,
-          "hidden_check_passed": 100.0,
-          "transient_state_clean": 100.0
+      {
+        "case_id": "dashboard_memory",
+        "case_type": "cleanup",
+        "conditions": {
+          "baseline": {
+            "runs": 3,
+            "artifact_deliveries": 3,
+            "artifact_delivery_rate": 100.0
+          },
+          "light": {
+            "runs": 3,
+            "artifact_deliveries": 2,
+            "artifact_delivery_rate": 66.7
+          },
+          "guarded": {
+            "runs": 3,
+            "artifact_deliveries": 3,
+            "artifact_delivery_rate": 100.0
+          }
+        }
+      },
+      {
+        "case_id": "recipe_cleanup",
+        "case_type": "cleanup",
+        "conditions": {
+          "baseline": {
+            "runs": 3,
+            "artifact_deliveries": 0,
+            "artifact_delivery_rate": 0.0
+          },
+          "light": {
+            "runs": 3,
+            "artifact_deliveries": 3,
+            "artifact_delivery_rate": 100.0
+          },
+          "guarded": {
+            "runs": 3,
+            "artifact_deliveries": 2,
+            "artifact_delivery_rate": 66.7
+          }
+        }
+      },
+      {
+        "case_id": "three_step_plan",
+        "case_type": "cleanup",
+        "conditions": {
+          "baseline": {
+            "runs": 3,
+            "artifact_deliveries": 0,
+            "artifact_delivery_rate": 0.0
+          },
+          "light": {
+            "runs": 3,
+            "artifact_deliveries": 1,
+            "artifact_delivery_rate": 33.3
+          },
+          "guarded": {
+            "runs": 3,
+            "artifact_deliveries": 3,
+            "artifact_delivery_rate": 100.0
+          }
+        }
+      },
+      {
+        "case_id": "todo_frontend",
+        "case_type": "cleanup",
+        "conditions": {
+          "baseline": {
+            "runs": 3,
+            "artifact_deliveries": 0,
+            "artifact_delivery_rate": 0.0
+          },
+          "light": {
+            "runs": 3,
+            "artifact_deliveries": 3,
+            "artifact_delivery_rate": 100.0
+          },
+          "guarded": {
+            "runs": 3,
+            "artifact_deliveries": 2,
+            "artifact_delivery_rate": 66.7
+          }
+        }
+      }
+    ],
+    "case_types": {
+      "cleanup": {
+        "baseline": {
+          "runs": 15,
+          "valid_runs": 15,
+          "invalid_runs": 0,
+          "artifact_deliveries": 3,
+          "artifact_delivery_rate": 20.0,
+          "artifact_delivery_wilson_95": [
+            7.0,
+            45.2
+          ],
+          "metric_rates": {
+            "active_requirements_preserved": 80.0,
+            "artifact_residue_free": 20.0,
+            "process_trace_artifact_free": 40.0,
+            "scope_clean": 20.0,
+            "hidden_check_passed": 100.0,
+            "transient_state_clean": 100.0
+          },
+          "median_total_tokens": 165731,
+          "median_output_tokens": 1697,
+          "median_duration_seconds": 64.5,
+          "total_usage": {
+            "input_tokens": 2204706,
+            "cached_input_tokens": 1991680,
+            "output_tokens": 31608
+          },
+          "total_duration_seconds": 1053.1
         },
-        "median_total_tokens": 234255,
-        "median_output_tokens": 3014,
-        "median_duration_seconds": 93.4,
-        "median_final_response_chars": 44,
-        "total_usage": {
-          "input_tokens": 695745,
-          "cached_input_tokens": 627200,
-          "output_tokens": 9132
+        "light": {
+          "runs": 15,
+          "valid_runs": 15,
+          "invalid_runs": 0,
+          "artifact_deliveries": 12,
+          "artifact_delivery_rate": 80.0,
+          "artifact_delivery_wilson_95": [
+            54.8,
+            93.0
+          ],
+          "metric_rates": {
+            "active_requirements_preserved": 80.0,
+            "artifact_residue_free": 86.7,
+            "process_trace_artifact_free": 86.7,
+            "scope_clean": 86.7,
+            "hidden_check_passed": 100.0,
+            "transient_state_clean": 100.0
+          },
+          "median_total_tokens": 178884,
+          "median_output_tokens": 2006,
+          "median_duration_seconds": 75.1,
+          "total_usage": {
+            "input_tokens": 2758767,
+            "cached_input_tokens": 2412288,
+            "output_tokens": 40126
+          },
+          "total_duration_seconds": 1276.1
         },
-        "total_duration_seconds": 280.6
+        "guarded": {
+          "runs": 15,
+          "valid_runs": 15,
+          "invalid_runs": 0,
+          "artifact_deliveries": 13,
+          "artifact_delivery_rate": 86.7,
+          "artifact_delivery_wilson_95": [
+            62.1,
+            96.3
+          ],
+          "metric_rates": {
+            "active_requirements_preserved": 93.3,
+            "artifact_residue_free": 93.3,
+            "process_trace_artifact_free": 93.3,
+            "scope_clean": 93.3,
+            "hidden_check_passed": 100.0,
+            "transient_state_clean": 100.0
+          },
+          "median_total_tokens": 225286,
+          "median_output_tokens": 2822,
+          "median_duration_seconds": 88.0,
+          "total_usage": {
+            "input_tokens": 3603406,
+            "cached_input_tokens": 3265280,
+            "output_tokens": 50279
+          },
+          "total_duration_seconds": 1501.8
+        }
+      },
+      "preservation_control": {
+        "baseline": {
+          "runs": 3,
+          "valid_runs": 3,
+          "invalid_runs": 0,
+          "artifact_deliveries": 0,
+          "artifact_delivery_rate": 0.0,
+          "artifact_delivery_wilson_95": [
+            0.0,
+            56.1
+          ],
+          "metric_rates": {
+            "active_requirements_preserved": 100.0,
+            "artifact_residue_free": 0.0,
+            "process_trace_artifact_free": 100.0,
+            "scope_clean": 0.0,
+            "hidden_check_passed": 100.0,
+            "transient_state_clean": 100.0
+          },
+          "median_total_tokens": 173228,
+          "median_output_tokens": 2274,
+          "median_duration_seconds": 87.8,
+          "total_usage": {
+            "input_tokens": 557677,
+            "cached_input_tokens": 498432,
+            "output_tokens": 8001
+          },
+          "total_duration_seconds": 274.5
+        },
+        "light": {
+          "runs": 3,
+          "valid_runs": 3,
+          "invalid_runs": 0,
+          "artifact_deliveries": 2,
+          "artifact_delivery_rate": 66.7,
+          "artifact_delivery_wilson_95": [
+            20.8,
+            93.9
+          ],
+          "metric_rates": {
+            "active_requirements_preserved": 66.7,
+            "artifact_residue_free": 100.0,
+            "process_trace_artifact_free": 100.0,
+            "scope_clean": 100.0,
+            "hidden_check_passed": 100.0,
+            "transient_state_clean": 100.0
+          },
+          "median_total_tokens": 265936,
+          "median_output_tokens": 3072,
+          "median_duration_seconds": 99.8,
+          "total_usage": {
+            "input_tokens": 811056,
+            "cached_input_tokens": 729856,
+            "output_tokens": 9366
+          },
+          "total_duration_seconds": 299.7
+        },
+        "guarded": {
+          "runs": 3,
+          "valid_runs": 3,
+          "invalid_runs": 0,
+          "artifact_deliveries": 3,
+          "artifact_delivery_rate": 100.0,
+          "artifact_delivery_wilson_95": [
+            43.9,
+            100.0
+          ],
+          "metric_rates": {
+            "active_requirements_preserved": 100.0,
+            "artifact_residue_free": 100.0,
+            "process_trace_artifact_free": 100.0,
+            "scope_clean": 100.0,
+            "hidden_check_passed": 100.0,
+            "transient_state_clean": 100.0
+          },
+          "median_total_tokens": 234255,
+          "median_output_tokens": 3014,
+          "median_duration_seconds": 93.4,
+          "total_usage": {
+            "input_tokens": 695745,
+            "cached_input_tokens": 627200,
+            "output_tokens": 9132
+          },
+          "total_duration_seconds": 280.6
+        }
       }
     }
   },

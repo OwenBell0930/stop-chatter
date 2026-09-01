@@ -4,7 +4,7 @@
 
 <div align="center">
   <a href="assets/hero-en.svg">
-    <img src="assets/hero-en.svg" width="100%" alt="Stop Chatter — Make LLMs output only the result you asked for, without extra explanations or process residue" />
+    <img src="assets/hero-en.svg" width="100%" alt="Stop Chatter — Make LLMs deliver only what you want now, without rejected scope or process residue" />
   </a>
 </div>
 
@@ -12,12 +12,14 @@
 
 <div align="center">
 
-**Make LLMs output only the result you asked for—without extra explanations or process residue.**
+**Make LLMs deliver only what you want now—without rejected scope or process residue.**
 
 [![CI](https://github.com/OwenBell0930/stop-chatter/actions/workflows/ci.yml/badge.svg)](https://github.com/OwenBell0930/stop-chatter/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-0B1020.svg)](LICENSE)
 [![Zero runtime dependencies](https://img.shields.io/badge/runtime_dependencies-0-19A974.svg)](#two-modes)
-[![Cursor · Codex · Claude Code](https://img.shields.io/badge/Cursor_·_Codex_·_Claude_Code-ready-FF6B4A.svg)](#install)
+[![Cursor · Codex · Claude Code](https://img.shields.io/badge/Cursor_·_Codex_·_Claude_Code-ready-FF6B4A.svg)](#install-and-uninstall)
+[![Local only](https://img.shields.io/badge/telemetry-none-19A974.svg)](#privacy)
+[![Install + uninstall](https://img.shields.io/badge/install_+_uninstall-explicit-0B1020.svg)](#install-and-uninstall)
 
 </div>
 
@@ -46,27 +48,31 @@ This is not just verbosity. It is **dangling negation**: content already rejecte
 | Correct direction during a long task | A nearby synonym resurrects the rejected idea | Prune the dependency cone and relevant aliases |
 | Correct one task | The example becomes a permanent user preference | Keep corrections task-local by default |
 
-## Measured benchmark v2: helps, but is not a guarantee
+## Measured deliverable results
 
-On 2026-09-01, ChatterBench ran **6 Chinese correction cases × 3 conditions × 3 fresh repeats** on the same `gpt-5.6-luna` / Codex CLI setup: **54 runs and 108 valid agent turns**. Five cases require pruning; one preservation control requires keeping an explicit negative compatibility contract, so indiscriminate deletion cannot score.
+On 2026-09-01, ChatterBench ran **5 core Chinese correction cases × 3 conditions × 3 fresh repeats** on the same `gpt-5.6-luna` / Codex CLI setup: **45 core runs and 90 valid turns**. A separate 9-run preservation control checks that the tool does not delete an explicitly required compatibility contract. All **54 runs / 108 turns** completed successfully.
 
 <div align="center">
   <a href="assets/benchmark-v2-en.svg">
-    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench v2 comparison: Baseline 0%, Light 44.4%, Guarded 44.4%, with requirement, residue, scope, and cost metrics" />
+    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench deliverable comparison: Baseline 20.0%, Light 80.0%, Guarded 86.7%, with token and time costs" />
   </a>
 </div>
 
-| Condition | Strict clean delivery | Active requirements | Artifact residue-free | Response residue-free | Scope clean | Median time |
+| Condition | Deliverable success | Current requirements kept | Rejected content absent | File scope correct | Median tokens | Median time |
 |---|---:|---:|---:|---:|---:|---:|
-| Baseline | 0/18, 0.0% (95% CI 0.0–17.6) | 83.3% | 16.7% | 11.1% | 16.7% | 68.6s |
-| Light | 8/18, 44.4% (95% CI 24.6–66.3) | 77.8% | 88.9% | 55.6% | 88.9% | 77.2s |
-| Guarded | 8/18, 44.4% (95% CI 24.6–66.3) | 94.4% | 94.4% | 55.6% | 94.4% | 88.0s |
+| Baseline | 3/15, **20.0%** (95% CI 7.0–45.2) | 80.0% | 20.0% | 20.0% | 165.7k | 64.5s |
+| Light | 12/15, **80.0%** (95% CI 54.8–93.0) | 80.0% | 86.7% | 86.7% | 178.9k (**+7.9%**) | 75.1s (**+16.4%**) |
+| Guarded | 13/15, **86.7%** (95% CI 62.1–96.3) | 93.3% | 93.3% | 93.3% | 225.3k (**+35.9%**) | 88.0s (**+36.4%**) |
 
-**What the data supports:** Light and Guarded tied on strict end-to-end success. Guarded preserved active requirements and kept artifacts and scope clean more often, but cost more time and tokens. The final response remains the main bottleneck: both modes were residue-free in only 55.6% of runs. Scenario results also diverged—Light scored 3/3 on the recipe and todo cases, Guarded scored 3/3 on the three-step plan, and every condition scored 0/3 on the dashboard-plus-memory case. This is useful intervention, not a reliable guardrail.
+Token cost is the host-reported input plus output tokens for both turns; cached input is already a subset of input and is not added twice. Time is measured agent wall time.
 
-“Strict clean delivery” is all-or-nothing across both turns: active requirements, hidden behavior, artifact residue, response residue, scope, transient state, and neutral-continuation regression must all pass. The formal run started from frozen clean commit `5f830b4`; all 54 runs were valid, and **no manual adjudication changed v2 scores**. Raw final replies, score details, timings, token counts, patch hashes, and all 54 patches are published.
+**What the data supports:** Light increased deliverable success by **60.0 percentage points** with a **7.9% median-token increase**, making it the low-cost default. Guarded reached the highest observed success, but its extra checker workflow raised median tokens by **35.9%**; it is better reserved for long or high-residue tasks. Across all six cases including the preservation control, the result was Baseline **3/18**, Light **14/18**, and Guarded **16/18**. The control itself scored **0/3, 2/3, and 3/3**, respectively.
 
-This is still a small, synthetic, single-model and single-host benchmark—not a claim about Cursor, Claude Code, other models, English tasks, or production distributions. See the [method](evals/README.md), [v2 summary](evals/results/2026-09-01-chatterbench-v2-r3/summary.md), [machine-readable data](evals/results/2026-09-01-chatterbench-v2-r3/summary.json), [54 run records](evals/results/2026-09-01-chatterbench-v2-r3/runs/), and [54 artifact patches](evals/results/2026-09-01-chatterbench-v2-r3/patches/). The earlier [15-run pilot](evals/results/2026-09-01-codex-luna-pilot/) remains archived and is not pooled with v2 because v2 fixed two narrow gold checks and added the preservation control.
+“Deliverable success” is deliberately plain: after both the correction turn and a neutral continuation, the required behavior must still work, active requirements must remain, rejected content and process labels must be absent from files, unrelated/protected files must stay untouched, and transient state must be removed. **Assistant reply wording does not affect the score**—the model should still tell the user what materially changed.
+
+The formal run started from frozen clean commit `5f830b4`. The artifact-only public view was recomputed deterministically from those frozen checks and patches; no model run was repeated and no score was manually changed. Public records retain artifact evidence, timings, and token usage, but omit assistant replies and session identifiers.
+
+This is still a small, synthetic, single-model and single-host benchmark—not a claim about Cursor, Claude Code, other models, English tasks, or production distributions. See the [method](evals/README.md), [artifact summary](evals/results/2026-09-01-chatterbench-v2-r3/summary.md), [machine-readable data](evals/results/2026-09-01-chatterbench-v2-r3/summary.json), [54 artifact-only run records](evals/results/2026-09-01-chatterbench-v2-r3/runs/), and [54 artifact patches](evals/results/2026-09-01-chatterbench-v2-r3/patches/).
 
 The deterministic gate was evaluated separately on 20 labeled samples: code-level precision **91.7%**, recall **84.6%**, and F1 **88.0%**. Its two known misses were unlisted semantic aliases; its false positive was a substring collision. These numbers describe the checker only, not the whole Skill.
 
@@ -92,7 +98,7 @@ Current positive target  →  necessary implementation  →  necessary validatio
 
 Light mode keeps the Skill lightweight. Guarded mode creates task-local transient state and checks observable residue before delivery. Neither mode modifies global configuration or durable memory automatically.
 
-## Install
+## Install and uninstall
 
 ```bash
 git clone https://github.com/OwenBell0930/stop-chatter.git
@@ -114,6 +120,14 @@ The installer never overwrites an existing destination. Invoke the Skill explici
 | Claude Code | `/stop-chatter` |
 
 Single-host and user-scope installation are also supported; see [host setup](references/host-setup.md).
+
+Remove the same adapters with one explicit command:
+
+```bash
+python3 scripts/uninstall.py --host all --scope project --target /path/to/project
+```
+
+The uninstaller first verifies that each exact destination is a `stop-chatter` installation. It refuses unknown directories and leaves parent folders, sibling skills, host settings, and project files untouched. Both commands support `--dry-run`.
 
 ## Guarded mode in 30 seconds
 
@@ -147,11 +161,18 @@ See the [target-state protocol](references/protocol.md) for the full schema and 
 
 The checker enforces deterministic facts only. The Skill supplies task-relevant aliases; the script does not pretend to understand arbitrary semantics.
 
+## Privacy
+
+- The Skill, installer, uninstaller, and deterministic checker run locally with the Python standard library: **zero third-party runtime dependencies, no network calls, no telemetry**.
+- The installer does not add hooks, edit host settings, or write durable memory. Guarded state is task-local, Git-ignored, and removed after delivery.
+- The public benchmark uses synthetic fixtures. Current run records contain artifact checks, patches, timings, and token counts—not assistant replies, session IDs, or user/project data.
+- Stop Chatter does not change the privacy policy of Cursor, Codex, Claude Code, or the model provider. Any prompt or file context sent by the host is still governed by that host's settings and policy.
+
 ## Boundaries
 
 - No hooks, host settings, durable memory, network calls, or telemetry are installed automatically.
 - It does not add negative tests merely to prove that unrequested scope is absent. Keep one only when an active external contract or safety property requires it.
-- Light mode depends on model compliance. Guarded mode hard-checks visible file facts, but it cannot intercept every natural-language response.
+- Light mode depends on model compliance. Guarded mode hard-checks visible file facts; conversational completion replies remain outside the gate so the agent can report material changes and validation.
 - A passing gate is artifact-hygiene evidence, not proof that the implementation is correct.
 
 ## Validate this repository

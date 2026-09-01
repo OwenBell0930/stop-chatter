@@ -4,7 +4,7 @@
 
 <div align="center">
   <a href="assets/hero.svg">
-    <img src="assets/hero.svg" width="100%" alt="Stop Chatter — 让LLM只输出你要的最终结果，避免多余解释和过程留痕" />
+    <img src="assets/hero.svg" width="100%" alt="Stop Chatter — 让 LLM 只交付你现在要的交付物，避免错误扩展和过程留痕" />
   </a>
 </div>
 
@@ -12,12 +12,14 @@
 
 <div align="center">
 
-**让LLM只输出你要的最终结果，避免多余解释和过程留痕！**
+**让 LLM 只交付你现在要的结果，避免错误扩展和过程留痕！**
 
 [![CI](https://github.com/OwenBell0930/stop-chatter/actions/workflows/ci.yml/badge.svg)](https://github.com/OwenBell0930/stop-chatter/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-0B1020.svg)](LICENSE)
 [![Zero runtime dependencies](https://img.shields.io/badge/runtime_dependencies-0-19A974.svg)](#两种模式)
-[![Cursor · Codex · Claude Code](https://img.shields.io/badge/Cursor_·_Codex_·_Claude_Code-ready-FF6B4A.svg)](#安装)
+[![Cursor · Codex · Claude Code](https://img.shields.io/badge/Cursor_·_Codex_·_Claude_Code-ready-FF6B4A.svg)](#安装与卸载)
+[![Local only](https://img.shields.io/badge/telemetry-none-19A974.svg)](#数据隐私)
+[![Install + uninstall](https://img.shields.io/badge/install_+_uninstall-explicit-0B1020.svg)](#安装与卸载)
 
 </div>
 
@@ -46,27 +48,31 @@
 | 长任务中纠正方向 | 相近概念换个名字重新出现 | 连同依赖链和语义别名一起清理 |
 | 纠正一次任务 | 被写成跨任务的永久偏好 | 默认只在当前任务生效 |
 
-## 实测 v2：有帮助，但不是效果保证
+## 交付物效果实测
 
-2026-09-01，ChatterBench 在同一套 `gpt-5.6-luna` / Codex CLI 环境中运行了 **6 个中文纠错场景 × 3 个条件 × 3 次全新重复**，共 **54 次运行、108 个有效 Agent 回合**。其中 5 个场景要求清理；另有 1 个“保留对照”明确要求保留外部兼容性拒绝契约，防止工具靠无脑删除刷分。
+2026-09-01，ChatterBench 在同一套 `gpt-5.6-luna` / Codex CLI 环境中运行了 **5 个核心中文纠错场景 × 3 个条件 × 3 次全新重复**，共 **45 次核心运行、90 个有效回合**。另有 9 次“保留型安全对照”，用于确认工具不会把明确要求保留的兼容性契约一并删掉。全部 **54 次运行、108 个回合**均有效。
 
 <div align="center">
   <a href="assets/benchmark-v2.svg">
-    <img src="assets/benchmark-v2.svg" width="100%" alt="ChatterBench v2 数据对比：Baseline 0%，Light 44.4%，Guarded 44.4%，并展示需求保留、残留、范围和成本指标" />
+    <img src="assets/benchmark-v2.svg" width="100%" alt="ChatterBench 交付物数据对比：Baseline 20.0%，Light 80.0%，Guarded 86.7%，并展示 token 和耗时成本" />
   </a>
 </div>
 
-| 模式 | 严格干净交付 | 有效需求保留 | artifact 无残留 | 回复无残留 | 范围干净 | 中位耗时 |
+| 模式 | 交付物成功 | 当前需求完整保留 | 已撤回内容无残留 | 文件改动不越界 | 中位 token | 中位耗时 |
 |---|---:|---:|---:|---:|---:|---:|
-| Baseline | 0/18，0.0%（95% CI 0.0–17.6） | 83.3% | 16.7% | 11.1% | 16.7% | 68.6 秒 |
-| Light | 8/18，44.4%（95% CI 24.6–66.3） | 77.8% | 88.9% | 55.6% | 88.9% | 77.2 秒 |
-| Guarded | 8/18，44.4%（95% CI 24.6–66.3） | 94.4% | 94.4% | 55.6% | 94.4% | 88.0 秒 |
+| Baseline | 3/15，**20.0%**（95% CI 7.0–45.2） | 80.0% | 20.0% | 20.0% | 165.7k | 64.5 秒 |
+| Light | 12/15，**80.0%**（95% CI 54.8–93.0） | 80.0% | 86.7% | 86.7% | 178.9k（**+7.9%**） | 75.1 秒（**+16.4%**） |
+| Guarded | 13/15，**86.7%**（95% CI 62.1–96.3） | 93.3% | 93.3% | 93.3% | 225.3k（**+35.9%**） | 88.0 秒（**+36.4%**） |
 
-**数据能说明什么：**Light 与 Guarded 的严格端到端成功率相同。Guarded 更常保住有效需求，也更常做到 artifact 无残留、范围干净，但耗时和 token 成本更高。最终回复仍是主要短板：两种模式都只有 55.6% 的运行做到回复无残留。不同场景差异也很大——Light 在菜谱和 todo 场景为 3/3，Guarded 在三步方案为 3/3，而“看板 + 任务级记忆”场景三种条件都是 0/3。因此它是有用干预，不是可靠兜底。
+token 成本按宿主报告的“两回合 input + output”计算；cached input 已包含在 input 中，不重复相加。耗时为 Agent 实际墙钟时间。
 
-“严格干净交付”采用两回合全有或全无判定：有效需求、隐藏行为、artifact 残留、回复残留、范围、临时状态和中性续写回归必须全部通过。正式运行从冻结的干净 commit `5f830b4` 启动；54 次运行全部有效，**v2 没有任何人工改分**。原始最终回复、逐项评分、耗时、token、补丁哈希和全部 54 份 patch 都已公开。
+**数据能说明什么：**Light 用 **+7.9% 的中位 token**，把交付物成功率提高了 **60.0 个百分点**，适合作为低成本默认模式。Guarded 的实测成功率最高，但检查流程令中位 token 增加 **35.9%**，更适合长任务或容易反复残留的场景。把保留型安全对照也算进去，三种模式分别为 Baseline **3/18**、Light **14/18**、Guarded **16/18**；安全对照本身分别为 **0/3、2/3、3/3**。
 
-这仍是小规模、合成场景、单模型、单宿主评测，不能外推到 Cursor、Claude Code、其他模型、英文任务或真实生产分布。可查看[评测方法](evals/README.md)、[v2 汇总](evals/results/2026-09-01-chatterbench-v2-r3/summary.md)、[机器可读数据](evals/results/2026-09-01-chatterbench-v2-r3/summary.json)、[54 组原始记录](evals/results/2026-09-01-chatterbench-v2-r3/runs/)和[54 份 artifact patch](evals/results/2026-09-01-chatterbench-v2-r3/patches/)。早期[15 组先导实验](evals/results/2026-09-01-codex-luna-pilot/)继续归档，但不与 v2 合并，因为 v2 修正了两处过窄金标，并新增了保留对照。
+“交付物成功”很好理解：纠错回合和一次中性续写之后，该做的功能仍然可用、当前需求没有被误删、已撤回内容和“简洁版”等过程标签没有留在文件中、没有新增无关文件或改坏受保护文件、任务临时状态也已清掉，才算一次成功。**回复怎么措辞不参与评分**——Agent 仍应向用户说明真正改了什么、测了什么和有哪些限制。
+
+正式运行从冻结的干净 commit `5f830b4` 启动。当前公开视图由冻结的文件检查与 patch 确定性重算，没有重跑模型，也没有人工改分；运行记录只保留交付物证据、耗时和 token，不再保留 Agent 回复或会话标识。
+
+这仍是小规模、合成场景、单模型、单宿主评测，不能外推到 Cursor、Claude Code、其他模型、英文任务或真实生产分布。可查看[评测方法](evals/README.md)、[交付物汇总](evals/results/2026-09-01-chatterbench-v2-r3/summary.md)、[机器可读数据](evals/results/2026-09-01-chatterbench-v2-r3/summary.json)、[54 组仅含交付物的运行记录](evals/results/2026-09-01-chatterbench-v2-r3/runs/)和[54 份 artifact patch](evals/results/2026-09-01-chatterbench-v2-r3/patches/)。
 
 确定性门禁另用 20 条标注样本评测：代码级 Precision **91.7%**、Recall **84.6%**、F1 **88.0%**。两次漏检来自未配置的语义别名，一次误报来自子串碰撞；这些数字只代表门禁脚本，不代表整个 Skill。
 
@@ -92,7 +98,7 @@
 
 Light 模式保持 Skill 的轻量性。Guarded 模式才会创建任务内临时状态，并在交付前检查可观察的残留；两种模式都不会自动修改全局配置或长期记忆。
 
-## 安装
+## 安装与卸载
 
 ```bash
 git clone https://github.com/OwenBell0930/stop-chatter.git
@@ -114,6 +120,14 @@ python3 scripts/install.py --host all --scope project --target /path/to/project
 | Claude Code | `/stop-chatter` |
 
 也可以只安装单个宿主或安装到用户级目录，详见 [host setup](references/host-setup.md)。
+
+用一条明确命令卸载同一组适配器：
+
+```bash
+python3 scripts/uninstall.py --host all --scope project --target /path/to/project
+```
+
+卸载器会先验证每个精确目标确实是 `stop-chatter`，遇到陌生目录会拒绝删除；不会动父目录、其他 Skill、宿主设置或业务文件。安装和卸载都支持 `--dry-run` 预览。
 
 ## Guarded 模式：30 秒上手
 
@@ -147,11 +161,18 @@ python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" check --root .
 
 检查器只负责确定性事实。语义别名由 Skill 根据当前任务提供；脚本不会假装理解任意语义。
 
+## 数据隐私
+
+- Skill、安装器、卸载器和确定性检查器都只使用 Python 标准库在本地运行：**零第三方运行依赖、不联网、无遥测**。
+- 安装器不会增加 Hook、修改宿主设置或写入长期记忆；Guarded 状态只存在于当前任务、默认被 Git 忽略，并在交付后删除。
+- 公开评测使用合成 fixture。当前运行记录只包含交付物检查、patch、耗时和 token，不包含 Agent 回复、会话 ID 或真实用户/项目数据。
+- Stop Chatter 不会改变 Cursor、Codex、Claude Code 或模型服务商自身的数据策略；宿主发送给模型的提示词和文件上下文，仍以宿主设置与政策为准。
+
 ## 边界
 
 - 不会自动安装 Hook、修改宿主设置、写入长期记忆或访问网络。
 - 不会为了证明“不存在错误扩展”而给业务项目堆一组否定测试；只有外部契约或安全属性明确要求时才保留。
-- Light 模式依赖模型遵循 Skill；Guarded 模式只硬检查文件级可见事实，不能拦截所有自然语言输出。
+- Light 模式依赖模型遵循 Skill；Guarded 模式只硬检查文件级可见事实。对话回复不进入门禁，Agent 可以正常汇报实质改动与验证结果。
 - 门禁通过只证明 artifact 卫生条件通过，不等于业务实现一定正确。
 
 ## 验证仓库

@@ -4,14 +4,13 @@
   "case_type": "cleanup",
   "condition": "baseline",
   "repeat": 3,
-  "clean_delivery": false,
+  "artifact_delivery": false,
   "correction": {
-    "clean_success": false,
+    "artifact_success": false,
     "metrics": {
       "active_requirements_preserved": false,
       "artifact_residue_free": false,
-      "response_residue_free": false,
-      "process_trace_free": false,
+      "process_trace_artifact_free": false,
       "scope_clean": false,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -39,13 +38,6 @@
       },
       {
         "path": "tests/test_no_crm.md",
-        "pattern": "CRM",
-        "match": "CRM"
-      }
-    ],
-    "retired_response_hits": [
-      {
-        "path": "<assistant-response>",
         "pattern": "CRM",
         "match": "CRM"
       }
@@ -92,23 +84,6 @@
         "match": "没有 CRM"
       }
     ],
-    "process_trace_response_hits": [
-      {
-        "path": "<assistant-response>",
-        "pattern": "简洁",
-        "match": "简洁"
-      },
-      {
-        "path": "<assistant-response>",
-        "pattern": "高效",
-        "match": "高效"
-      },
-      {
-        "path": "<assistant-response>",
-        "pattern": "移除.{0,20}CRM",
-        "match": "移除 CRM"
-      }
-    ],
     "unexpected_changes": [],
     "forbidden_paths_present": [
       "decision-log.md",
@@ -116,16 +91,14 @@
     ],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 41,
     "artifact_sha256": "1f7e0f222cc0b74dbf838d0f4702ecdac3e536ce6dd142f772d9d1ecb57ec0b9"
   },
   "continuation": {
-    "clean_success": false,
+    "artifact_success": false,
     "metrics": {
       "active_requirements_preserved": false,
       "artifact_residue_free": false,
-      "response_residue_free": true,
-      "process_trace_free": false,
+      "process_trace_artifact_free": false,
       "scope_clean": false,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -160,7 +133,6 @@
         "match": "CRM"
       }
     ],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [
       {
         "path": "decision-log.md",
@@ -203,7 +175,6 @@
         "match": "没有 CRM"
       }
     ],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [
       "decision-log.md",
@@ -211,7 +182,6 @@
     ],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 34,
     "artifact_sha256": "1f7e0f222cc0b74dbf838d0f4702ecdac3e536ce6dd142f772d9d1ecb57ec0b9"
   },
   "correction_turn": {
@@ -223,9 +193,6 @@
       "cached_input_tokens": 28160,
       "output_tokens": 284
     },
-    "response_sha256": "7c641b4fb64b35081ca0d5727660dcc33aa62f21c77406ce351e9ae213ed5f16",
-    "response": "已按要求调整为三步：调研、实现、验收；已移除 CRM 集成及“简洁高效”方案内容。",
-    "response_chars": 41,
     "event_types": [
       "item.completed",
       "item.started",
@@ -244,9 +211,6 @@
       "cached_input_tokens": 34304,
       "output_tokens": 200
     },
-    "response_sha256": "2e0b49ff219c37487155455427f508ccb9945dd69493361788b6155cbfeaa229",
-    "response": "已为调研、实现、验收三步分别补充“负责人：待定”，其他范围保持不变。",
-    "response_chars": 34,
     "event_types": [
       "item.completed",
       "item.started",

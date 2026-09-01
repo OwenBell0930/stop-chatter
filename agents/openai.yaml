@@ -1,6 +1,6 @@
 interface:
   display_name: "Stop Chatter"
-  short_description: "让LLM只输出你要的最终结果，避免多余解释和过程留痕！"
+  short_description: "让 LLM 只交付你现在要的结果，避免错误扩展和过程留痕。"
   icon_large: "./assets/logo.svg"
   brand_color: "#FF6B4A"
   default_prompt: "Use $stop-chatter to apply my correction and leave only the result I currently asked for."

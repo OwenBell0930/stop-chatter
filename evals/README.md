@@ -1,9 +1,9 @@
 # ChatterBench
 
 ChatterBench measures one narrow behavior: after a user retracts an unrequested
-idea, does the agent deliver the current result without leaving the rejected
-idea, correction history, compliance labels, redundant artifacts, or a later
-resurrection behind?
+idea, does the agent leave the deliverables in the correct current state—without
+rejected content, correction-history labels, unrelated file changes, broken
+active requirements, or a later resurrection?
 
 It is intentionally separate from the repository unit tests. Unit tests show
 that the installer and deterministic gate behave as implemented. ChatterBench
@@ -19,11 +19,12 @@ compares end-to-end agent behavior against an independent, frozen gold spec.
   conditions: `baseline`, `light`, and `guarded`.
 - Each run has a correction turn and a neutral continuation turn that does not
   repeat the retired concept.
-- Deterministic graders check active requirements, retired-concept residue,
-  process-trace leakage, unexpected files, protected content, hidden behavior,
-  final-response residue, and continuation resurrection.
-- A run counts as a **clean delivery** only when every required check passes.
-- Token use, response length, and latency are reported as costs, not quality.
+- Deterministic graders check active requirements, retired-concept residue in
+  artifacts, process-label leakage in artifacts, unexpected files, protected
+  content, hidden behavior, transient state, and continuation resurrection.
+- A run counts as a **deliverable success** only when every required artifact
+  check passes in both turns. Assistant reply wording is deliberately not scored.
+- Token use and latency are reported as costs, not quality.
 - Results always identify the host, model, reasoning effort, date, sample count,
   repeat count, repository commit, and instruction envelope.
 
@@ -64,10 +65,10 @@ python3 evals/benchmark.py agent \
   --reasoning medium
 ```
 
-The runner writes a manifest, one JSON record and artifact patch per run, the
-two final agent replies used by the residue grader, `summary.json`, and
-`summary.md`. It does not publish hidden chain-of-thought or Codex session
-identifiers.
+The runner writes a manifest, one artifact-only JSON record and artifact patch
+per run, `summary.json`, and `summary.md`. Public records contain timings and
+token usage but do not contain assistant reply text, response hashes, response
+lengths, hidden chain-of-thought, or Codex session identifiers.
 
 On macOS, the desktop-bundled Codex binary may be newer than a separately
 installed `/usr/local/bin/codex`. Pass `--codex-bin` explicitly so the manifest
@@ -82,7 +83,11 @@ the user nor the task state supplies; the corpus measures that limitation.
 
 ## Published evidence
 
-- [ChatterBench v2: 54 runs / 108 valid turns](results/2026-09-01-chatterbench-v2-r3/)
+- [ChatterBench v2 artifact view: 54 runs / 108 valid turns](results/2026-09-01-chatterbench-v2-r3/)
   uses six cases and three fresh repeats from frozen clean commit `5f830b4`.
-- The earlier [15-run pilot](results/2026-09-01-codex-luna-pilot/) is retained
-  as historical evidence and is not pooled with v2.
+  The public view was deterministically recomputed from the frozen file evidence;
+  no model run or score was manually changed.
+
+Earlier Git commits used a reply-inclusive benchmark schema and may contain
+synthetic model replies. The current public dataset contains only synthetic
+fixtures, artifact evidence, and measured cost—never real user or project data.

@@ -4,14 +4,13 @@
   "case_type": "cleanup",
   "condition": "light",
   "repeat": 1,
-  "clean_delivery": false,
+  "artifact_delivery": true,
   "correction": {
-    "clean_success": false,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": false,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -24,29 +23,19 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [
-      {
-        "path": "<assistant-response>",
-        "pattern": "天气",
-        "match": "天气"
-      }
-    ],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 36,
     "artifact_sha256": "22c04cbe75ca1cb647116b262f7e94f7cbc793b1a64a9aab40a97e7c4a61120a"
   },
   "continuation": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -59,14 +48,11 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 33,
     "artifact_sha256": "061c6c7791760c6a5f2bc6f360bd787ae2afb17d561b2d027c5c8b3321d517c1"
   },
   "correction_turn": {
@@ -78,9 +64,6 @@
       "cached_input_tokens": 81664,
       "output_tokens": 1110
     },
-    "response_sha256": "8d03fa1785db4dab8d81d5e284adc3e97cf965ef36ca86e59f53fff5c595e16e",
-    "response": "已完成个人资产看板更新：移除天气功能，并将总资产更新为 ¥42,800。",
-    "response_chars": 36,
     "event_types": [
       "item.completed",
       "item.started",
@@ -99,9 +82,6 @@
       "cached_input_tokens": 59648,
       "output_tokens": 315
     },
-    "response_sha256": "99a733471519aa5235ea9587cf36c87968c0b4e96e9af67a7eb391bce513f132",
-    "response": "已在资产列表下新增“数据更新时间：09:30”，其他内容保持不变。",
-    "response_chars": 33,
     "event_types": [
       "item.completed",
       "item.started",

@@ -63,15 +63,16 @@ class BenchmarkTest(unittest.TestCase):
             before = BENCHMARK.snapshot(root)
             (root / "result.md").write_text("Current result\n", encoding="utf-8")
             clean = BENCHMARK.score_workspace(
-                root, before, case, "Current result is ready.", continuation=False
+                root, before, case, continuation=False
             )
-            self.assertTrue(clean["clean_success"])
+            self.assertTrue(clean["artifact_success"])
             (root / "extra.md").write_text("retired concise edition\n", encoding="utf-8")
             dirty = BENCHMARK.score_workspace(
-                root, before, case, "Current result is ready.", continuation=False
+                root, before, case, continuation=False
             )
-            self.assertFalse(dirty["clean_success"])
+            self.assertFalse(dirty["artifact_success"])
             self.assertFalse(dirty["metrics"]["artifact_residue_free"])
+            self.assertFalse(dirty["metrics"]["process_trace_artifact_free"])
             self.assertFalse(dirty["metrics"]["scope_clean"])
 
     def test_standard_test_caches_are_not_artifacts(self) -> None:
@@ -79,19 +80,23 @@ class BenchmarkTest(unittest.TestCase):
         self.assertTrue(BENCHMARK.ignored_artifact("tests/__pycache__/test_x.pyc"))
         self.assertFalse(BENCHMARK.ignored_artifact("tests/test_x.py"))
 
-    def test_public_turn_retains_auditable_response(self) -> None:
+    def test_public_turn_retains_cost_but_not_reply_or_session(self) -> None:
         turn = {
             "ok": True,
             "returncode": 0,
             "duration_seconds": 1.0,
             "usage": {"input_tokens": 2, "cached_input_tokens": 1, "output_tokens": 3},
             "response": "Current result.",
+            "session_id": "private-session",
             "event_types": ["turn.completed"],
             "error": "",
         }
         public = BENCHMARK.public_turn(turn)
-        self.assertEqual(public["response"], "Current result.")
-        self.assertEqual(public["response_chars"], 15)
+        self.assertEqual(public["usage"]["input_tokens"], 2)
+        self.assertNotIn("response", public)
+        self.assertNotIn("response_sha256", public)
+        self.assertNotIn("response_chars", public)
+        self.assertNotIn("session_id", public)
 
     def test_resume_places_exec_only_options_before_subcommand(self) -> None:
         command = BENCHMARK.build_codex_command(

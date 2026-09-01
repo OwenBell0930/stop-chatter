@@ -8,13 +8,13 @@
 - Repository dirty at start: `false`
 - Instruction envelope: Codex system instructions plus the local account-level AGENTS.md; user config and exec policy rules disabled equally for all conditions.
 
-## Agent behavior
+## Deliverable behavior
 
-| Condition | Clean delivery | Active requirements | Artifact residue-free | Response residue-free | Scope clean | Median tokens | Median seconds |
+| Condition | Deliverable success | Active requirements | Rejected content absent | Process labels absent | Scope correct | Median tokens | Median seconds |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| baseline | 0/18 (0.0%; 95% CI 0.0–17.6) | 83.3% | 16.7% | 11.1% | 16.7% | 166246 | 68.6 |
-| light | 8/18 (44.4%; 95% CI 24.6–66.3) | 77.8% | 88.9% | 55.6% | 88.9% | 187634 | 77.2 |
-| guarded | 8/18 (44.4%; 95% CI 24.6–66.3) | 94.4% | 94.4% | 55.6% | 94.4% | 227132 | 88.0 |
+| baseline | 3/18 (16.7%; 95% CI 5.8–39.2) | 83.3% | 16.7% | 50.0% | 16.7% | 166246 | 68.6 |
+| light | 14/18 (77.8%; 95% CI 54.8–91.0) | 77.8% | 88.9% | 88.9% | 88.9% | 187634 | 77.2 |
+| guarded | 16/18 (88.9%; 95% CI 67.2–96.9) | 94.4% | 94.4% | 94.4% | 94.4% | 227132 | 88.0 |
 
 ## Run validity and measured cost
 
@@ -24,23 +24,23 @@
 | light | 18/18 | 3569823 | 3142144 | 49492 | 1575.8 |
 | guarded | 18/18 | 4299151 | 3892480 | 59411 | 1782.4 |
 
-## Per-case clean delivery
+## Per-case deliverable success
 
 | Case | Type | Baseline | Light | Guarded |
 |---|---|---:|---:|---:|
-| compatibility_contract | preservation_control | 0/3 | 0/3 | 1/3 |
-| csv_export | cleanup | 0/3 | 2/3 | 2/3 |
-| dashboard_memory | cleanup | 0/3 | 0/3 | 0/3 |
+| compatibility_contract | preservation_control | 0/3 | 2/3 | 3/3 |
+| csv_export | cleanup | 0/3 | 3/3 | 3/3 |
+| dashboard_memory | cleanup | 3/3 | 2/3 | 3/3 |
 | recipe_cleanup | cleanup | 0/3 | 3/3 | 2/3 |
-| three_step_plan | cleanup | 0/3 | 0/3 | 3/3 |
-| todo_frontend | cleanup | 0/3 | 3/3 | 0/3 |
+| three_step_plan | cleanup | 0/3 | 1/3 | 3/3 |
+| todo_frontend | cleanup | 0/3 | 3/3 | 2/3 |
 
 ## Case-type controls
 
-- `cleanup`: baseline 0/15, light 8/15, guarded 7/15
-- `preservation_control`: baseline 0/3, light 0/3, guarded 1/3
+- `cleanup`: baseline 3/15, light 12/15, guarded 13/15
+- `preservation_control`: baseline 0/3, light 2/3, guarded 3/3
 
-Clean delivery is all-or-nothing across both the correction and continuation turns.
+Deliverable success is all-or-nothing across both the correction and continuation turns. It requires the current requirements and hidden checks to pass, rejected content and process labels to be absent from artifacts, file scope to stay correct, and transient state to be removed. Assistant reply wording is not scored or stored.
 
 ## Deterministic gate corpus
 

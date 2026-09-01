@@ -4,14 +4,13 @@
   "case_type": "cleanup",
   "condition": "baseline",
   "repeat": 3,
-  "clean_delivery": false,
+  "artifact_delivery": false,
   "correction": {
-    "clean_success": false,
+    "artifact_success": false,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": false,
-      "response_residue_free": false,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": false,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -29,31 +28,21 @@
         "match": "analytics"
       }
     ],
-    "retired_response_hits": [
-      {
-        "path": "<assistant-response>",
-        "pattern": "埋点",
-        "match": "埋点"
-      }
-    ],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [
       "tests/test_no_analytics.py"
     ],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 71,
     "artifact_sha256": "6cac62abeed5a530e69d9c9e9615ca17d7aa68a05d7c3b7c211d40ddabc71816"
   },
   "continuation": {
-    "clean_success": false,
+    "artifact_success": false,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": false,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": false,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -71,16 +60,13 @@
         "match": "analytics"
       }
     ],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [
       "tests/test_no_analytics.py"
     ],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 31,
     "artifact_sha256": "1f6605b339a7472e1cc5d7b27761f45cb6250338a4082d452289eb75e53c6564"
   },
   "correction_turn": {
@@ -92,9 +78,6 @@
       "cached_input_tokens": 96768,
       "output_tokens": 1395
     },
-    "response_sha256": "ae02455c7a85d54e4f2d460509ef9d8185ef175370443fed690b2762bc21438b",
-    "response": "已收回为仅 CSV 导出，移除分析与埋点，并让 `export_rows` 支持默认逗号及可选 `delimiter`，全部 3 项测试通过。",
-    "response_chars": 71,
     "event_types": [
       "item.completed",
       "item.started",
@@ -113,9 +96,6 @@
       "cached_input_tokens": 76800,
       "output_tokens": 458
     },
-    "response_sha256": "1f390600913b807debd34c1082b9254604ddf90b13aad6bd6906eb3767dbd8be",
-    "response": "已在 README 增加分号分隔符调用示例，其他范围保持不变。",
-    "response_chars": 31,
     "event_types": [
       "item.completed",
       "item.started",

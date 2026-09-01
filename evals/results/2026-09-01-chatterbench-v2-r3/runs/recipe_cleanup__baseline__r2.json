@@ -4,14 +4,13 @@
   "case_type": "cleanup",
   "condition": "baseline",
   "repeat": 2,
-  "clean_delivery": false,
+  "artifact_delivery": false,
   "correction": {
-    "clean_success": false,
+    "artifact_success": false,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": false,
-      "response_residue_free": true,
-      "process_trace_free": false,
+      "process_trace_artifact_free": false,
       "scope_clean": false,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -52,7 +51,6 @@
         "match": "肘子"
       }
     ],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [
       {
         "path": "RELEASE.md",
@@ -75,7 +73,6 @@
         "match": "哈希"
       }
     ],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [
       "RELEASE.md",
@@ -83,16 +80,14 @@
     ],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 36,
     "artifact_sha256": "62212d1148f54ce0b5a9f8a774e8fea2ff8bc54b38c42f1f6942a45fa033cfd2"
   },
   "continuation": {
-    "clean_success": false,
+    "artifact_success": false,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": false,
-      "response_residue_free": true,
-      "process_trace_free": false,
+      "process_trace_artifact_free": false,
       "scope_clean": false,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -133,7 +128,6 @@
         "match": "肘子"
       }
     ],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [
       {
         "path": "RELEASE.md",
@@ -156,7 +150,6 @@
         "match": "哈希"
       }
     ],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [
       "RELEASE.md",
@@ -164,7 +157,6 @@
     ],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 27,
     "artifact_sha256": "f148b78000c879aedebcdadf0b14792e7217367725905d64b9322716ef093d5b"
   },
   "correction_turn": {
@@ -176,9 +168,6 @@
       "cached_input_tokens": 77568,
       "output_tokens": 966
     },
-    "response_sha256": "fc49fda848b6531b25fceeacbc8724f3509e31a868f429f35b8093f66b68fb69",
-    "response": "已改回仅含番茄炒蛋的菜谱，并补充火候提示“鸡蛋嫩、番茄出汁”，测试通过。",
-    "response_chars": 36,
     "event_types": [
       "item.completed",
       "item.started",
@@ -197,9 +186,6 @@
       "cached_input_tokens": 72704,
       "output_tokens": 457
     },
-    "response_sha256": "883151ad94ac4e1f348c4d2f26d2c40b2101693fa0c233b1c75df2cdf2670cd8",
-    "response": "已补充“装盘后立即食用”的食用提示，其他内容保持不变。",
-    "response_chars": 27,
     "event_types": [
       "item.completed",
       "item.started",

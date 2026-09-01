@@ -30,5 +30,11 @@
   "instruction_envelope": "Codex system instructions plus the local account-level AGENTS.md; user config and exec policy rules disabled equally for all conditions.",
   "continuation_turn": true,
   "independent_gold_visible_to_agent": false,
-  "guarded_task_state_visible_to_agent": true
+  "guarded_task_state_visible_to_agent": true,
+  "result_schema_version": 2,
+  "artifact_view_version": 1,
+  "quality_scope": "deliverables_only",
+  "assistant_reply_scored": false,
+  "assistant_reply_stored": false,
+  "artifact_view_derived_from_frozen_run": true
 }

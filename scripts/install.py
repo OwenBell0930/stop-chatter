@@ -18,6 +18,7 @@ PAYLOAD = (
     "assets/logo.svg",
     "scripts/stop_chatter.py",
     "scripts/install.py",
+    "scripts/uninstall.py",
     "references/protocol.md",
     "references/host-setup.md",
     "templates/state.example.json",

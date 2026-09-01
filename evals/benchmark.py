@@ -150,10 +150,9 @@ def requirement_failures(files: dict[str, bytes], requirements: list[dict[str, A
 
 
 def scan_pattern_hits(
-    files: dict[str, bytes], patterns: list[str], response: str
-) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
+    files: dict[str, bytes], patterns: list[str]
+) -> list[dict[str, str]]:
     artifact_hits: list[dict[str, str]] = []
-    response_hits: list[dict[str, str]] = []
     compiled = [(pattern, re.compile(pattern, flags=re.IGNORECASE | re.MULTILINE)) for pattern in patterns]
     for path, raw in sorted(files.items()):
         try:
@@ -164,13 +163,7 @@ def scan_pattern_hits(
             match = pattern.search(text)
             if match:
                 artifact_hits.append({"path": path, "pattern": source, "match": match.group(0)[:120]})
-    for source, pattern in compiled:
-        match = pattern.search(response or "")
-        if match:
-            response_hits.append(
-                {"path": "<assistant-response>", "pattern": source, "match": match.group(0)[:120]}
-            )
-    return artifact_hits, response_hits
+    return artifact_hits
 
 
 def run_hidden_check(root: Path, case: dict[str, Any]) -> tuple[bool, str]:
@@ -186,7 +179,6 @@ def score_workspace(
     root: Path,
     before: dict[str, bytes],
     case: dict[str, Any],
-    response: str,
     *,
     continuation: bool,
 ) -> dict[str, Any]:
@@ -197,12 +189,8 @@ def score_workspace(
         requirements.extend(case.get("continuation_requirements", []))
     required_failures = requirement_failures(files, requirements)
 
-    retired_artifact, retired_response = scan_pattern_hits(
-        files, case.get("retired_patterns", []), response
-    )
-    trace_artifact, trace_response = scan_pattern_hits(
-        files, case.get("process_trace_patterns", []), response
-    )
+    retired_artifact = scan_pattern_hits(files, case.get("retired_patterns", []))
+    trace_artifact = scan_pattern_hits(files, case.get("process_trace_patterns", []))
 
     unexpected_changes = [
         path
@@ -226,27 +214,23 @@ def score_workspace(
     metrics = {
         "active_requirements_preserved": not required_failures,
         "artifact_residue_free": not retired_artifact,
-        "response_residue_free": not retired_response,
-        "process_trace_free": not trace_artifact and not trace_response,
+        "process_trace_artifact_free": not trace_artifact,
         "scope_clean": not unexpected_changes and not forbidden_paths_present and not protected_failures,
         "hidden_check_passed": hidden_ok,
         "transient_state_clean": transient_state_clean,
     }
-    clean_success = all(metrics.values())
+    artifact_success = all(metrics.values())
     return {
-        "clean_success": clean_success,
+        "artifact_success": artifact_success,
         "metrics": metrics,
         "changed_paths": changed,
         "required_failures": required_failures,
         "retired_artifact_hits": retired_artifact,
-        "retired_response_hits": retired_response,
         "process_trace_artifact_hits": trace_artifact,
-        "process_trace_response_hits": trace_response,
         "unexpected_changes": unexpected_changes,
         "forbidden_paths_present": sorted(set(forbidden_paths_present)),
         "protected_failures": protected_failures,
         "hidden_check_output": hidden_output,
-        "response_chars": len(response or ""),
         "artifact_sha256": sha256_bytes(
             b"".join(path.encode("utf-8") + b"\0" + files[path] + b"\0" for path in sorted(files))
         ),
@@ -361,7 +345,6 @@ def condition_prompt(condition: str, case: dict[str, Any]) -> str:
 
 def parse_codex_events(stdout: str) -> dict[str, Any]:
     session_id = ""
-    messages: list[str] = []
     usage = {"input_tokens": 0, "cached_input_tokens": 0, "output_tokens": 0}
     event_types: list[str] = []
     for line in stdout.splitlines():
@@ -374,10 +357,6 @@ def parse_codex_events(stdout: str) -> dict[str, Any]:
             event_types.append(event_type)
         if event_type == "thread.started":
             session_id = str(event.get("thread_id", ""))
-        if event_type == "item.completed":
-            item = event.get("item", {})
-            if item.get("type") == "agent_message" and isinstance(item.get("text"), str):
-                messages.append(item["text"])
         if event_type == "turn.completed":
             raw_usage = event.get("usage", {})
             for key in usage:
@@ -386,7 +365,6 @@ def parse_codex_events(stdout: str) -> dict[str, Any]:
                     usage[key] += value
     return {
         "session_id": session_id,
-        "response": messages[-1] if messages else "",
         "usage": usage,
         "event_types": sorted(set(event_types)),
     }
@@ -486,7 +464,6 @@ def codex_turn(
             "duration_seconds": round(time.monotonic() - started, 3),
             "error": f"timeout after {timeout}s",
             "session_id": "",
-            "response": "",
             "usage": {"input_tokens": 0, "cached_input_tokens": 0, "output_tokens": 0},
             "event_types": [],
         }
@@ -521,9 +498,6 @@ def public_turn(turn: dict[str, Any]) -> dict[str, Any]:
         "returncode": turn["returncode"],
         "duration_seconds": turn["duration_seconds"],
         "usage": turn["usage"],
-        "response_sha256": sha256_bytes(turn.get("response", "").encode("utf-8")),
-        "response": turn.get("response", ""),
-        "response_chars": len(turn.get("response", "")),
         "event_types": turn.get("event_types", []),
         "error": turn.get("error", ""),
     }
@@ -557,7 +531,6 @@ def run_agent_case(
         workspace,
         before,
         case,
-        correction_turn.get("response", ""),
         continuation=False,
     )
 
@@ -578,7 +551,6 @@ def run_agent_case(
             "duration_seconds": 0.0,
             "error": "continuation skipped because the correction turn did not complete",
             "session_id": "",
-            "response": "",
             "usage": {"input_tokens": 0, "cached_input_tokens": 0, "output_tokens": 0},
             "event_types": [],
         }
@@ -586,7 +558,6 @@ def run_agent_case(
         workspace,
         before,
         case,
-        continuation_turn.get("response", ""),
         continuation=True,
     )
     patch = artifact_patch(workspace)
@@ -604,11 +575,11 @@ def run_agent_case(
         "case_type": case.get("case_type", "cleanup"),
         "condition": condition,
         "repeat": repeat,
-        "clean_delivery": bool(
+        "artifact_delivery": bool(
             correction_turn["ok"]
             and continuation_turn["ok"]
-            and correction_score["clean_success"]
-            and continuation_score["clean_success"]
+            and correction_score["artifact_success"]
+            and continuation_score["artifact_success"]
         ),
         "correction": correction_score,
         "continuation": continuation_score,
@@ -641,7 +612,7 @@ def summarize_runs(records: list[dict[str, Any]]) -> dict[str, Any]:
     present_conditions = {record["condition"] for record in records}
     for condition in [item for item in CONDITION_ORDER if item in present_conditions]:
         selected = [record for record in records if record["condition"] == condition]
-        successes = sum(record["clean_delivery"] for record in selected)
+        successes = sum(record["artifact_delivery"] for record in selected)
         valid_runs = sum(
             record["correction_turn"]["ok"] and record["continuation_turn"]["ok"]
             for record in selected
@@ -651,8 +622,7 @@ def summarize_runs(records: list[dict[str, Any]]) -> dict[str, Any]:
         for metric in (
             "active_requirements_preserved",
             "artifact_residue_free",
-            "response_residue_free",
-            "process_trace_free",
+            "process_trace_artifact_free",
             "scope_clean",
             "hidden_check_passed",
             "transient_state_clean",
@@ -671,9 +641,9 @@ def summarize_runs(records: list[dict[str, Any]]) -> dict[str, Any]:
             "runs": len(selected),
             "valid_runs": valid_runs,
             "invalid_runs": len(selected) - valid_runs,
-            "clean_deliveries": successes,
-            "clean_delivery_rate": round(100 * successes / len(selected), 1),
-            "clean_delivery_wilson_95": [round(100 * lower, 1), round(100 * upper, 1)],
+            "artifact_deliveries": successes,
+            "artifact_delivery_rate": round(100 * successes / len(selected), 1),
+            "artifact_delivery_wilson_95": [round(100 * lower, 1), round(100 * upper, 1)],
             "metric_rates": metric_rates,
             "median_total_tokens": int(
                 statistics.median(
@@ -687,9 +657,6 @@ def summarize_runs(records: list[dict[str, Any]]) -> dict[str, Any]:
             ),
             "median_duration_seconds": round(
                 statistics.median(record["total_duration_seconds"] for record in selected), 1
-            ),
-            "median_final_response_chars": int(
-                statistics.median(record["continuation_turn"]["response_chars"] for record in selected)
             ),
             "total_usage": {
                 key: sum(record["total_usage"][key] for record in selected)
@@ -715,11 +682,11 @@ def summarize_cases(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
         }
         for condition in conditions:
             selected = [record for record in case_records if record["condition"] == condition]
-            successes = sum(record["clean_delivery"] for record in selected)
+            successes = sum(record["artifact_delivery"] for record in selected)
             entry["conditions"][condition] = {
                 "runs": len(selected),
-                "clean_deliveries": successes,
-                "clean_delivery_rate": round(100 * successes / len(selected), 1),
+                "artifact_deliveries": successes,
+                "artifact_delivery_rate": round(100 * successes / len(selected), 1),
             }
         result.append(entry)
     return result
@@ -892,20 +859,20 @@ def summary_markdown(
         f"- Repository dirty at start: `{str(manifest['repository_dirty']).lower()}`",
         f"- Instruction envelope: {manifest['instruction_envelope']}",
         "",
-        "## Agent behavior",
+        "## Deliverable behavior",
         "",
-        "| Condition | Clean delivery | Active requirements | Artifact residue-free | Response residue-free | Scope clean | Median tokens | Median seconds |",
+        "| Condition | Deliverable success | Active requirements | Rejected content absent | Process labels absent | Scope correct | Median tokens | Median seconds |",
         "|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for condition, values in agent.items():
         metrics = values["metric_rates"]
-        interval = values["clean_delivery_wilson_95"]
+        interval = values["artifact_delivery_wilson_95"]
         lines.append(
-            f"| {condition} | {values['clean_deliveries']}/{values['runs']} "
-            f"({values['clean_delivery_rate']:.1f}%; 95% CI {interval[0]:.1f}–{interval[1]:.1f}) "
+            f"| {condition} | {values['artifact_deliveries']}/{values['runs']} "
+            f"({values['artifact_delivery_rate']:.1f}%; 95% CI {interval[0]:.1f}–{interval[1]:.1f}) "
             f"| {metrics['active_requirements_preserved']:.1f}% "
             f"| {metrics['artifact_residue_free']:.1f}% "
-            f"| {metrics['response_residue_free']:.1f}% "
+            f"| {metrics['process_trace_artifact_free']:.1f}% "
             f"| {metrics['scope_clean']:.1f}% "
             f"| {values['median_total_tokens']} | {values['median_duration_seconds']:.1f} |"
         )
@@ -928,7 +895,7 @@ def summary_markdown(
     lines.extend(
         [
             "",
-            "## Per-case clean delivery",
+            "## Per-case deliverable success",
             "",
             "| Case | Type | Baseline | Light | Guarded |",
             "|---|---|---:|---:|---:|",
@@ -936,26 +903,29 @@ def summary_markdown(
     )
     for case in cases:
         values = case["conditions"]
-        baseline = values.get("baseline", {"clean_deliveries": 0, "runs": 0})
-        light = values.get("light", {"clean_deliveries": 0, "runs": 0})
-        guarded = values.get("guarded", {"clean_deliveries": 0, "runs": 0})
+        baseline = values.get("baseline", {"artifact_deliveries": 0, "runs": 0})
+        light = values.get("light", {"artifact_deliveries": 0, "runs": 0})
+        guarded = values.get("guarded", {"artifact_deliveries": 0, "runs": 0})
         lines.append(
             f"| {case['case_id']} | {case['case_type']} "
-            f"| {baseline['clean_deliveries']}/{baseline['runs']} "
-            f"| {light['clean_deliveries']}/{light['runs']} "
-            f"| {guarded['clean_deliveries']}/{guarded['runs']} |"
+            f"| {baseline['artifact_deliveries']}/{baseline['runs']} "
+            f"| {light['artifact_deliveries']}/{light['runs']} "
+            f"| {guarded['artifact_deliveries']}/{guarded['runs']} |"
         )
     lines.extend(["", "## Case-type controls", ""])
     for case_type, type_summary in case_types.items():
         rates = ", ".join(
-            f"{condition} {values['clean_deliveries']}/{values['runs']}"
+            f"{condition} {values['artifact_deliveries']}/{values['runs']}"
             for condition, values in type_summary.items()
         )
         lines.append(f"- `{case_type}`: {rates}")
     lines.extend(
         [
             "",
-            "Clean delivery is all-or-nothing across both the correction and continuation turns.",
+            "Deliverable success is all-or-nothing across both the correction and continuation turns. "
+            "It requires the current requirements and hidden checks to pass, rejected content and "
+            "process labels to be absent from artifacts, file scope to stay correct, and transient "
+            "state to be removed. Assistant reply wording is not scored or stored.",
             "",
             "## Deterministic gate corpus",
             "",
@@ -1007,8 +977,8 @@ def command_agent(args: argparse.Namespace) -> int:
     work_root = Path(tempfile.mkdtemp(prefix="stop-chatter-agent-eval-"))
 
     manifest = {
-        "schema_version": 1,
-        "benchmark_version": "v2",
+        "schema_version": 2,
+        "benchmark_version": "v3",
         "started_at": started_at,
         "host": "Codex CLI",
         "host_version": codex_version(args.codex_bin),
@@ -1031,6 +1001,9 @@ def command_agent(args: argparse.Namespace) -> int:
         "continuation_turn": True,
         "independent_gold_visible_to_agent": False,
         "guarded_task_state_visible_to_agent": True,
+        "quality_scope": "deliverables_only",
+        "assistant_reply_scored": False,
+        "assistant_reply_stored": False,
     }
     (output / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
@@ -1067,7 +1040,7 @@ def command_agent(args: argparse.Namespace) -> int:
                         encoding="utf-8",
                     )
                     print(
-                        f"DONE {record['run']} clean_delivery={record['clean_delivery']}",
+                        f"DONE {record['run']} artifact_delivery={record['artifact_delivery']}",
                         flush=True,
                     )
     finally:
@@ -1082,9 +1055,11 @@ def command_agent(args: argparse.Namespace) -> int:
     case_types = summarize_case_types(records)
     summary = {
         "manifest": manifest,
-        "agent": agent,
-        "cases": cases_summary,
-        "case_types": case_types,
+        "artifact_delivery": {
+            "all_cases": agent,
+            "cases": cases_summary,
+            "case_types": case_types,
+        },
         "gate": gate,
     }
     (output / "summary.json").write_text(

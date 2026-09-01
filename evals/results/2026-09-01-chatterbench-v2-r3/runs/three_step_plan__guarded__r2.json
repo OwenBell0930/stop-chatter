@@ -4,14 +4,13 @@
   "case_type": "cleanup",
   "condition": "guarded",
   "repeat": 2,
-  "clean_delivery": true,
+  "artifact_delivery": true,
   "correction": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -23,23 +22,19 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 35,
     "artifact_sha256": "b883d27548cd449081fbd7a48c20fecf31a9f2c4d207ff3e2320d8f6c00151e1"
   },
   "continuation": {
-    "clean_success": true,
+    "artifact_success": true,
     "metrics": {
       "active_requirements_preserved": true,
       "artifact_residue_free": true,
-      "response_residue_free": true,
-      "process_trace_free": true,
+      "process_trace_artifact_free": true,
       "scope_clean": true,
       "hidden_check_passed": true,
       "transient_state_clean": true
@@ -51,14 +46,11 @@
     ],
     "required_failures": [],
     "retired_artifact_hits": [],
-    "retired_response_hits": [],
     "process_trace_artifact_hits": [],
-    "process_trace_response_hits": [],
     "unexpected_changes": [],
     "forbidden_paths_present": [],
     "protected_failures": [],
     "hidden_check_output": "",
-    "response_chars": 28,
     "artifact_sha256": "9c64d928a8f82e660e2adf1b300fd8b1087aefcb75b85115057ec3ead746128c"
   },
   "correction_turn": {
@@ -70,9 +62,6 @@
       "cached_input_tokens": 87808,
       "output_tokens": 1551
     },
-    "response_sha256": "71b22f2dde6f5a7a128b1ed64c58750072a1a65bac4d335cc2cab1cc3e453e38",
-    "response": "已完成，方案现仅含“调研、实现、验收”三步，检查通过且临时状态已删除。",
-    "response_chars": 35,
     "event_types": [
       "item.completed",
       "item.started",
@@ -91,9 +80,6 @@
       "cached_input_tokens": 41472,
       "output_tokens": 410
     },
-    "response_sha256": "106c5826344a20a61f7908ad98fb4d4a6314df91d2a09391b7e70e1adab6b412",
-    "response": "已完成，三步均已补充“负责人：待定”，其他范围保持不变。",
-    "response_chars": 28,
     "event_types": [
       "item.completed",
       "item.started",
