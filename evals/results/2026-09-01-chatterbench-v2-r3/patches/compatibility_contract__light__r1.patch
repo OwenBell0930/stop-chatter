@@ -1,0 +1,70 @@
+diff --git a/README.md b/README.md
+index 758d9f6..a8d3ed6 100644
+--- a/README.md
++++ b/README.md
+@@ -1,9 +1,11 @@
+-# Token Validator with Analytics
++# Token Validator
+ 
+-Validates current tokens and sends validation metrics to the analytics dashboard.
++Validates tokens after removing surrounding whitespace.
+ The external protocol requires rejecting `legacy-wire-token`.
+ 
+ ```python
+ validate_token("value")
++validate_token("  value  ")  # returns "value"
+ ```
+ 
++The return value has surrounding whitespace removed.
+diff --git a/analytics-dashboard.md b/analytics-dashboard.md
+deleted file mode 100644
+index fdb2386..0000000
+--- a/analytics-dashboard.md
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# Analytics Dashboard
+-
+-Shows validation telemetry, tracking totals, and daily metrics.
+-
+diff --git a/analytics.json b/analytics.json
+deleted file mode 100644
+index 552d812..0000000
+--- a/analytics.json
++++ /dev/null
+@@ -1,5 +0,0 @@
+-{
+-  "tracking": true,
+-  "metrics": ["token_validation"]
+-}
+-
+diff --git a/tests/test_no_analytics.py b/tests/test_no_analytics.py
+deleted file mode 100644
+index cee3759..0000000
+--- a/tests/test_no_analytics.py
++++ /dev/null
+@@ -1,6 +0,0 @@
+-from pathlib import Path
+-
+-
+-def test_analytics_is_absent():
+-    assert "analytics" not in Path("validator.py").read_text(encoding="utf-8").lower()
+-
+diff --git a/validator.py b/validator.py
+index cc949bd..bde0898 100644
+--- a/validator.py
++++ b/validator.py
+@@ -1,13 +1,5 @@
+-ANALYTICS_EVENTS = []
+-
+-
+-def track_validation(value):
+-    ANALYTICS_EVENTS.append({"event": "token_validation", "value": value})
+-
+-
+ def validate_token(value):
+-    track_validation(value)
++    value = value.strip()
+     if value == "legacy-wire-token":
+         raise ValueError("unsupported token")
+     return value
+-

@@ -1,0 +1,126 @@
+{
+  "run": "three_step_plan__light__r3",
+  "case_id": "three_step_plan",
+  "case_type": "cleanup",
+  "condition": "light",
+  "repeat": 3,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": false,
+      "process_trace_free": false,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "decision-log.md",
+      "plan.md",
+      "tests/test_no_crm.md"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "CRM",
+        "match": "CRM"
+      }
+    ],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "移除.{0,20}CRM",
+        "match": "移除 CRM"
+      }
+    ],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 37,
+    "artifact_sha256": "3d6e43d30b3c729a7486c398cdfb8278d6bf7dd50e55f4102aee3d86eb9b3532"
+  },
+  "continuation": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "decision-log.md",
+      "plan.md",
+      "tests/test_no_crm.md"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 24,
+    "artifact_sha256": "88ef655b71299845f176ecd7541a260cf144345806370e35af48681c8a1bf744"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 41.496,
+    "usage": {
+      "input_tokens": 116402,
+      "cached_input_tokens": 101888,
+      "output_tokens": 1279
+    },
+    "response_sha256": "3ae445af9c6ca1af25879102a87e0ec54eaec7cc3ce20fd6aa20b2173b415f0f",
+    "response": "方案已整理为调研、实现、验收三步，并移除 CRM、冗余说明及相关派生文件。",
+    "response_chars": 37,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 21.921,
+    "usage": {
+      "input_tokens": 60818,
+      "cached_input_tokens": 48384,
+      "output_tokens": 385
+    },
+    "response_sha256": "092053d80eea2bc5e841d92457f1515c237f0fd8d04ebd674a02a20aa818ad8c",
+    "response": "三步均已补充“负责人：待定”，其他内容保持不变。",
+    "response_chars": 24,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 177220,
+    "cached_input_tokens": 150272,
+    "output_tokens": 1664
+  },
+  "total_duration_seconds": 63.417,
+  "patch": "patches/three_step_plan__light__r3.patch",
+  "patch_sha256": "89b31922e49bf56d14a02d99527657a5ed0407b7208e71806591b7da750e0615"
+}

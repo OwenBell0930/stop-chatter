@@ -1,0 +1,122 @@
+{
+  "run": "csv_export__light__r3",
+  "case_id": "csv_export",
+  "case_type": "cleanup",
+  "condition": "light",
+  "repeat": 3,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": false,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "README.md",
+      "exporter.py",
+      "tests/test_export.py",
+      "tests/test_no_analytics.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "埋点",
+        "match": "埋点"
+      }
+    ],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 52,
+    "artifact_sha256": "83e17d7faad81eb7a978a8abd7d5ba5a1c46a084ae8c74b1543b695cea04a6ed"
+  },
+  "continuation": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "README.md",
+      "exporter.py",
+      "tests/test_export.py",
+      "tests/test_no_analytics.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 31,
+    "artifact_sha256": "3e9767471fd337ca9f8f2e903191ab3dfe66405def14d8a0c5a72314a64b7d4b"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 56.712,
+    "usage": {
+      "input_tokens": 120796,
+      "cached_input_tokens": 103936,
+      "output_tokens": 2220
+    },
+    "response_sha256": "472ac61e0d577243971d5b00a1f4275463527bea8ffc9f6dbe2a32ef70353b9d",
+    "response": "已收敛为仅 CSV 导出，移除分析与埋点，并支持默认逗号及可选 `delimiter` 参数；测试通过。",
+    "response_chars": 52,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 24.656,
+    "usage": {
+      "input_tokens": 89033,
+      "cached_input_tokens": 86016,
+      "output_tokens": 626
+    },
+    "response_sha256": "1f390600913b807debd34c1082b9254604ddf90b13aad6bd6906eb3767dbd8be",
+    "response": "已在 README 增加分号分隔符调用示例，其他范围保持不变。",
+    "response_chars": 31,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 209829,
+    "cached_input_tokens": 189952,
+    "output_tokens": 2846
+  },
+  "total_duration_seconds": 81.368,
+  "patch": "patches/csv_export__light__r3.patch",
+  "patch_sha256": "622d6b2b367247e0ae703a081435b092ed81cfda55da78c198f96717b1ff706f"
+}

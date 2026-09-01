@@ -1,0 +1,122 @@
+{
+  "run": "dashboard_memory__baseline__r1",
+  "case_id": "dashboard_memory",
+  "case_type": "cleanup",
+  "condition": "baseline",
+  "repeat": 1,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": false,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "MEMORY.md",
+      "app.js",
+      "index.html",
+      "styles.css"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "天气",
+        "match": "天气"
+      }
+    ],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 36,
+    "artifact_sha256": "73a55f1ce74143521583a7f56363e72f473ef9c3e2fb0640826ed0ca169b78ff"
+  },
+  "continuation": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "MEMORY.md",
+      "app.js",
+      "index.html",
+      "styles.css"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 33,
+    "artifact_sha256": "ad00ac6826554cf2c6e37cf4341225a780d0b37e6c78779fda0b1d9ca0ee77a2"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 63.65,
+    "usage": {
+      "input_tokens": 171492,
+      "cached_input_tokens": 155392,
+      "output_tokens": 2370
+    },
+    "response_sha256": "401ef465de815eab86404905ef36f0fc6f6819c82c163eb79f4263a8f6229db4",
+    "response": "已删除天气功能及相关记录，并将个人资产看板总资产更新为 ¥42,800。",
+    "response_chars": 36,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 22.022,
+    "usage": {
+      "input_tokens": 62885,
+      "cached_input_tokens": 60672,
+      "output_tokens": 313
+    },
+    "response_sha256": "3299a7863403fdd4140b5056b8260bbb4f09bd5c56010aae89d759c5652882ee",
+    "response": "已在资产列表下补充“数据更新时间：09:30”，其他内容保持不变。",
+    "response_chars": 33,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 234377,
+    "cached_input_tokens": 216064,
+    "output_tokens": 2683
+  },
+  "total_duration_seconds": 85.672,
+  "patch": "patches/dashboard_memory__baseline__r1.patch",
+  "patch_sha256": "5d895e29a5a45075a2f1f717519312d7725fd62a6449ed94abe69d8db0e1b58c"
+}

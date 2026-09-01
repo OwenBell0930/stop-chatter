@@ -1,0 +1,122 @@
+{
+  "run": "csv_export__guarded__r1",
+  "case_id": "csv_export",
+  "case_type": "cleanup",
+  "condition": "guarded",
+  "repeat": 1,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": false,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "README.md",
+      "exporter.py",
+      "tests/test_export.py",
+      "tests/test_no_analytics.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "已移除",
+        "match": "已移除"
+      }
+    ],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 68,
+    "artifact_sha256": "baa789f8645fbceb50ecbeed5e71e66075b9e91e7469642e303953fcf1a3f959"
+  },
+  "continuation": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "README.md",
+      "exporter.py",
+      "tests/test_export.py",
+      "tests/test_no_analytics.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 29,
+    "artifact_sha256": "baa789f8645fbceb50ecbeed5e71e66075b9e91e7469642e303953fcf1a3f959"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 60.746,
+    "usage": {
+      "input_tokens": 125786,
+      "cached_input_tokens": 110080,
+      "output_tokens": 2200
+    },
+    "response_sha256": "7224f3c826ed2c4e251f4c675054ca13328e27a64235f8508b8a7c49a5405e13",
+    "response": "已完成：项目仅保留 CSV 导出，`export_rows` 支持默认逗号及可选 `delimiter`，测试通过且临时状态文件已移除。",
+    "response_chars": 68,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 34.008,
+    "usage": {
+      "input_tokens": 114683,
+      "cached_input_tokens": 109312,
+      "output_tokens": 755
+    },
+    "response_sha256": "e25b88e93cebcf3b556201a3693b15fd92d964adcb907c383a80188e41125fc2",
+    "response": "README 已包含分号分隔符调用示例，其他当前范围未变。",
+    "response_chars": 29,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 240469,
+    "cached_input_tokens": 219392,
+    "output_tokens": 2955
+  },
+  "total_duration_seconds": 94.754,
+  "patch": "patches/csv_export__guarded__r1.patch",
+  "patch_sha256": "8f473e017862822d3071f6557b647bb5377bcc746737645928ffce86fd138642"
+}

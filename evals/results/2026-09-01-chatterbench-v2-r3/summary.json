@@ -1,0 +1,634 @@
+{
+  "manifest": {
+    "schema_version": 1,
+    "benchmark_version": "v2",
+    "started_at": "2026-09-01T06:39:15+00:00",
+    "host": "Codex CLI",
+    "host_version": "codex-cli 0.151.0-alpha.7.2",
+    "host_binary": "/Applications/ChatGPT.app/Contents/Resources/codex",
+    "model": "gpt-5.6-luna",
+    "reasoning": "medium",
+    "conditions": [
+      "baseline",
+      "light",
+      "guarded"
+    ],
+    "case_ids": [
+      "compatibility_contract",
+      "csv_export",
+      "dashboard_memory",
+      "recipe_cleanup",
+      "three_step_plan",
+      "todo_frontend"
+    ],
+    "case_count": 6,
+    "repeats": 3,
+    "planned_runs": 54,
+    "repository_commit": "5f830b4d20903c5639e4d5082d6235ba11b043cf",
+    "repository_dirty": false,
+    "python": "3.14.3",
+    "platform": "macOS-13.7.8-x86_64-i386-64bit-Mach-O",
+    "instruction_envelope": "Codex system instructions plus the local account-level AGENTS.md; user config and exec policy rules disabled equally for all conditions.",
+    "continuation_turn": true,
+    "independent_gold_visible_to_agent": false,
+    "guarded_task_state_visible_to_agent": true
+  },
+  "agent": {
+    "baseline": {
+      "runs": 18,
+      "valid_runs": 18,
+      "invalid_runs": 0,
+      "clean_deliveries": 0,
+      "clean_delivery_rate": 0.0,
+      "clean_delivery_wilson_95": [
+        0.0,
+        17.6
+      ],
+      "metric_rates": {
+        "active_requirements_preserved": 83.3,
+        "artifact_residue_free": 16.7,
+        "response_residue_free": 11.1,
+        "process_trace_free": 50.0,
+        "scope_clean": 16.7,
+        "hidden_check_passed": 100.0,
+        "transient_state_clean": 100.0
+      },
+      "median_total_tokens": 166246,
+      "median_output_tokens": 1870,
+      "median_duration_seconds": 68.6,
+      "median_final_response_chars": 37,
+      "total_usage": {
+        "input_tokens": 2762383,
+        "cached_input_tokens": 2490112,
+        "output_tokens": 39609
+      },
+      "total_duration_seconds": 1327.6
+    },
+    "light": {
+      "runs": 18,
+      "valid_runs": 18,
+      "invalid_runs": 0,
+      "clean_deliveries": 8,
+      "clean_delivery_rate": 44.4,
+      "clean_delivery_wilson_95": [
+        24.6,
+        66.3
+      ],
+      "metric_rates": {
+        "active_requirements_preserved": 77.8,
+        "artifact_residue_free": 88.9,
+        "response_residue_free": 55.6,
+        "process_trace_free": 77.8,
+        "scope_clean": 88.9,
+        "hidden_check_passed": 100.0,
+        "transient_state_clean": 100.0
+      },
+      "median_total_tokens": 187634,
+      "median_output_tokens": 2117,
+      "median_duration_seconds": 77.2,
+      "median_final_response_chars": 34,
+      "total_usage": {
+        "input_tokens": 3569823,
+        "cached_input_tokens": 3142144,
+        "output_tokens": 49492
+      },
+      "total_duration_seconds": 1575.8
+    },
+    "guarded": {
+      "runs": 18,
+      "valid_runs": 18,
+      "invalid_runs": 0,
+      "clean_deliveries": 8,
+      "clean_delivery_rate": 44.4,
+      "clean_delivery_wilson_95": [
+        24.6,
+        66.3
+      ],
+      "metric_rates": {
+        "active_requirements_preserved": 94.4,
+        "artifact_residue_free": 94.4,
+        "response_residue_free": 55.6,
+        "process_trace_free": 77.8,
+        "scope_clean": 94.4,
+        "hidden_check_passed": 100.0,
+        "transient_state_clean": 100.0
+      },
+      "median_total_tokens": 227132,
+      "median_output_tokens": 2829,
+      "median_duration_seconds": 88.0,
+      "median_final_response_chars": 34,
+      "total_usage": {
+        "input_tokens": 4299151,
+        "cached_input_tokens": 3892480,
+        "output_tokens": 59411
+      },
+      "total_duration_seconds": 1782.4
+    }
+  },
+  "cases": [
+    {
+      "case_id": "compatibility_contract",
+      "case_type": "preservation_control",
+      "conditions": {
+        "baseline": {
+          "runs": 3,
+          "clean_deliveries": 0,
+          "clean_delivery_rate": 0.0
+        },
+        "light": {
+          "runs": 3,
+          "clean_deliveries": 0,
+          "clean_delivery_rate": 0.0
+        },
+        "guarded": {
+          "runs": 3,
+          "clean_deliveries": 1,
+          "clean_delivery_rate": 33.3
+        }
+      }
+    },
+    {
+      "case_id": "csv_export",
+      "case_type": "cleanup",
+      "conditions": {
+        "baseline": {
+          "runs": 3,
+          "clean_deliveries": 0,
+          "clean_delivery_rate": 0.0
+        },
+        "light": {
+          "runs": 3,
+          "clean_deliveries": 2,
+          "clean_delivery_rate": 66.7
+        },
+        "guarded": {
+          "runs": 3,
+          "clean_deliveries": 2,
+          "clean_delivery_rate": 66.7
+        }
+      }
+    },
+    {
+      "case_id": "dashboard_memory",
+      "case_type": "cleanup",
+      "conditions": {
+        "baseline": {
+          "runs": 3,
+          "clean_deliveries": 0,
+          "clean_delivery_rate": 0.0
+        },
+        "light": {
+          "runs": 3,
+          "clean_deliveries": 0,
+          "clean_delivery_rate": 0.0
+        },
+        "guarded": {
+          "runs": 3,
+          "clean_deliveries": 0,
+          "clean_delivery_rate": 0.0
+        }
+      }
+    },
+    {
+      "case_id": "recipe_cleanup",
+      "case_type": "cleanup",
+      "conditions": {
+        "baseline": {
+          "runs": 3,
+          "clean_deliveries": 0,
+          "clean_delivery_rate": 0.0
+        },
+        "light": {
+          "runs": 3,
+          "clean_deliveries": 3,
+          "clean_delivery_rate": 100.0
+        },
+        "guarded": {
+          "runs": 3,
+          "clean_deliveries": 2,
+          "clean_delivery_rate": 66.7
+        }
+      }
+    },
+    {
+      "case_id": "three_step_plan",
+      "case_type": "cleanup",
+      "conditions": {
+        "baseline": {
+          "runs": 3,
+          "clean_deliveries": 0,
+          "clean_delivery_rate": 0.0
+        },
+        "light": {
+          "runs": 3,
+          "clean_deliveries": 0,
+          "clean_delivery_rate": 0.0
+        },
+        "guarded": {
+          "runs": 3,
+          "clean_deliveries": 3,
+          "clean_delivery_rate": 100.0
+        }
+      }
+    },
+    {
+      "case_id": "todo_frontend",
+      "case_type": "cleanup",
+      "conditions": {
+        "baseline": {
+          "runs": 3,
+          "clean_deliveries": 0,
+          "clean_delivery_rate": 0.0
+        },
+        "light": {
+          "runs": 3,
+          "clean_deliveries": 3,
+          "clean_delivery_rate": 100.0
+        },
+        "guarded": {
+          "runs": 3,
+          "clean_deliveries": 0,
+          "clean_delivery_rate": 0.0
+        }
+      }
+    }
+  ],
+  "case_types": {
+    "cleanup": {
+      "baseline": {
+        "runs": 15,
+        "valid_runs": 15,
+        "invalid_runs": 0,
+        "clean_deliveries": 0,
+        "clean_delivery_rate": 0.0,
+        "clean_delivery_wilson_95": [
+          0.0,
+          20.4
+        ],
+        "metric_rates": {
+          "active_requirements_preserved": 80.0,
+          "artifact_residue_free": 20.0,
+          "response_residue_free": 13.3,
+          "process_trace_free": 40.0,
+          "scope_clean": 20.0,
+          "hidden_check_passed": 100.0,
+          "transient_state_clean": 100.0
+        },
+        "median_total_tokens": 165731,
+        "median_output_tokens": 1697,
+        "median_duration_seconds": 64.5,
+        "median_final_response_chars": 33,
+        "total_usage": {
+          "input_tokens": 2204706,
+          "cached_input_tokens": 1991680,
+          "output_tokens": 31608
+        },
+        "total_duration_seconds": 1053.1
+      },
+      "light": {
+        "runs": 15,
+        "valid_runs": 15,
+        "invalid_runs": 0,
+        "clean_deliveries": 8,
+        "clean_delivery_rate": 53.3,
+        "clean_delivery_wilson_95": [
+          30.1,
+          75.2
+        ],
+        "metric_rates": {
+          "active_requirements_preserved": 80.0,
+          "artifact_residue_free": 86.7,
+          "response_residue_free": 66.7,
+          "process_trace_free": 80.0,
+          "scope_clean": 86.7,
+          "hidden_check_passed": 100.0,
+          "transient_state_clean": 100.0
+        },
+        "median_total_tokens": 178884,
+        "median_output_tokens": 2006,
+        "median_duration_seconds": 75.1,
+        "median_final_response_chars": 34,
+        "total_usage": {
+          "input_tokens": 2758767,
+          "cached_input_tokens": 2412288,
+          "output_tokens": 40126
+        },
+        "total_duration_seconds": 1276.1
+      },
+      "guarded": {
+        "runs": 15,
+        "valid_runs": 15,
+        "invalid_runs": 0,
+        "clean_deliveries": 7,
+        "clean_delivery_rate": 46.7,
+        "clean_delivery_wilson_95": [
+          24.8,
+          69.9
+        ],
+        "metric_rates": {
+          "active_requirements_preserved": 93.3,
+          "artifact_residue_free": 93.3,
+          "response_residue_free": 60.0,
+          "process_trace_free": 86.7,
+          "scope_clean": 93.3,
+          "hidden_check_passed": 100.0,
+          "transient_state_clean": 100.0
+        },
+        "median_total_tokens": 225286,
+        "median_output_tokens": 2822,
+        "median_duration_seconds": 88.0,
+        "median_final_response_chars": 33,
+        "total_usage": {
+          "input_tokens": 3603406,
+          "cached_input_tokens": 3265280,
+          "output_tokens": 50279
+        },
+        "total_duration_seconds": 1501.8
+      }
+    },
+    "preservation_control": {
+      "baseline": {
+        "runs": 3,
+        "valid_runs": 3,
+        "invalid_runs": 0,
+        "clean_deliveries": 0,
+        "clean_delivery_rate": 0.0,
+        "clean_delivery_wilson_95": [
+          0.0,
+          56.1
+        ],
+        "metric_rates": {
+          "active_requirements_preserved": 100.0,
+          "artifact_residue_free": 0.0,
+          "response_residue_free": 0.0,
+          "process_trace_free": 100.0,
+          "scope_clean": 0.0,
+          "hidden_check_passed": 100.0,
+          "transient_state_clean": 100.0
+        },
+        "median_total_tokens": 173228,
+        "median_output_tokens": 2274,
+        "median_duration_seconds": 87.8,
+        "median_final_response_chars": 44,
+        "total_usage": {
+          "input_tokens": 557677,
+          "cached_input_tokens": 498432,
+          "output_tokens": 8001
+        },
+        "total_duration_seconds": 274.5
+      },
+      "light": {
+        "runs": 3,
+        "valid_runs": 3,
+        "invalid_runs": 0,
+        "clean_deliveries": 0,
+        "clean_delivery_rate": 0.0,
+        "clean_delivery_wilson_95": [
+          0.0,
+          56.1
+        ],
+        "metric_rates": {
+          "active_requirements_preserved": 66.7,
+          "artifact_residue_free": 100.0,
+          "response_residue_free": 0.0,
+          "process_trace_free": 66.7,
+          "scope_clean": 100.0,
+          "hidden_check_passed": 100.0,
+          "transient_state_clean": 100.0
+        },
+        "median_total_tokens": 265936,
+        "median_output_tokens": 3072,
+        "median_duration_seconds": 99.8,
+        "median_final_response_chars": 44,
+        "total_usage": {
+          "input_tokens": 811056,
+          "cached_input_tokens": 729856,
+          "output_tokens": 9366
+        },
+        "total_duration_seconds": 299.7
+      },
+      "guarded": {
+        "runs": 3,
+        "valid_runs": 3,
+        "invalid_runs": 0,
+        "clean_deliveries": 1,
+        "clean_delivery_rate": 33.3,
+        "clean_delivery_wilson_95": [
+          6.1,
+          79.2
+        ],
+        "metric_rates": {
+          "active_requirements_preserved": 100.0,
+          "artifact_residue_free": 100.0,
+          "response_residue_free": 33.3,
+          "process_trace_free": 33.3,
+          "scope_clean": 100.0,
+          "hidden_check_passed": 100.0,
+          "transient_state_clean": 100.0
+        },
+        "median_total_tokens": 234255,
+        "median_output_tokens": 3014,
+        "median_duration_seconds": 93.4,
+        "median_final_response_chars": 44,
+        "total_usage": {
+          "input_tokens": 695745,
+          "cached_input_tokens": 627200,
+          "output_tokens": 9132
+        },
+        "total_duration_seconds": 280.6
+      }
+    }
+  },
+  "gate": {
+    "evaluated_at": "2026-09-01T07:58:02+00:00",
+    "corpus_samples": 20,
+    "code_level": {
+      "true_positive": 11,
+      "false_positive": 1,
+      "false_negative": 2,
+      "precision": 91.7,
+      "recall": 84.6,
+      "f1": 88.0
+    },
+    "binary_block_decision": {
+      "true_positive": 10,
+      "false_positive": 1,
+      "true_negative": 7,
+      "false_negative": 2,
+      "precision": 90.9,
+      "recall": 83.3,
+      "f1": 87.0
+    },
+    "exact_match_rate": 85.0,
+    "samples": [
+      {
+        "id": "direct-retired-zh",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [
+          "STC001"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "direct-retired-casefold-en",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [
+          "STC001"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "configured-alias",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [
+          "STC001"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "unlisted-semantic-alias-en",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [],
+        "exact_match": false
+      },
+      {
+        "id": "unlisted-semantic-alias-zh",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [],
+        "exact_match": false
+      },
+      {
+        "id": "substring-collision",
+        "expected_codes": [],
+        "observed_codes": [
+          "STC001"
+        ],
+        "exact_match": false
+      },
+      {
+        "id": "clean-current-artifact",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "active-contract-exception",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "default-process-label-zh",
+        "expected_codes": [
+          "STC003"
+        ],
+        "observed_codes": [
+          "STC003"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "default-process-label-en",
+        "expected_codes": [
+          "STC003"
+        ],
+        "observed_codes": [
+          "STC003"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "ordinary-concise-instruction",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "custom-meta-marker",
+        "expected_codes": [
+          "STC003"
+        ],
+        "observed_codes": [
+          "STC003"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "unmapped-artifact",
+        "expected_codes": [
+          "STC002"
+        ],
+        "observed_codes": [
+          "STC002"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "mapped-artifact",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "non-utf8-text",
+        "expected_codes": [
+          "STC004"
+        ],
+        "observed_codes": [
+          "STC004"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "binary-with-nul",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "ignored-path",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "wrong-term-not-excepted",
+        "expected_codes": [
+          "STC001"
+        ],
+        "observed_codes": [
+          "STC001"
+        ],
+        "exact_match": true
+      },
+      {
+        "id": "process-allowlist",
+        "expected_codes": [],
+        "observed_codes": [],
+        "exact_match": true
+      },
+      {
+        "id": "two-simultaneous-findings",
+        "expected_codes": [
+          "STC001",
+          "STC003"
+        ],
+        "observed_codes": [
+          "STC001",
+          "STC003"
+        ],
+        "exact_match": true
+      }
+    ]
+  }
+}

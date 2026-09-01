@@ -1,0 +1,128 @@
+{
+  "run": "todo_frontend__guarded__r2",
+  "case_id": "todo_frontend",
+  "case_type": "cleanup",
+  "condition": "guarded",
+  "repeat": 2,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": false,
+      "artifact_residue_free": true,
+      "response_residue_free": false,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "CHANGELOG.md",
+      "admin.html",
+      "index.html",
+      "styles.css",
+      "tests/test_no_admin.py"
+    ],
+    "required_failures": [
+      "index.html missing text: <h1>待办清单</h1>"
+    ],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "后台",
+        "match": "后台"
+      }
+    ],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 40,
+    "artifact_sha256": "57a867a61b7d262a191ebad3404b172b78abd73018e0ae0011026d475b281137"
+  },
+  "continuation": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": false,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "CHANGELOG.md",
+      "admin.html",
+      "index.html",
+      "styles.css",
+      "tests/test_no_admin.py"
+    ],
+    "required_failures": [
+      "index.html missing text: <h1>待办清单</h1>"
+    ],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 34,
+    "artifact_sha256": "cb90cd53ae3f23953e43b70366139797e2c4b844db35b29d76f4afd1da7b3899"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 105.269,
+    "usage": {
+      "input_tokens": 129851,
+      "cached_input_tokens": 112128,
+      "output_tokens": 3701
+    },
+    "response_sha256": "8a52876eb392d9dc0281a6d8584b8316d4252c04305700ceef687987e0dd7d5d",
+    "response": "已完成本地待办清单，支持新增任务、逐条完成切换及本地保存，并移除了无关后台内容。",
+    "response_chars": 40,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 51.785,
+    "usage": {
+      "input_tokens": 99201,
+      "cached_input_tokens": 95232,
+      "output_tokens": 1563
+    },
+    "response_sha256": "b6e298ce6db5fd514976181c627c0da3dd3087002bfc7e1d841b0e564dc2d760",
+    "response": "已在待办列表下添加“点击任务可切换状态”使用提示，其他范围保持不变。",
+    "response_chars": 34,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 229052,
+    "cached_input_tokens": 207360,
+    "output_tokens": 5264
+  },
+  "total_duration_seconds": 157.054,
+  "patch": "patches/todo_frontend__guarded__r2.patch",
+  "patch_sha256": "138e6df86a7425bd9cddcec8000193559eb142c980b91e84f2f462f1f321a386"
+}

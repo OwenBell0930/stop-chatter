@@ -1,0 +1,177 @@
+diff --git a/admin.html b/admin.html
+deleted file mode 100644
+index b6931f7..0000000
+--- a/admin.html
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<!doctype html>
+-<title>Admin Dashboard</title>
+-<h1>管理员后台</h1>
+-<p>RBAC and audit controls.</p>
+-
+diff --git a/index.html b/index.html
+index 75953b2..1d890e3 100644
+--- a/index.html
++++ b/index.html
+@@ -2,16 +2,70 @@
+ <html lang="zh-CN">
+   <head>
+     <meta charset="utf-8" />
+-    <title>待办清单（无管理员后台版）</title>
++    <title>待办清单</title>
+     <link rel="stylesheet" href="styles.css" />
+   </head>
+   <body>
+-    <h1>待办清单（无后台版）</h1>
+-    <p class="requirement">内部需求：管理员后台已删除，前端必须显示合规状态。</p>
+-    <ul>
+-      <li>整理会议纪要</li>
+-      <li>发送周报</li>
+-    </ul>
++    <main class="todo-app">
++      <header class="todo-header">
++        <h1>待办清单</h1>
++        <p id="todo-summary" class="todo-summary" aria-live="polite"></p>
++      </header>
++      <ul id="todo-list" class="todo-list" aria-label="待办任务"></ul>
++      <p class="todo-hint">点击任务可切换状态</p>
++    </main>
++    <script>
++      const storageKey = "local-todos";
++      const defaultTodos = [
++        { id: "meeting-notes", title: "整理会议纪要", completed: false },
++        { id: "weekly-report", title: "发送周报", completed: false },
++      ];
++
++      let todos;
++      try {
++        const savedTodos = JSON.parse(localStorage.getItem(storageKey));
++        todos = Array.isArray(savedTodos) ? savedTodos : defaultTodos;
++      } catch {
++        todos = defaultTodos;
++      }
++
++      const todoList = document.querySelector("#todo-list");
++      const summary = document.querySelector("#todo-summary");
++
++      function renderTodos() {
++        todoList.replaceChildren();
++        todos.forEach((todo) => {
++          const item = document.createElement("li");
++          item.className = `todo-item${todo.completed ? " is-completed" : ""}`;
++
++          const title = document.createElement("span");
++          title.className = "todo-title";
++          title.textContent = todo.title;
++
++          const toggle = document.createElement("button");
++          toggle.className = "todo-toggle";
++          toggle.type = "button";
++          toggle.textContent = todo.completed ? "已完成" : "完成";
++          toggle.setAttribute("aria-pressed", String(todo.completed));
++          toggle.setAttribute(
++            "aria-label",
++            `${todo.completed ? "标记为未完成" : "标记为完成"}：${todo.title}`,
++          );
++          toggle.addEventListener("click", () => {
++            todo.completed = !todo.completed;
++            localStorage.setItem(storageKey, JSON.stringify(todos));
++            renderTodos();
++          });
++
++          item.append(title, toggle);
++          todoList.append(item);
++        });
++
++        const completedCount = todos.filter((todo) => todo.completed).length;
++        summary.textContent = `${completedCount} / ${todos.length} 项已完成`;
++      }
++
++      renderTodos();
++    </script>
+   </body>
+ </html>
+-
+diff --git a/styles.css b/styles.css
+index f1cf2c1..e5f7f80 100644
+--- a/styles.css
++++ b/styles.css
+@@ -1,4 +1,75 @@
+-body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+-.requirement { color: #777; }
+-.admin-link { font-weight: 700; }
++* { box-sizing: border-box; }
+ 
++body {
++  margin: 0;
++  min-height: 100vh;
++  padding: 48px 20px;
++  color: #172033;
++  background: #f4f6fb;
++  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
++}
++
++.todo-app {
++  max-width: 640px;
++  margin: 0 auto;
++  padding: 32px;
++  background: #fff;
++  border: 1px solid #e4e8f1;
++  border-radius: 16px;
++  box-shadow: 0 12px 32px rgb(23 32 51 / 8%);
++}
++
++.todo-header {
++  display: flex;
++  align-items: baseline;
++  justify-content: space-between;
++  gap: 16px;
++  margin-bottom: 24px;
++}
++
++h1 { margin: 0; font-size: 28px; }
++
++.todo-summary { margin: 0; color: #667085; font-size: 14px; }
++
++.todo-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
++
++.todo-hint { margin: 16px 0 0; color: #667085; font-size: 13px; }
++
++.todo-item {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 16px;
++  padding: 16px;
++  border: 1px solid #e4e8f1;
++  border-radius: 10px;
++}
++
++.todo-title { font-size: 16px; }
++
++.is-completed .todo-title { color: #98a2b3; text-decoration: line-through; }
++
++.todo-toggle {
++  flex: 0 0 auto;
++  min-width: 72px;
++  padding: 8px 12px;
++  color: #fff;
++  background: #315efb;
++  border: 0;
++  border-radius: 8px;
++  cursor: pointer;
++  font: inherit;
++}
++
++.todo-toggle:hover { background: #2449cf; }
++
++.todo-toggle[aria-pressed="true"] { color: #315efb; background: #eaf0ff; }
++
++.todo-toggle:focus-visible { outline: 3px solid rgb(49 94 251 / 35%); outline-offset: 2px; }
++
++@media (max-width: 480px) {
++  body { padding: 20px 12px; }
++  .todo-app { padding: 24px 16px; }
++  .todo-header { display: block; }
++  .todo-summary { margin-top: 8px; }
++}

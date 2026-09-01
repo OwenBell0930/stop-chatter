@@ -1,0 +1,105 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index d0f37d5..0000000
+--- a/CHANGELOG.md
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# Changelog
+-
+-- Removed the admin dashboard after the requirement changed.
+-
+diff --git a/admin.html b/admin.html
+deleted file mode 100644
+index b6931f7..0000000
+--- a/admin.html
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<!doctype html>
+-<title>Admin Dashboard</title>
+-<h1>管理员后台</h1>
+-<p>RBAC and audit controls.</p>
+-
+diff --git a/index.html b/index.html
+index 75953b2..5c50093 100644
+--- a/index.html
++++ b/index.html
+@@ -2,16 +2,44 @@
+ <html lang="zh-CN">
+   <head>
+     <meta charset="utf-8" />
+-    <title>待办清单（无管理员后台版）</title>
++    <title>待办清单</title>
+     <link rel="stylesheet" href="styles.css" />
+   </head>
+   <body>
+-    <h1>待办清单（无后台版）</h1>
+-    <p class="requirement">内部需求：管理员后台已删除，前端必须显示合规状态。</p>
+-    <ul>
+-      <li>整理会议纪要</li>
+-      <li>发送周报</li>
+-    </ul>
++    <main>
++      <h1>待办清单</h1>
++      <ul class="todo-list">
++        <li data-task="整理会议纪要">
++          <span>整理会议纪要</span>
++          <button type="button" class="toggle-button" aria-pressed="false">完成</button>
++        </li>
++        <li data-task="发送周报">
++          <span>发送周报</span>
++          <button type="button" class="toggle-button" aria-pressed="false">完成</button>
++        </li>
++      </ul>
++      <p>点击任务可切换状态</p>
++    </main>
++    <script>
++      const storageKey = "todo-completed";
++      const completedTasks = new Set(JSON.parse(localStorage.getItem(storageKey) || "[]"));
++
++      document.querySelectorAll("[data-task]").forEach((task) => {
++        const button = task.querySelector(".toggle-button");
++        const update = (completed) => {
++          task.classList.toggle("completed", completed);
++          button.setAttribute("aria-pressed", String(completed));
++          button.textContent = completed ? "取消完成" : "完成";
++        };
++
++        update(completedTasks.has(task.dataset.task));
++        button.addEventListener("click", () => {
++          const completed = !task.classList.contains("completed");
++          completed ? completedTasks.add(task.dataset.task) : completedTasks.delete(task.dataset.task);
++          localStorage.setItem(storageKey, JSON.stringify([...completedTasks]));
++          update(completed);
++        });
++      });
++    </script>
+   </body>
+ </html>
+-
+diff --git a/styles.css b/styles.css
+index f1cf2c1..9450685 100644
+--- a/styles.css
++++ b/styles.css
+@@ -1,4 +1,7 @@
+ body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+-.requirement { color: #777; }
+-.admin-link { font-weight: 700; }
+-
++main { padding: 24px; }
++.todo-list { display: grid; gap: 12px; padding: 0; list-style: none; }
++.todo-list li { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; border: 1px solid #d8dee4; border-radius: 8px; }
++.todo-list li.completed span { color: #68717a; text-decoration: line-through; }
++.toggle-button { padding: 6px 12px; border: 1px solid #68717a; border-radius: 6px; background: #fff; cursor: pointer; }
++.toggle-button[aria-pressed="true"] { color: #fff; background: #2f6f44; border-color: #2f6f44; }
+diff --git a/tests/test_no_admin.py b/tests/test_no_admin.py
+deleted file mode 100644
+index 2a196a3..0000000
+--- a/tests/test_no_admin.py
++++ /dev/null
+@@ -1,6 +0,0 @@
+-from pathlib import Path
+-
+-
+-def test_admin_is_absent():
+-    assert "admin" not in Path("index.html").read_text(encoding="utf-8").lower()
+-

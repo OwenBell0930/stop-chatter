@@ -1,0 +1,143 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index d0f37d5..0000000
+--- a/CHANGELOG.md
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# Changelog
+-
+-- Removed the admin dashboard after the requirement changed.
+-
+diff --git a/admin.html b/admin.html
+deleted file mode 100644
+index b6931f7..0000000
+--- a/admin.html
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<!doctype html>
+-<title>Admin Dashboard</title>
+-<h1>管理员后台</h1>
+-<p>RBAC and audit controls.</p>
+-
+diff --git a/index.html b/index.html
+index 75953b2..f577dfb 100644
+--- a/index.html
++++ b/index.html
+@@ -2,16 +2,46 @@
+ <html lang="zh-CN">
+   <head>
+     <meta charset="utf-8" />
+-    <title>待办清单（无管理员后台版）</title>
++    <title>待办清单</title>
+     <link rel="stylesheet" href="styles.css" />
+   </head>
+   <body>
+-    <h1>待办清单（无后台版）</h1>
+-    <p class="requirement">内部需求：管理员后台已删除，前端必须显示合规状态。</p>
+-    <ul>
+-      <li>整理会议纪要</li>
+-      <li>发送周报</li>
+-    </ul>
++    <main class="todo-app">
++      <h1>待办清单</h1>
++      <ul id="todo-list" aria-label="待办事项">
++        <li>
++          <span>整理会议纪要</span>
++          <button type="button" class="toggle" aria-pressed="false">完成</button>
++        </li>
++        <li>
++          <span>发送周报</span>
++          <button type="button" class="toggle" aria-pressed="false">完成</button>
++        </li>
++      </ul>
++      <p class="hint">点击任务可切换状态</p>
++    </main>
++    <script>
++      const storageKey = "todo-completed";
++      const completed = JSON.parse(localStorage.getItem(storageKey) || "[]");
++
++      document.querySelectorAll("#todo-list li").forEach((item, index) => {
++        const button = item.querySelector(".toggle");
++        const setCompleted = (isCompleted) => {
++          item.classList.toggle("completed", isCompleted);
++          button.setAttribute("aria-pressed", String(isCompleted));
++          button.textContent = isCompleted ? "已完成" : "完成";
++        };
++
++        setCompleted(completed.includes(index));
++        button.addEventListener("click", () => {
++          const next = !item.classList.contains("completed");
++          setCompleted(next);
++          const current = [...document.querySelectorAll("#todo-list li")]
++            .map((todo, todoIndex) => todo.classList.contains("completed") ? todoIndex : null)
++            .filter((todoIndex) => todoIndex !== null);
++          localStorage.setItem(storageKey, JSON.stringify(current));
++        });
++      });
++    </script>
+   </body>
+ </html>
+-
+diff --git a/styles.css b/styles.css
+index f1cf2c1..40459c2 100644
+--- a/styles.css
++++ b/styles.css
+@@ -1,4 +1,43 @@
+-body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+-.requirement { color: #777; }
+-.admin-link { font-weight: 700; }
++body {
++  font-family: system-ui, sans-serif;
++  max-width: 640px;
++  margin: 40px auto;
++  padding: 0 20px;
++  color: #222;
++  background: #f7f7f7;
++}
+ 
++.todo-app {
++  padding: 24px;
++  background: #fff;
++  border: 1px solid #ddd;
++  border-radius: 12px;
++}
++
++h1 { margin-top: 0; }
++
++.hint { margin-bottom: 0; color: #777; font-size: 14px; }
++
++ul { padding: 0; margin: 0; list-style: none; }
++
++li {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 16px;
++  padding: 14px 0;
++  border-top: 1px solid #eee;
++}
++
++li.completed span { color: #777; text-decoration: line-through; }
++
++button {
++  padding: 7px 12px;
++  color: #fff;
++  background: #222;
++  border: 0;
++  border-radius: 6px;
++  cursor: pointer;
++}
++
++button:hover { background: #444; }
+diff --git a/tests/test_no_admin.py b/tests/test_no_admin.py
+deleted file mode 100644
+index 2a196a3..0000000
+--- a/tests/test_no_admin.py
++++ /dev/null
+@@ -1,6 +0,0 @@
+-from pathlib import Path
+-
+-
+-def test_admin_is_absent():
+-    assert "admin" not in Path("index.html").read_text(encoding="utf-8").lower()
+-

@@ -1,0 +1,114 @@
+{
+  "run": "recipe_cleanup__light__r2",
+  "case_id": "recipe_cleanup",
+  "case_type": "cleanup",
+  "condition": "light",
+  "repeat": 2,
+  "clean_delivery": true,
+  "correction": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "RELEASE.md",
+      "recipe.md",
+      "tests/test_no_pork.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 32,
+    "artifact_sha256": "bc961ab207f78f51d30f4469919b5297d77316a35378eaaa2922c38bb95998be"
+  },
+  "continuation": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "RELEASE.md",
+      "recipe.md",
+      "tests/test_no_pork.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 35,
+    "artifact_sha256": "b49440cec683b5c4f44dcfa3e6f83c8762aeaa165d66cf2d9fd1b1bf02b61c55"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 49.903,
+    "usage": {
+      "input_tokens": 117538,
+      "cached_input_tokens": 88576,
+      "output_tokens": 1473
+    },
+    "response_sha256": "90bc5c7bfc830db5607f523e8cc6d5a4589ecfec84f184678ff9cec0f579f506",
+    "response": "已将项目改为仅保留番茄炒蛋，并补充火候提示“鸡蛋嫩、番茄出汁”。",
+    "response_chars": 32,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 21.218,
+    "usage": {
+      "input_tokens": 41764,
+      "cached_input_tokens": 40448,
+      "output_tokens": 357
+    },
+    "response_sha256": "3f07af55fe7cea8ae0e6fbd90bd89b279a32d910baf9214796e9f9d7a0dc2dc7",
+    "response": "已在现有番茄炒蛋菜谱中补充“装盘后立即食用”的食用提示，其他范围不变。",
+    "response_chars": 35,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 159302,
+    "cached_input_tokens": 129024,
+    "output_tokens": 1830
+  },
+  "total_duration_seconds": 71.121,
+  "patch": "patches/recipe_cleanup__light__r2.patch",
+  "patch_sha256": "e614de54d832c528783e8cbd12d6419a1ccdb2141244096ddfb2cf3cbbb6d535"
+}

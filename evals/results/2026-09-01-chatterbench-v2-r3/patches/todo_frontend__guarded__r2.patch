@@ -1,0 +1,181 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index d0f37d5..0000000
+--- a/CHANGELOG.md
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# Changelog
+-
+-- Removed the admin dashboard after the requirement changed.
+-
+diff --git a/admin.html b/admin.html
+deleted file mode 100644
+index b6931f7..0000000
+--- a/admin.html
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<!doctype html>
+-<title>Admin Dashboard</title>
+-<h1>管理员后台</h1>
+-<p>RBAC and audit controls.</p>
+-
+diff --git a/index.html b/index.html
+index 75953b2..2f17f5e 100644
+--- a/index.html
++++ b/index.html
+@@ -2,16 +2,81 @@
+ <html lang="zh-CN">
+   <head>
+     <meta charset="utf-8" />
+-    <title>待办清单（无管理员后台版）</title>
++    <title>我的待办</title>
+     <link rel="stylesheet" href="styles.css" />
+   </head>
+   <body>
+-    <h1>待办清单（无后台版）</h1>
+-    <p class="requirement">内部需求：管理员后台已删除，前端必须显示合规状态。</p>
+-    <ul>
+-      <li>整理会议纪要</li>
+-      <li>发送周报</li>
+-    </ul>
++    <main class="todo-app">
++      <header class="app-header">
++        <div>
++          <p class="eyebrow">TODAY</p>
++          <h1>我的待办</h1>
++        </div>
++        <span id="task-count" class="task-count"></span>
++      </header>
++
++      <form id="todo-form" class="todo-form">
++        <label class="sr-only" for="todo-input">添加待办</label>
++        <input id="todo-input" type="text" placeholder="接下来要做什么？" autocomplete="off" />
++        <button type="submit">添加</button>
++      </form>
++
++      <ul id="todo-list" class="todo-list" aria-live="polite"></ul>
++      <p class="usage-hint">点击任务可切换状态</p>
++      <p id="empty-state" class="empty-state">还没有待办，先添加一件吧。</p>
++    </main>
++
++    <script>
++      const storageKey = "local-todos";
++      const initialTodos = [
++        { id: 1, text: "整理会议纪要", completed: false },
++        { id: 2, text: "发送周报", completed: false }
++      ];
++      let todos = JSON.parse(localStorage.getItem(storageKey) || "null") || initialTodos;
++      const form = document.querySelector("#todo-form");
++      const input = document.querySelector("#todo-input");
++      const list = document.querySelector("#todo-list");
++      const emptyState = document.querySelector("#empty-state");
++      const count = document.querySelector("#task-count");
++
++      function save() {
++        localStorage.setItem(storageKey, JSON.stringify(todos));
++      }
++
++      function render() {
++        list.innerHTML = "";
++        todos.forEach((todo) => {
++          const item = document.createElement("li");
++          item.className = `todo-item${todo.completed ? " is-completed" : ""}`;
++          item.innerHTML = `
++            <button class="toggle-button" type="button" aria-label="${todo.completed ? "标记未完成" : "标记完成"}" aria-pressed="${todo.completed}">
++              <span aria-hidden="true">${todo.completed ? "✓" : ""}</span>
++            </button>
++            <span class="todo-text">${todo.text}</span>`;
++          item.querySelector(".toggle-button").addEventListener("click", () => {
++            todo.completed = !todo.completed;
++            save();
++            render();
++          });
++          list.appendChild(item);
++        });
++        const remaining = todos.filter((todo) => !todo.completed).length;
++        count.textContent = `${remaining} 件未完成`;
++        emptyState.hidden = todos.length > 0;
++      }
++
++      form.addEventListener("submit", (event) => {
++        event.preventDefault();
++        const text = input.value.trim();
++        if (!text) return;
++        todos.push({ id: Date.now(), text, completed: false });
++        input.value = "";
++        save();
++        render();
++        input.focus();
++      });
++
++      render();
++    </script>
+   </body>
+ </html>
+-
+diff --git a/styles.css b/styles.css
+index f1cf2c1..dc2e214 100644
+--- a/styles.css
++++ b/styles.css
+@@ -1,4 +1,46 @@
+-body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+-.requirement { color: #777; }
+-.admin-link { font-weight: 700; }
++:root {
++  color: #24313b;
++  background: #f4f7f6;
++  font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
++}
+ 
++* { box-sizing: border-box; }
++
++body { margin: 0; }
++
++.todo-app {
++  width: min(100% - 32px, 640px);
++  margin: 72px auto;
++  padding: 36px;
++  background: #fff;
++  border: 1px solid #dfe9e5;
++  border-radius: 20px;
++  box-shadow: 0 18px 50px rgba(33, 61, 52, .08);
++}
++
++.app-header { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
++.eyebrow { margin: 0 0 8px; color: #4f8c78; font-size: 12px; font-weight: 800; letter-spacing: .16em; }
++h1 { margin: 0; font-size: clamp(30px, 7vw, 42px); letter-spacing: -.04em; }
++.task-count { color: #6b7b75; font-size: 14px; }
++.todo-form { display: flex; gap: 10px; margin-bottom: 24px; }
++.todo-form input { min-width: 0; flex: 1; padding: 14px 16px; border: 1px solid #d7e2de; border-radius: 11px; color: inherit; font: inherit; outline: none; }
++.todo-form input:focus { border-color: #4f8c78; box-shadow: 0 0 0 3px rgba(79, 140, 120, .14); }
++button { border: 0; border-radius: 11px; cursor: pointer; font: inherit; }
++.todo-form button { padding: 0 21px; background: #2f6f5d; color: #fff; font-weight: 700; }
++.todo-form button:hover { background: #245b4c; }
++.todo-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
++.usage-hint { margin: 14px 0 0; color: #82918b; font-size: 13px; text-align: center; }
++.todo-item { display: flex; align-items: center; gap: 14px; padding: 15px 14px; border: 1px solid #e5eeeb; border-radius: 12px; }
++.toggle-button { display: grid; width: 24px; height: 24px; flex: 0 0 24px; place-items: center; border: 1.5px solid #9bb6ab; border-radius: 50%; background: #fff; color: #fff; font-size: 14px; font-weight: 800; }
++.toggle-button:hover { border-color: #2f6f5d; }
++.is-completed .toggle-button { border-color: #2f6f5d; background: #2f6f5d; }
++.todo-text { overflow-wrap: anywhere; }
++.is-completed .todo-text { color: #99a8a2; text-decoration: line-through; }
++.empty-state { margin: 26px 0 4px; color: #7b8b85; text-align: center; }
++.empty-state[hidden] { display: none; }
++.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
++
++@media (max-width: 520px) {
++  .todo-app { margin: 24px auto; padding: 24px 18px; }
++  .todo-form button { padding: 0 16px; }
++}
+diff --git a/tests/test_no_admin.py b/tests/test_no_admin.py
+deleted file mode 100644
+index 2a196a3..0000000
+--- a/tests/test_no_admin.py
++++ /dev/null
+@@ -1,6 +0,0 @@
+-from pathlib import Path
+-
+-
+-def test_admin_is_absent():
+-    assert "admin" not in Path("index.html").read_text(encoding="utf-8").lower()
+-

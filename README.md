@@ -46,21 +46,27 @@ This is not just verbosity. It is **dangling negation**: content already rejecte
 | Correct direction during a long task | A nearby synonym resurrects the rejected idea | Prune the dependency cone and relevant aliases |
 | Correct one task | The example becomes a permanent user preference | Keep corrections task-local by default |
 
-## Measured pilot: useful, not reliable yet
+## Measured benchmark v2: helps, but is not a guarantee
 
-On 2026-09-01, ChatterBench ran five Chinese correction cases in three conditions on the same `gpt-5.6-luna` / Codex CLI setup. Every run contained a correction turn and a continuation turn, for 15 runs and 30 completed agent turns.
+On 2026-09-01, ChatterBench ran **6 Chinese correction cases × 3 conditions × 3 fresh repeats** on the same `gpt-5.6-luna` / Codex CLI setup: **54 runs and 108 valid agent turns**. Five cases require pruning; one preservation control requires keeping an explicit negative compatibility contract, so indiscriminate deletion cannot score.
 
-| Condition | Automated clean delivery | After rubric audit | End-state artifact residue-free | End-state scope clean | Median time |
-|---|---:|---:|---:|---:|---:|
-| Baseline | 0/5 (0%) | 0/5 (0%) | 1/5 (20%) | 1/5 (20%) | 65.4s |
-| Light | 2/5 (40%) | 2/5 (40%) | 3/5 (60%) | 3/5 (60%) | 69.5s |
-| Guarded | 2/5 (40%) | 3/5 (60%) | 5/5 (100%) | 5/5 (100%) | 99.4s |
+<div align="center">
+  <a href="assets/benchmark-v2-en.svg">
+    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench v2 comparison: Baseline 0%, Light 44.4%, Guarded 44.4%, with requirement, residue, scope, and cost metrics" />
+  </a>
+</div>
 
-**What this says:** Light fixed two cases with little median latency increase. Guarded cleaned artifact residue and scope in all five end states, but it was not a perfect end-to-end guard: two otherwise-clean cases still repeated the retired concept in the correction reply. Today, `stop-chatter` is a useful intervention—not a reliable guarantee.
+| Condition | Strict clean delivery | Active requirements | Artifact residue-free | Response residue-free | Scope clean | Median time |
+|---|---:|---:|---:|---:|---:|---:|
+| Baseline | 0/18, 0.0% (95% CI 0.0–17.6) | 83.3% | 16.7% | 11.1% | 16.7% | 68.6s |
+| Light | 8/18, 44.4% (95% CI 24.6–66.3) | 77.8% | 88.9% | 55.6% | 88.9% | 77.2s |
+| Guarded | 8/18, 44.4% (95% CI 24.6–66.3) | 94.4% | 94.4% | 55.6% | 94.4% | 88.0s |
 
-“Clean delivery” is deliberately all-or-nothing: active output requirements must pass, artifacts and the final reply must contain no correction residue, no extra artifact may remain, and the neutral continuation must stay clean. Manual audit corrected one overly strict punctuation check that changed Guarded from 2/5 to 3/5; a second static-HTML-only check was also too narrow but did not change its run outcome. Both the untouched automated score and the audit are published.
+**What the data supports:** Light and Guarded tied on strict end-to-end success. Guarded preserved active requirements and kept artifacts and scope clean more often, but cost more time and tokens. The final response remains the main bottleneck: both modes were residue-free in only 55.6% of runs. Scenario results also diverged—Light scored 3/3 on the recipe and todo cases, Guarded scored 3/3 on the three-step plan, and every condition scored 0/3 on the dashboard-plus-memory case. This is useful intervention, not a reliable guardrail.
 
-This is a **single-repeat pilot**, not a statistically stable benchmark or a claim about Cursor, Claude Code, other models, or other languages. See the [method](evals/README.md), [raw run records and patches](evals/results/2026-09-01-codex-luna-pilot/), and [adjudication log](evals/results/2026-09-01-codex-luna-pilot/adjudication.md).
+“Strict clean delivery” is all-or-nothing across both turns: active requirements, hidden behavior, artifact residue, response residue, scope, transient state, and neutral-continuation regression must all pass. The formal run started from frozen clean commit `5f830b4`; all 54 runs were valid, and **no manual adjudication changed v2 scores**. Raw final replies, score details, timings, token counts, patch hashes, and all 54 patches are published.
+
+This is still a small, synthetic, single-model and single-host benchmark—not a claim about Cursor, Claude Code, other models, English tasks, or production distributions. See the [method](evals/README.md), [v2 summary](evals/results/2026-09-01-chatterbench-v2-r3/summary.md), [machine-readable data](evals/results/2026-09-01-chatterbench-v2-r3/summary.json), [54 run records](evals/results/2026-09-01-chatterbench-v2-r3/runs/), and [54 artifact patches](evals/results/2026-09-01-chatterbench-v2-r3/patches/). The earlier [15-run pilot](evals/results/2026-09-01-codex-luna-pilot/) remains archived and is not pooled with v2 because v2 fixed two narrow gold checks and added the preservation control.
 
 The deterministic gate was evaluated separately on 20 labeled samples: code-level precision **91.7%**, recall **84.6%**, and F1 **88.0%**. Its two known misses were unlisted semantic aliases; its false positive was a substring collision. These numbers describe the checker only, not the whole Skill.
 

@@ -1,0 +1,137 @@
+{
+  "run": "compatibility_contract__guarded__r1",
+  "case_id": "compatibility_contract",
+  "case_type": "preservation_control",
+  "condition": "guarded",
+  "repeat": 1,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": false,
+      "process_trace_free": false,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "README.md",
+      "analytics-dashboard.md",
+      "analytics.json",
+      "tests/test_contract.py",
+      "tests/test_no_analytics.py",
+      "validator.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "埋点",
+        "match": "埋点"
+      },
+      {
+        "path": "<assistant-response>",
+        "pattern": "分析面板",
+        "match": "分析面板"
+      }
+    ],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "已移除.{0,12}(?:分析|埋点)",
+        "match": "已移除分析面板与埋点"
+      }
+    ],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 85,
+    "artifact_sha256": "da3948dd044d4788010a33ac1f12a0b7c79891b7ea0e2675ee2f454336c894f7"
+  },
+  "continuation": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "README.md",
+      "analytics-dashboard.md",
+      "analytics.json",
+      "tests/test_contract.py",
+      "tests/test_no_analytics.py",
+      "validator.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 44,
+    "artifact_sha256": "39bf1e4eba0a5adfccae26f53010b0e117aaffcaf7c8c872b2842865d0fe0201"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 64.072,
+    "usage": {
+      "input_tokens": 132148,
+      "cached_input_tokens": 114176,
+      "output_tokens": 2394
+    },
+    "response_sha256": "7445f977ba2efd776cbff8498a0454ae537b2bb64b578fb011f15518d32f37e4",
+    "response": "已移除分析面板与埋点，`validate_token` 现会先去除首尾空格并继续拒绝 `legacy-wire-token`，契约测试 2/2 通过且瞬态状态文件已删除。",
+    "response_chars": 85,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 29.326,
+    "usage": {
+      "input_tokens": 99093,
+      "cached_input_tokens": 95232,
+      "output_tokens": 620
+    },
+    "response_sha256": "a250c604fa26bab4fd8aaf3046d98d23136fd791264c8241c64deb79955465d0",
+    "response": "已在 README 增加带首尾空格的调用示例，并说明返回值会去除首尾空格，其他范围未变。",
+    "response_chars": 44,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 231241,
+    "cached_input_tokens": 209408,
+    "output_tokens": 3014
+  },
+  "total_duration_seconds": 93.398,
+  "patch": "patches/compatibility_contract__guarded__r1.patch",
+  "patch_sha256": "13f594123538265b7d3e0d2f00441929113e4fa6e1b5e5d81ab615cec603c124"
+}

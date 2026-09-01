@@ -1,0 +1,109 @@
+diff --git a/admin.html b/admin.html
+deleted file mode 100644
+index b6931f7..0000000
+--- a/admin.html
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<!doctype html>
+-<title>Admin Dashboard</title>
+-<h1>管理员后台</h1>
+-<p>RBAC and audit controls.</p>
+-
+diff --git a/index.html b/index.html
+index 75953b2..860703a 100644
+--- a/index.html
++++ b/index.html
+@@ -2,16 +2,52 @@
+ <html lang="zh-CN">
+   <head>
+     <meta charset="utf-8" />
+-    <title>待办清单（无管理员后台版）</title>
++    <title>待办清单</title>
+     <link rel="stylesheet" href="styles.css" />
+   </head>
+   <body>
+-    <h1>待办清单（无后台版）</h1>
+-    <p class="requirement">内部需求：管理员后台已删除，前端必须显示合规状态。</p>
+-    <ul>
+-      <li>整理会议纪要</li>
+-      <li>发送周报</li>
+-    </ul>
++    <main class="todo-app">
++      <header class="page-header">
++        <p class="eyebrow">今日计划</p>
++        <h1>待办清单</h1>
++        <p class="subtitle">完成一项，就轻轻按下它。</p>
++      </header>
++
++      <ul class="todo-list" aria-label="待办事项">
++        <li class="todo-item" data-task-id="meeting-notes">
++          <span>整理会议纪要</span>
++          <button class="toggle-button" type="button" aria-pressed="false">完成</button>
++        </li>
++        <li class="todo-item" data-task-id="weekly-report">
++          <span>发送周报</span>
++          <button class="toggle-button" type="button" aria-pressed="false">完成</button>
++        </li>
++      </ul>
++      <p class="usage-hint">点击任务可切换状态</p>
++    </main>
++
++    <script>
++      const storageKey = "todo-list-status";
++      const savedStatus = JSON.parse(localStorage.getItem(storageKey) || "{}");
++
++      document.querySelectorAll(".todo-item").forEach((item) => {
++        const button = item.querySelector(".toggle-button");
++        const taskId = item.dataset.taskId;
++
++        const setCompleted = (completed) => {
++          item.classList.toggle("is-completed", completed);
++          button.setAttribute("aria-pressed", String(completed));
++          button.textContent = completed ? "已完成" : "完成";
++        };
++
++        setCompleted(Boolean(savedStatus[taskId]));
++        button.addEventListener("click", () => {
++          const completed = button.getAttribute("aria-pressed") !== "true";
++          savedStatus[taskId] = completed;
++          localStorage.setItem(storageKey, JSON.stringify(savedStatus));
++          setCompleted(completed);
++        });
++      });
++    </script>
+   </body>
+ </html>
+-
+diff --git a/styles.css b/styles.css
+index f1cf2c1..5e8a32f 100644
+--- a/styles.css
++++ b/styles.css
+@@ -1,4 +1,25 @@
+-body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+-.requirement { color: #777; }
+-.admin-link { font-weight: 700; }
++* { box-sizing: border-box; }
+ 
++body {
++  margin: 0;
++  min-height: 100vh;
++  padding: 48px 20px;
++  color: #202124;
++  background: #f6f7fb;
++  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
++}
++
++.todo-app { max-width: 640px; margin: 0 auto; }
++.page-header { margin-bottom: 28px; }
++.eyebrow { margin: 0 0 8px; color: #5d62d6; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
++h1 { margin: 0; font-size: clamp(32px, 8vw, 48px); letter-spacing: -.04em; }
++.subtitle { margin: 10px 0 0; color: #6c7080; }
++.todo-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
++.usage-hint { margin: 16px 0 0; color: #8a8e9d; font-size: 13px; text-align: center; }
++.todo-item { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; border: 1px solid #e5e7ef; border-radius: 16px; background: #fff; box-shadow: 0 5px 18px rgb(34 40 72 / 5%); font-size: 16px; transition: opacity .2s, background .2s; }
++.todo-item.is-completed { color: #8a8e9d; background: #f0f1f6; }
++.todo-item.is-completed span { text-decoration: line-through; }
++.toggle-button { min-width: 72px; padding: 9px 13px; border: 0; border-radius: 10px; color: #fff; background: #5d62d6; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
++.toggle-button:hover { background: #4c51c4; }
++.toggle-button:focus-visible { outline: 3px solid #c7c9ff; outline-offset: 2px; }
++.is-completed .toggle-button { color: #464a62; background: #dfe1eb; }

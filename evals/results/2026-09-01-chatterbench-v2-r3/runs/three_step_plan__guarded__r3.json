@@ -1,0 +1,114 @@
+{
+  "run": "three_step_plan__guarded__r3",
+  "case_id": "three_step_plan",
+  "case_type": "cleanup",
+  "condition": "guarded",
+  "repeat": 3,
+  "clean_delivery": true,
+  "correction": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "decision-log.md",
+      "plan.md",
+      "tests/test_no_crm.md"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 24,
+    "artifact_sha256": "b883d27548cd449081fbd7a48c20fecf31a9f2c4d207ff3e2320d8f6c00151e1"
+  },
+  "continuation": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "decision-log.md",
+      "plan.md",
+      "tests/test_no_crm.md"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 24,
+    "artifact_sha256": "259714580cfe3f5bea7e8d2e5132c8934cb3711d38b37b5ebfbd851977ea6848"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 68.568,
+    "usage": {
+      "input_tokens": 267574,
+      "cached_input_tokens": 238336,
+      "output_tokens": 2453
+    },
+    "response_sha256": "ca7a484624a7c41df0fba0dabe4ca4c6df9c185c46ded6686c740fb4632521c3",
+    "response": "方案已收敛为“调研、实现、验收”三步并完成验收。",
+    "response_chars": 24,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 19.415,
+    "usage": {
+      "input_tokens": 66043,
+      "cached_input_tokens": 65024,
+      "output_tokens": 369
+    },
+    "response_sha256": "8f900afe144c96cb714b1ea9b6a902e8d0308815197c1d85eb7fb5409098ce71",
+    "response": "三步均已补充“负责人：待定”，其他范围保持不变。",
+    "response_chars": 24,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 333617,
+    "cached_input_tokens": 303360,
+    "output_tokens": 2822
+  },
+  "total_duration_seconds": 87.983,
+  "patch": "patches/three_step_plan__guarded__r3.patch",
+  "patch_sha256": "ea1eaf5856218e06c8d9d7b80478d18152160687b1baefbc0aeb47914242f995"
+}

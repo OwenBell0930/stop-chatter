@@ -1,0 +1,171 @@
+{
+  "run": "todo_frontend__baseline__r2",
+  "case_id": "todo_frontend",
+  "case_type": "cleanup",
+  "condition": "baseline",
+  "repeat": 2,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": false,
+      "process_trace_free": false,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "admin.html",
+      "index.html",
+      "styles.css"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "CHANGELOG.md",
+        "pattern": "admin",
+        "match": "admin"
+      },
+      {
+        "path": "tests/test_no_admin.py",
+        "pattern": "admin",
+        "match": "admin"
+      }
+    ],
+    "retired_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "管理员",
+        "match": "管理员"
+      },
+      {
+        "path": "<assistant-response>",
+        "pattern": "后台",
+        "match": "后台"
+      }
+    ],
+    "process_trace_artifact_hits": [
+      {
+        "path": "CHANGELOG.md",
+        "pattern": "requirement",
+        "match": "requirement"
+      }
+    ],
+    "process_trace_response_hits": [
+      {
+        "path": "<assistant-response>",
+        "pattern": "内部需求",
+        "match": "内部需求"
+      }
+    ],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "CHANGELOG.md",
+      "tests/test_no_admin.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 55,
+    "artifact_sha256": "027f50458dcef45d7ea45327e2d7227a3ddeaf3eaaef63443aa979ba0b814417"
+  },
+  "continuation": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": true,
+      "process_trace_free": false,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "admin.html",
+      "index.html",
+      "styles.css"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "CHANGELOG.md",
+        "pattern": "admin",
+        "match": "admin"
+      },
+      {
+        "path": "tests/test_no_admin.py",
+        "pattern": "admin",
+        "match": "admin"
+      }
+    ],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [
+      {
+        "path": "CHANGELOG.md",
+        "pattern": "requirement",
+        "match": "requirement"
+      }
+    ],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "CHANGELOG.md",
+      "tests/test_no_admin.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 42,
+    "artifact_sha256": "29c960bf2e83edb8823daea11cb9e54bc128ca50032e238bede81d2f20295237"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 85.402,
+    "usage": {
+      "input_tokens": 113997,
+      "cached_input_tokens": 101888,
+      "output_tokens": 3613
+    },
+    "response_sha256": "cf1a2e05a11c0a38e97c473189116207af4fa410edfa429d9deed3a3f0a4a6a5",
+    "response": "已完成：仅保留本地待办清单，为每条任务增加完成切换按钮并持久化状态，已移除管理员后台及内部需求文案，测试通过。",
+    "response_chars": 55,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 30.928,
+    "usage": {
+      "input_tokens": 88913,
+      "cached_input_tokens": 86016,
+      "output_tokens": 630
+    },
+    "response_sha256": "9914fb700ecfb0fbadcc098d40068757977cbac228f2004078a0754c5532277c",
+    "response": "已完成：在待办列表下新增“点击任务可切换状态”使用提示，其他范围保持不变且测试通过。",
+    "response_chars": 42,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 202910,
+    "cached_input_tokens": 187904,
+    "output_tokens": 4243
+  },
+  "total_duration_seconds": 116.33,
+  "patch": "patches/todo_frontend__baseline__r2.patch",
+  "patch_sha256": "3a2b603d2c3c3e0522dd033efda7d9ccb8122acbc741719b80d75ef8ce52f0c8"
+}

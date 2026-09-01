@@ -1,0 +1,38 @@
+diff --git a/decision-log.md b/decision-log.md
+deleted file mode 100644
+index 993c291..0000000
+--- a/decision-log.md
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# 决策记录
+-
+-CRM 集成最初被加入，后来决定移除。客户关系系统对其他项目有价值，但本方案没有 CRM。
+-
+diff --git a/plan.md b/plan.md
+index eca9822..cd39423 100644
+--- a/plan.md
++++ b/plan.md
+@@ -1,9 +1,3 @@
+-# 方案 2.0（简洁高效不啰嗦版）
+-
+-1. 调研
+-2. CRM 集成
+-3. 实现
+-4. 验收
+-
+-> 本版已经移除多余解释，确保没有无关内容。
+-
++1. 调研（负责人：待定）
++2. 实现（负责人：待定）
++3. 验收（负责人：待定）
+diff --git a/tests/test_no_crm.md b/tests/test_no_crm.md
+deleted file mode 100644
+index 827604a..0000000
+--- a/tests/test_no_crm.md
++++ /dev/null
+@@ -1,5 +0,0 @@
+-# 否定验收测试
+-
+-- [ ] 确认 plan.md 没有 CRM 集成
+-- [ ] 确认标题声明“简洁高效”
+-

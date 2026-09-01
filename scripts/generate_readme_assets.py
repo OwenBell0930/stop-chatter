@@ -8,12 +8,16 @@ optionally renders 2x PNG previews when CairoSVG and Pillow are available.
 from __future__ import annotations
 
 import argparse
+import json
 from html import escape
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
+BENCHMARK_RESULT = (
+    ROOT / "evals" / "results" / "2026-09-01-chatterbench-v2-r3" / "summary.json"
+)
 
 NAVY = "#0B1020"
 NAVY_2 = "#141B31"
@@ -333,6 +337,116 @@ def make_user_story_en() -> str:
     return base_svg(1280, 720, PAPER, "".join(parts))
 
 
+def benchmark_metric_row(
+    parts: list[str],
+    x: int,
+    y: int,
+    label: str,
+    value: float,
+    accent: str,
+) -> None:
+    parts.append(text(x, y, label, size=12, color=MUTED, weight=650))
+    parts.append(text(x + 332, y, f"{value:.1f}%", size=12, color=INK, weight=750, anchor="end"))
+    parts.append(rect(x, y + 14, 332, 8, fill="#E8EAF0", radius=4))
+    if value > 0:
+        parts.append(rect(x, y + 14, round(332 * value / 100), 8, fill=accent, radius=4))
+
+
+def make_benchmark_chart(*, english: bool) -> str:
+    summary = json.loads(BENCHMARK_RESULT.read_text(encoding="utf-8"))
+    agent = summary["agent"]
+    copy = {
+        "title": "ChatterBench v2 — strict clean delivery" if english else "ChatterBench v2 — 严格干净交付率",
+        "subtitle": (
+            "6 Chinese cases × 3 repeats × 3 conditions · gpt-5.6-luna / Codex CLI"
+            if english
+            else "6 个中文场景 × 3 次重复 × 3 个条件 · gpt-5.6-luna / Codex CLI"
+        ),
+        "badge": "54 RUNS · 108 VALID TURNS" if english else "54 次运行 · 108 个有效回合",
+        "clean": "clean deliveries" if english else "次严格通过",
+        "requirements": "Active requirements" if english else "有效需求保留",
+        "artifact": "Artifact residue-free" if english else "工件无残留",
+        "response": "Response residue-free" if english else "回复无残留",
+        "scope": "Scope clean" if english else "范围干净",
+        "median": "Median" if english else "中位耗时",
+        "footer": (
+            "Light and Guarded tied on strict success. Guarded kept requirements and file scope cleaner, but took longer."
+            if english
+            else "Light 与 Guarded 严格成功率相同；Guarded 更能保住需求和文件范围，但耗时更高。"
+        ),
+        "limit": (
+            "One model · one host · synthetic Chinese cases · not a guarantee"
+            if english
+            else "单模型 · 单宿主 · 合成中文场景 · 不是效果保证"
+        ),
+        "gate": "Gate corpus: 20 · F1 88.0%" if english else "门禁语料：20 条 · F1 88.0%",
+    }
+
+    parts: list[str] = []
+    parts.append(text(48, 52, copy["title"], size=30, color=INK, weight=850))
+    parts.append(text(48, 88, copy["subtitle"], size=15, color=MUTED, weight=500))
+    parts.append(rect(948, 34, 284, 40, fill=NAVY, radius=20))
+    parts.append(text(1090, 55, copy["badge"], size=12, color=WHITE, weight=800, anchor="middle", spacing=0.5))
+
+    cards = [
+        ("baseline", "Baseline", "#7B8499", 40),
+        ("light", "Light", CORAL, 450),
+        ("guarded", "Guarded", GREEN, 860),
+    ]
+    for key, label, accent, x in cards:
+        values = agent[key]
+        metrics = values["metric_rates"]
+        interval = values["clean_delivery_wilson_95"]
+        parts.append(rect(x, 122, 380, 472, fill=WHITE, radius=22, stroke=accent, stroke_width=2, shadow=True))
+        parts.append(rect(x, 122, 380, 58, fill=accent, radius=21))
+        parts.append(f'<rect x="{x}" y="158" width="380" height="22" fill="{accent}"/>')
+        parts.append(text(x + 190, 151, label, size=19, color=WHITE, weight=850, anchor="middle", spacing=0.6))
+        parts.append(text(x + 28, 222, f"{values['clean_delivery_rate']:.1f}%", size=46, color=accent, weight=900))
+        parts.append(
+            text(
+                x + 352,
+                210,
+                f"{values['clean_deliveries']} / {values['runs']} {copy['clean']}",
+                size=12,
+                color=INK,
+                weight=700,
+                anchor="end",
+            )
+        )
+        parts.append(
+            text(
+                x + 352,
+                234,
+                f"95% CI {interval[0]:.1f}–{interval[1]:.1f}",
+                size=11,
+                color=MUTED,
+                anchor="end",
+            )
+        )
+        benchmark_metric_row(parts, x + 24, 286, copy["requirements"], metrics["active_requirements_preserved"], accent)
+        benchmark_metric_row(parts, x + 24, 346, copy["artifact"], metrics["artifact_residue_free"], accent)
+        benchmark_metric_row(parts, x + 24, 406, copy["response"], metrics["response_residue_free"], accent)
+        benchmark_metric_row(parts, x + 24, 466, copy["scope"], metrics["scope_clean"], accent)
+        parts.append(rect(x + 24, 530, 332, 42, fill="#F4F5F8", radius=10))
+        parts.append(
+            text(
+                x + 190,
+                552,
+                f"{copy['median']} {values['median_duration_seconds']:.1f}s · {round(values['median_total_tokens'] / 1000)}k tokens",
+                size=12,
+                color=INK,
+                weight=700,
+                anchor="middle",
+            )
+        )
+
+    parts.append(rect(40, 620, 1200, 70, fill=NAVY, radius=16))
+    parts.append(text(64, 644, copy["footer"], size=16, color=WHITE, weight=750))
+    parts.append(text(64, 672, copy["limit"], size=11, color="#AAB3CB", weight=500))
+    parts.append(text(1216, 672, copy["gate"], size=11, color="#A9DFC9", weight=700, anchor="end"))
+    return base_svg(1280, 720, PAPER, "".join(parts))
+
+
 def write_assets() -> list[Path]:
     ASSETS.mkdir(parents=True, exist_ok=True)
     outputs = {
@@ -341,6 +455,8 @@ def write_assets() -> list[Path]:
         ASSETS / "hero-en.svg": make_hero_en(),
         ASSETS / "user-story.svg": make_user_story(),
         ASSETS / "user-story-en.svg": make_user_story_en(),
+        ASSETS / "benchmark-v2.svg": make_benchmark_chart(english=False),
+        ASSETS / "benchmark-v2-en.svg": make_benchmark_chart(english=True),
     }
     for path, content in outputs.items():
         path.write_text(content, encoding="utf-8")

@@ -1,0 +1,164 @@
+diff --git a/admin.html b/admin.html
+deleted file mode 100644
+index b6931f7..0000000
+--- a/admin.html
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<!doctype html>
+-<title>Admin Dashboard</title>
+-<h1>管理员后台</h1>
+-<p>RBAC and audit controls.</p>
+-
+diff --git a/index.html b/index.html
+index 75953b2..54c582e 100644
+--- a/index.html
++++ b/index.html
+@@ -2,16 +2,70 @@
+ <html lang="zh-CN">
+   <head>
+     <meta charset="utf-8" />
+-    <title>待办清单（无管理员后台版）</title>
++    <meta name="viewport" content="width=device-width, initial-scale=1" />
++    <title>待办清单</title>
+     <link rel="stylesheet" href="styles.css" />
+   </head>
+   <body>
+-    <h1>待办清单（无后台版）</h1>
+-    <p class="requirement">内部需求：管理员后台已删除，前端必须显示合规状态。</p>
+-    <ul>
+-      <li>整理会议纪要</li>
+-      <li>发送周报</li>
+-    </ul>
++    <main class="todo-app">
++      <h1>待办清单</h1>
++      <ul id="todo-list" aria-label="待办任务"></ul>
++      <p class="todo-hint">点击任务可切换状态</p>
++    </main>
++
++    <script>
++      const storageKey = "local-todos";
++      const defaultTodos = [
++        { id: "meeting-notes", title: "整理会议纪要", completed: false },
++        { id: "weekly-report", title: "发送周报", completed: false },
++      ];
++
++      let todos;
++      try {
++        const savedTodos = JSON.parse(localStorage.getItem(storageKey));
++        todos = Array.isArray(savedTodos) ? savedTodos : defaultTodos;
++      } catch (error) {
++        todos = defaultTodos;
++      }
++
++      const todoList = document.querySelector("#todo-list");
++
++      function saveTodos() {
++        localStorage.setItem(storageKey, JSON.stringify(todos));
++      }
++
++      function renderTodos() {
++        todoList.replaceChildren();
++
++        todos.forEach((todo) => {
++          const item = document.createElement("li");
++          item.className = todo.completed ? "todo todo--completed" : "todo";
++
++          const title = document.createElement("span");
++          title.className = "todo__title";
++          title.textContent = todo.title;
++
++          const toggle = document.createElement("button");
++          toggle.type = "button";
++          toggle.className = "todo__toggle";
++          toggle.textContent = todo.completed ? "已完成" : "完成";
++          toggle.setAttribute(
++            "aria-label",
++            `${todo.completed ? "标记为未完成" : "完成"}：${todo.title}`
++          );
++          toggle.setAttribute("aria-pressed", String(todo.completed));
++          toggle.addEventListener("click", () => {
++            todo.completed = !todo.completed;
++            saveTodos();
++            renderTodos();
++          });
++
++          item.append(title, toggle);
++          todoList.append(item);
++        });
++      }
++
++      renderTodos();
++    </script>
+   </body>
+ </html>
+-
+diff --git a/styles.css b/styles.css
+index f1cf2c1..b596cd6 100644
+--- a/styles.css
++++ b/styles.css
+@@ -1,4 +1,62 @@
+-body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+-.requirement { color: #777; }
+-.admin-link { font-weight: 700; }
++:root {
++  color: #1f2937;
++  background: #f8fafc;
++  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
++}
+ 
++body { margin: 0; }
++
++.todo-app {
++  width: min(100% - 32px, 640px);
++  margin: 64px auto;
++  padding: 28px;
++  background: #ffffff;
++  border: 1px solid #e5e7eb;
++  border-radius: 12px;
++  box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
++}
++
++h1 { margin: 0 0 24px; font-size: 28px; }
++
++#todo-list {
++  display: grid;
++  gap: 12px;
++  margin: 0;
++  padding: 0;
++  list-style: none;
++}
++
++.todo {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 16px;
++  padding: 14px 16px;
++  border: 1px solid #e5e7eb;
++  border-radius: 8px;
++}
++
++.todo__title { overflow-wrap: anywhere; }
++
++.todo--completed .todo__title {
++  color: #6b7280;
++  text-decoration: line-through;
++}
++
++.todo__toggle {
++  flex: 0 0 auto;
++  padding: 7px 12px;
++  color: #ffffff;
++  background: #2563eb;
++  border: 0;
++  border-radius: 6px;
++  cursor: pointer;
++  font: inherit;
++}
++
++.todo__toggle:hover { background: #1d4ed8; }
++
++.todo__toggle:focus-visible {
++  outline: 3px solid rgb(37 99 235 / 35%);
++  outline-offset: 2px;
++}

@@ -1,0 +1,118 @@
+{
+  "run": "todo_frontend__light__r2",
+  "case_id": "todo_frontend",
+  "case_type": "cleanup",
+  "condition": "light",
+  "repeat": 2,
+  "clean_delivery": true,
+  "correction": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "CHANGELOG.md",
+      "admin.html",
+      "index.html",
+      "styles.css",
+      "tests/test_no_admin.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 40,
+    "artifact_sha256": "c107ddb8e30a106b136d1e263f0907834c39240a661d30d2b7c327c1829bc689"
+  },
+  "continuation": {
+    "clean_success": true,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": true,
+      "response_residue_free": true,
+      "process_trace_free": true,
+      "scope_clean": true,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "CHANGELOG.md",
+      "admin.html",
+      "index.html",
+      "styles.css",
+      "tests/test_no_admin.py"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 34,
+    "artifact_sha256": "7b5fe9bbc85001c7a553ea89d0a84ce7e24110b35e62b7f00b6a1ef2b50da515"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 157.793,
+    "usage": {
+      "input_tokens": 239315,
+      "cached_input_tokens": 213504,
+      "output_tokens": 7171
+    },
+    "response_sha256": "c310728df338aad22091673950609b273c12b2fb46fc83afb40b2e8e969411d6",
+    "response": "已完成：保留 Light 模式本地待办清单，为每条任务增加完成切换并持久化状态。",
+    "response_chars": 40,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 54.835,
+    "usage": {
+      "input_tokens": 113240,
+      "cached_input_tokens": 109568,
+      "output_tokens": 1015
+    },
+    "response_sha256": "27f6917d12e98f65fbce6a6db5c0ad04be48576f5cefe43556914426c873927c",
+    "response": "已在待办列表下补充“点击任务可切换状态”使用提示，其他范围保持不变。",
+    "response_chars": 34,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 352555,
+    "cached_input_tokens": 323072,
+    "output_tokens": 8186
+  },
+  "total_duration_seconds": 212.628,
+  "patch": "patches/todo_frontend__light__r2.patch",
+  "patch_sha256": "eae2ff6047e3069137690c362da9f3e85448fe32be1c08c3bb6edf96857a52a6"
+}

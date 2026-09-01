@@ -64,9 +64,10 @@ python3 evals/benchmark.py agent \
   --reasoning medium
 ```
 
-The runner writes a manifest, one JSON record and artifact patch per run,
-`summary.json`, and `summary.md`. It does not publish hidden chain-of-thought or
-Codex session identifiers.
+The runner writes a manifest, one JSON record and artifact patch per run, the
+two final agent replies used by the residue grader, `summary.json`, and
+`summary.md`. It does not publish hidden chain-of-thought or Codex session
+identifiers.
 
 On macOS, the desktop-bundled Codex binary may be newer than a separately
 installed `/usr/local/bin/codex`. Pass `--codex-bin` explicitly so the manifest
@@ -78,3 +79,10 @@ This benchmark is deliberately adversarial and small. A host/model result is
 not evidence for another host/model, and a single repeat is a pilot rather than
 a stable estimate. The deterministic gate cannot infer an alias that neither
 the user nor the task state supplies; the corpus measures that limitation.
+
+## Published evidence
+
+- [ChatterBench v2: 54 runs / 108 valid turns](results/2026-09-01-chatterbench-v2-r3/)
+  uses six cases and three fresh repeats from frozen clean commit `5f830b4`.
+- The earlier [15-run pilot](results/2026-09-01-codex-luna-pilot/) is retained
+  as historical evidence and is not pooled with v2.

@@ -1,0 +1,220 @@
+{
+  "run": "recipe_cleanup__guarded__r1",
+  "case_id": "recipe_cleanup",
+  "case_type": "cleanup",
+  "condition": "guarded",
+  "repeat": 1,
+  "clean_delivery": false,
+  "correction": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": true,
+      "process_trace_free": false,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "recipe.md"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "RELEASE.md",
+        "pattern": "东坡肉",
+        "match": "东坡肉"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "东坡肘子",
+        "match": "东坡肘子"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "肘子",
+        "match": "肘子"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "东坡肉",
+        "match": "东坡肉"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "东坡肘子",
+        "match": "东坡肘子"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "肘子",
+        "match": "肘子"
+      }
+    ],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [
+      {
+        "path": "RELEASE.md",
+        "pattern": "无东坡",
+        "match": "无东坡"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "r23",
+        "match": "r23"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "不可变发布",
+        "match": "不可变发布"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "哈希",
+        "match": "哈希"
+      }
+    ],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "RELEASE.md",
+      "tests/test_no_pork.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 43,
+    "artifact_sha256": "14b41404be3baa0bbd8c8487277ea317534b0115b6245e6a197317b30e485c36"
+  },
+  "continuation": {
+    "clean_success": false,
+    "metrics": {
+      "active_requirements_preserved": true,
+      "artifact_residue_free": false,
+      "response_residue_free": true,
+      "process_trace_free": false,
+      "scope_clean": false,
+      "hidden_check_passed": true,
+      "transient_state_clean": true
+    },
+    "changed_paths": [
+      "recipe.md"
+    ],
+    "required_failures": [],
+    "retired_artifact_hits": [
+      {
+        "path": "RELEASE.md",
+        "pattern": "东坡肉",
+        "match": "东坡肉"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "东坡肘子",
+        "match": "东坡肘子"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "肘子",
+        "match": "肘子"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "东坡肉",
+        "match": "东坡肉"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "东坡肘子",
+        "match": "东坡肘子"
+      },
+      {
+        "path": "tests/test_no_pork.py",
+        "pattern": "肘子",
+        "match": "肘子"
+      }
+    ],
+    "retired_response_hits": [],
+    "process_trace_artifact_hits": [
+      {
+        "path": "RELEASE.md",
+        "pattern": "无东坡",
+        "match": "无东坡"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "r23",
+        "match": "r23"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "不可变发布",
+        "match": "不可变发布"
+      },
+      {
+        "path": "RELEASE.md",
+        "pattern": "哈希",
+        "match": "哈希"
+      }
+    ],
+    "process_trace_response_hits": [],
+    "unexpected_changes": [],
+    "forbidden_paths_present": [
+      "RELEASE.md",
+      "tests/test_no_pork.py"
+    ],
+    "protected_failures": [],
+    "hidden_check_output": "",
+    "response_chars": 30,
+    "artifact_sha256": "dc7c18293e43b59c45f0627e913606d0dc9bf0728542f594a17868250e5acf75"
+  },
+  "correction_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 51.962,
+    "usage": {
+      "input_tokens": 130317,
+      "cached_input_tokens": 113152,
+      "output_tokens": 1864
+    },
+    "response_sha256": "ceebd0ecef13d8f5821739bbad7be3979ad99836f0970af1ec59dba7182ab035",
+    "response": "已将项目菜谱改为仅“番茄炒蛋”，补充火候提示“鸡蛋嫩、番茄出汁”，并清理临时状态文件。",
+    "response_chars": 43,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "continuation_turn": {
+    "ok": true,
+    "returncode": 0,
+    "duration_seconds": 32.639,
+    "usage": {
+      "input_tokens": 95961,
+      "cached_input_tokens": 91136,
+      "output_tokens": 836
+    },
+    "response_sha256": "05aa33be390bcbcbc1c9bbc61ad14f34dc6529a270aff43016128d8f04541000",
+    "response": "已在菜谱中补充食用提示“装盘后立即食用”，其他范围保持不变。",
+    "response_chars": 30,
+    "event_types": [
+      "item.completed",
+      "item.started",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "error": ""
+  },
+  "total_usage": {
+    "input_tokens": 226278,
+    "cached_input_tokens": 204288,
+    "output_tokens": 2700
+  },
+  "total_duration_seconds": 84.601,
+  "patch": "patches/recipe_cleanup__guarded__r1.patch",
+  "patch_sha256": "f32687b1da6a107131750c3a11a5c56bf63b454753aa3fad33f8dcd8d0b94681"
+}

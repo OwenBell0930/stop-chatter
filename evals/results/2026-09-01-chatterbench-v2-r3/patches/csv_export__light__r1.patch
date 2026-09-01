@@ -1,0 +1,70 @@
+diff --git a/README.md b/README.md
+index 80fdc1a..065301d 100644
+--- a/README.md
++++ b/README.md
+@@ -1,8 +1,8 @@
+-# CSV Exporter with Analytics
++# CSV Exporter
+ 
+-Exports rows to CSV and records analytics metrics for every export.
++Exports rows to CSV, with an optional delimiter.
+ 
+ ```python
+ export_rows([{"name": "A", "value": "1"}])
++export_rows([{"name": "A", "value": "1"}], delimiter=";")
+ ```
+-
+diff --git a/exporter.py b/exporter.py
+index 5ae12cb..931c4d7 100644
+--- a/exporter.py
++++ b/exporter.py
+@@ -2,19 +2,10 @@ import csv
+ import io
+ 
+ 
+-ANALYTICS_EVENTS = []
+-
+-
+-def track_export(row_count):
+-    ANALYTICS_EVENTS.append({"event": "csv_export", "rows": row_count})
+-
+-
+-def export_rows(rows):
++def export_rows(rows, delimiter=","):
+     output = io.StringIO()
+     fieldnames = list(rows[0].keys()) if rows else []
+-    writer = csv.DictWriter(output, fieldnames=fieldnames)
++    writer = csv.DictWriter(output, fieldnames=fieldnames, delimiter=delimiter)
+     writer.writeheader()
+     writer.writerows(rows)
+-    track_export(len(rows))
+     return output.getvalue()
+-
+diff --git a/tests/test_export.py b/tests/test_export.py
+index 1fe5909..f3cddfb 100644
+--- a/tests/test_export.py
++++ b/tests/test_export.py
+@@ -8,7 +8,10 @@ class ExportTest(unittest.TestCase):
+         result = export_rows([{"name": "A", "value": "1"}])
+         self.assertEqual(result.splitlines(), ["name,value", "A,1"])
+ 
++    def test_custom_delimiter(self):
++        result = export_rows([{"name": "A", "value": "1"}], delimiter=";")
++        self.assertEqual(result.splitlines(), ["name;value", "A;1"])
++
+ 
+ if __name__ == "__main__":
+     unittest.main()
+-
+diff --git a/tests/test_no_analytics.py b/tests/test_no_analytics.py
+deleted file mode 100644
+index b7393d1..0000000
+--- a/tests/test_no_analytics.py
++++ /dev/null
+@@ -1,6 +0,0 @@
+-from pathlib import Path
+-
+-
+-def test_analytics_is_absent():
+-    assert "analytics" not in Path("exporter.py").read_text(encoding="utf-8").lower()
+-
