@@ -11,8 +11,10 @@ compares end-to-end agent behavior against an independent, frozen gold spec.
 
 ## Protocol
 
-- Five correction cases are copied into fresh Git repositories. Gold specs stay
-  outside the agent workspace.
+- Six correction cases are copied into fresh Git repositories. Five require
+  pruning; one requires preserving an explicit compatibility rejection and its
+  negative contract test, so indiscriminate deletion cannot score well. Gold
+  specs stay outside the agent workspace.
 - The same model, reasoning effort, fixture, and user task are run in three
   conditions: `baseline`, `light`, and `guarded`.
 - Each run has a correction turn and a neutral continuation turn that does not

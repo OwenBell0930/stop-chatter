@@ -65,7 +65,7 @@ python3 <skill-dir>/scripts/stop_chatter.py check --root .
 
 Fix only reported scope or residue failures, then run the check once more. The checker is deterministic: it cannot infer unlisted semantic aliases or prove that implementation behavior matches the goal. Use the reasoning workflow for those judgments.
 
-After the task ends, remove `.stop-chatter/state.json` unless an active handoff still needs it. Never promote the transient retired ledger into memory.
+After the task ends, remove `.stop-chatter/state.json` unless an active handoff still needs it. A portable cleanup command is `python3 -c 'from pathlib import Path; Path(".stop-chatter/state.json").unlink(missing_ok=True)'`. Standard interpreter and test caches are outside the checker artifact set; do not delete them merely to satisfy this workflow. Never promote the transient retired ledger into memory.
 
 For installation paths and host-specific invocation, read [references/host-setup.md](references/host-setup.md) only when installing or diagnosing discovery.
 

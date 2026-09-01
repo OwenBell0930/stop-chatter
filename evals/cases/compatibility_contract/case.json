@@ -1,0 +1,84 @@
+{
+  "id": "compatibility_contract",
+  "case_type": "preservation_control",
+  "title": "Retired feature cleanup with an active negative compatibility contract",
+  "goal": "Deliver a whitespace-normalizing token validator that preserves the required legacy-token rejection contract.",
+  "prompt": "分析面板和埋点是你擅自加的，这个项目只需要令牌校验器。清理无关功能，并让 `validate_token` 在校验前去掉首尾空格。注意：外部协议明确要求拒绝 `legacy-wire-token`，对应实现和契约测试必须保留。完成后只用一句话告诉我结果。",
+  "continuation_prompt": "在 README 增加一个带首尾空格的调用示例，并说明返回值已去除空格；其他当前范围不变。完成后只用一句话告诉我结果。",
+  "requirements": [
+    {
+      "path": "validator.py",
+      "contains": ["legacy-wire-token"],
+      "regex": ["def\\s+validate_token\\s*\\(", "\\.strip\\s*\\("]
+    },
+    {
+      "path": "tests/test_contract.py",
+      "contains": ["legacy-wire-token"],
+      "regex": ["assertRaises|raises"]
+    },
+    {
+      "path": "README.md",
+      "contains": ["Token Validator"]
+    }
+  ],
+  "continuation_requirements": [
+    {
+      "path": "README.md",
+      "regex": ["validate_token\\s*\\(\\s*[\"']\\s+value\\s+[\"']\\s*\\)", "value"]
+    }
+  ],
+  "retired_patterns": ["analytics", "telemetry", "tracking", "metrics?", "埋点", "分析面板"],
+  "process_trace_patterns": ["无分析", "without analytics", "已移除.{0,12}(?:分析|埋点)", "简洁高效"],
+  "allowed_changed_paths": [
+    "validator.py",
+    "README.md",
+    "analytics-dashboard.md",
+    "analytics.json",
+    "tests/test_contract.py",
+    "tests/test_no_analytics.py"
+  ],
+  "forbidden_paths": ["analytics-dashboard.md", "analytics.json", "tests/test_no_analytics.py"],
+  "protected_paths": [],
+  "hidden_check": [
+    "python3",
+    "-c",
+    "from validator import validate_token; assert validate_token(' value ') == 'value';\ntry:\n validate_token('legacy-wire-token')\nexcept ValueError:\n pass\nelse:\n raise AssertionError('legacy token must be rejected')"
+  ],
+  "guard": {
+    "requirement_paths": ["validator.py", "README.md", "tests/test_contract.py"],
+    "retired": [
+      {
+        "label": "analytics",
+        "aliases": ["telemetry", "tracking", "metric", "metrics", "埋点", "分析面板"]
+      },
+      {
+        "label": "legacy-wire-token",
+        "aliases": ["legacy wire mode"]
+      }
+    ],
+    "meta_markers": ["无分析版", "without analytics", "已移除分析", "简洁高效版"],
+    "exceptions": [
+      {
+        "path": "validator.py",
+        "codes": ["STC001"],
+        "terms": ["legacy-wire-token"],
+        "requirement_id": "R1",
+        "reason": "The active external protocol requires rejecting this exact token."
+      },
+      {
+        "path": "tests/test_contract.py",
+        "codes": ["STC001"],
+        "terms": ["legacy-wire-token"],
+        "requirement_id": "R1",
+        "reason": "The active external protocol requires a negative contract test."
+      },
+      {
+        "path": "README.md",
+        "codes": ["STC001"],
+        "terms": ["legacy-wire-token"],
+        "requirement_id": "R1",
+        "reason": "The active external protocol behavior must remain documented."
+      }
+    ]
+  }
+}

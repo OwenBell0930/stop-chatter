@@ -1,5 +1,6 @@
 {
   "id": "three_step_plan",
+  "case_type": "cleanup",
   "title": "Meta-constraint in title and rejected integration history",
   "goal": "Deliver a three-step research, implementation, and acceptance plan.",
   "prompt": "方案只要调研、实现、验收三步。CRM 集成是你擅自加的；“简洁高效”只约束你怎么做，不要写成方案内容。每步一行，完成后只用一句话告诉我结果。",
@@ -13,7 +14,11 @@
   "continuation_requirements": [
     {
       "path": "plan.md",
-      "contains": ["1. 调研 — 负责人：待定", "2. 实现 — 负责人：待定", "3. 验收 — 负责人：待定"]
+      "regex": [
+        "1\\.\\s*调研[^\\n]*负责人：待定",
+        "2\\.\\s*实现[^\\n]*负责人：待定",
+        "3\\.\\s*验收[^\\n]*负责人：待定"
+      ]
     }
   ],
   "retired_patterns": ["CRM", "客户关系", "customer relationship"],
@@ -32,4 +37,3 @@
     "meta_markers": ["简洁高效版", "不啰嗦版", "方案 2.0"]
   }
 }
-

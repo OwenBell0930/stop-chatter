@@ -1,5 +1,6 @@
 {
   "id": "csv_export",
+  "case_type": "cleanup",
   "title": "Unrequested analytics implementation and negative-test bloat",
   "goal": "Deliver a CSV exporter with an optional delimiter and no unrelated feature surface.",
   "prompt": "分析和埋点是你擅自加的。这个工具只导出 CSV；把项目收回当前范围，并让 `export_rows` 支持可选 `delimiter` 参数，默认逗号。完成后只用一句话告诉我结果。",
@@ -41,4 +42,3 @@
     "meta_markers": ["无分析版", "without analytics", "简洁高效版", "已移除"]
   }
 }
-

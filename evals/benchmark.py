@@ -36,6 +36,7 @@ IGNORED_PREFIXES = (
 )
 CACHE_DIRECTORY_NAMES = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
 KNOWN_CODES = ("STC001", "STC002", "STC003", "STC004")
+CONDITION_ORDER = ("baseline", "light", "guarded")
 
 
 def utc_now() -> str:
@@ -271,6 +272,9 @@ def prepare_workspace(case: dict[str, Any], destination: Path, condition: str) -
     shutil.copytree(fixture, destination)
     init_git(destination)
     before = snapshot(destination)
+    exclude = destination / ".git" / "info" / "exclude"
+    with exclude.open("a", encoding="utf-8") as handle:
+        handle.write("\n__pycache__/\n**/__pycache__/\n.pytest_cache/\n")
     if condition in {"light", "guarded"}:
         result = run_command(
             [
@@ -287,7 +291,6 @@ def prepare_workspace(case: dict[str, Any], destination: Path, condition: str) -
         )
         if result.returncode != 0:
             raise RuntimeError(result.stderr.strip() or result.stdout.strip())
-        exclude = destination / ".git" / "info" / "exclude"
         with exclude.open("a", encoding="utf-8") as handle:
             handle.write("\n.agents/\n.stop-chatter/\n")
     if condition == "guarded":
@@ -335,7 +338,7 @@ def make_guard_state(case: dict[str, Any]) -> dict[str, Any]:
         "delivery": {
             "ignore_paths": [".git/**", ".agents/**", ".stop-chatter/**", "__pycache__/**"],
             "allow_process_trace_paths": [],
-            "exceptions": [],
+            "exceptions": guard.get("exceptions", []),
         },
     }
 
@@ -519,6 +522,7 @@ def public_turn(turn: dict[str, Any]) -> dict[str, Any]:
         "duration_seconds": turn["duration_seconds"],
         "usage": turn["usage"],
         "response_sha256": sha256_bytes(turn.get("response", "").encode("utf-8")),
+        "response": turn.get("response", ""),
         "response_chars": len(turn.get("response", "")),
         "event_types": turn.get("event_types", []),
         "error": turn.get("error", ""),
@@ -597,6 +601,7 @@ def run_agent_case(
     return {
         "run": run_name,
         "case_id": case["id"],
+        "case_type": case.get("case_type", "cleanup"),
         "condition": condition,
         "repeat": repeat,
         "clean_delivery": bool(
@@ -633,9 +638,14 @@ def wilson_interval(successes: int, total: int) -> tuple[float, float]:
 
 def summarize_runs(records: list[dict[str, Any]]) -> dict[str, Any]:
     summary: dict[str, Any] = {}
-    for condition in sorted({record["condition"] for record in records}):
+    present_conditions = {record["condition"] for record in records}
+    for condition in [item for item in CONDITION_ORDER if item in present_conditions]:
         selected = [record for record in records if record["condition"] == condition]
         successes = sum(record["clean_delivery"] for record in selected)
+        valid_runs = sum(
+            record["correction_turn"]["ok"] and record["continuation_turn"]["ok"]
+            for record in selected
+        )
         lower, upper = wilson_interval(successes, len(selected))
         metric_rates: dict[str, float] = {}
         for metric in (
@@ -649,12 +659,18 @@ def summarize_runs(records: list[dict[str, Any]]) -> dict[str, Any]:
         ):
             metric_rates[metric] = round(
                 100
-                * sum(record["continuation"]["metrics"][metric] for record in selected)
+                * sum(
+                    record["correction"]["metrics"][metric]
+                    and record["continuation"]["metrics"][metric]
+                    for record in selected
+                )
                 / len(selected),
                 1,
             )
         summary[condition] = {
             "runs": len(selected),
+            "valid_runs": valid_runs,
+            "invalid_runs": len(selected) - valid_runs,
             "clean_deliveries": successes,
             "clean_delivery_rate": round(100 * successes / len(selected), 1),
             "clean_delivery_wilson_95": [round(100 * lower, 1), round(100 * upper, 1)],
@@ -675,8 +691,48 @@ def summarize_runs(records: list[dict[str, Any]]) -> dict[str, Any]:
             "median_final_response_chars": int(
                 statistics.median(record["continuation_turn"]["response_chars"] for record in selected)
             ),
+            "total_usage": {
+                key: sum(record["total_usage"][key] for record in selected)
+                for key in ("input_tokens", "cached_input_tokens", "output_tokens")
+            },
+            "total_duration_seconds": round(
+                sum(record["total_duration_seconds"] for record in selected), 1
+            ),
         }
     return summary
+
+
+def summarize_cases(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    present_conditions = {record["condition"] for record in records}
+    conditions = [item for item in CONDITION_ORDER if item in present_conditions]
+    result: list[dict[str, Any]] = []
+    for case_id in sorted({record["case_id"] for record in records}):
+        case_records = [record for record in records if record["case_id"] == case_id]
+        entry: dict[str, Any] = {
+            "case_id": case_id,
+            "case_type": case_records[0].get("case_type", "cleanup"),
+            "conditions": {},
+        }
+        for condition in conditions:
+            selected = [record for record in case_records if record["condition"] == condition]
+            successes = sum(record["clean_delivery"] for record in selected)
+            entry["conditions"][condition] = {
+                "runs": len(selected),
+                "clean_deliveries": successes,
+                "clean_delivery_rate": round(100 * successes / len(selected), 1),
+            }
+        result.append(entry)
+    return result
+
+
+def summarize_case_types(records: list[dict[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for case_type in sorted({record.get("case_type", "cleanup") for record in records}):
+        type_records = [
+            record for record in records if record.get("case_type", "cleanup") == case_type
+        ]
+        result[case_type] = summarize_runs(type_records)
+    return result
 
 
 def make_corpus_state(sample: dict[str, Any]) -> dict[str, Any]:
@@ -818,7 +874,13 @@ def codex_version(codex_bin: str) -> str:
     return result.stdout.strip() if result.returncode == 0 else "unavailable"
 
 
-def summary_markdown(manifest: dict[str, Any], agent: dict[str, Any], gate: dict[str, Any]) -> str:
+def summary_markdown(
+    manifest: dict[str, Any],
+    agent: dict[str, Any],
+    gate: dict[str, Any],
+    cases: list[dict[str, Any]],
+    case_types: dict[str, Any],
+) -> str:
     lines = [
         "# ChatterBench result",
         "",
@@ -827,6 +889,7 @@ def summary_markdown(manifest: dict[str, Any], agent: dict[str, Any], gate: dict
         f"- Model: `{manifest['model']}` at `{manifest['reasoning']}` reasoning",
         f"- Cases: `{manifest['case_count']}`; repeats: `{manifest['repeats']}`",
         f"- Repository commit: `{manifest['repository_commit']}`",
+        f"- Repository dirty at start: `{str(manifest['repository_dirty']).lower()}`",
         f"- Instruction envelope: {manifest['instruction_envelope']}",
         "",
         "## Agent behavior",
@@ -846,6 +909,49 @@ def summary_markdown(manifest: dict[str, Any], agent: dict[str, Any], gate: dict
             f"| {metrics['scope_clean']:.1f}% "
             f"| {values['median_total_tokens']} | {values['median_duration_seconds']:.1f} |"
         )
+    lines.extend(
+        [
+            "",
+            "## Run validity and measured cost",
+            "",
+            "| Condition | Valid runs | Input tokens | Cached input | Output tokens | Total agent seconds |",
+            "|---|---:|---:|---:|---:|---:|",
+        ]
+    )
+    for condition, values in agent.items():
+        usage = values["total_usage"]
+        lines.append(
+            f"| {condition} | {values['valid_runs']}/{values['runs']} "
+            f"| {usage['input_tokens']} | {usage['cached_input_tokens']} "
+            f"| {usage['output_tokens']} | {values['total_duration_seconds']:.1f} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Per-case clean delivery",
+            "",
+            "| Case | Type | Baseline | Light | Guarded |",
+            "|---|---|---:|---:|---:|",
+        ]
+    )
+    for case in cases:
+        values = case["conditions"]
+        baseline = values.get("baseline", {"clean_deliveries": 0, "runs": 0})
+        light = values.get("light", {"clean_deliveries": 0, "runs": 0})
+        guarded = values.get("guarded", {"clean_deliveries": 0, "runs": 0})
+        lines.append(
+            f"| {case['case_id']} | {case['case_type']} "
+            f"| {baseline['clean_deliveries']}/{baseline['runs']} "
+            f"| {light['clean_deliveries']}/{light['runs']} "
+            f"| {guarded['clean_deliveries']}/{guarded['runs']} |"
+        )
+    lines.extend(["", "## Case-type controls", ""])
+    for case_type, type_summary in case_types.items():
+        rates = ", ".join(
+            f"{condition} {values['clean_deliveries']}/{values['runs']}"
+            for condition, values in type_summary.items()
+        )
+        lines.append(f"- `{case_type}`: {rates}")
     lines.extend(
         [
             "",
@@ -902,6 +1008,7 @@ def command_agent(args: argparse.Namespace) -> int:
 
     manifest = {
         "schema_version": 1,
+        "benchmark_version": "v2",
         "started_at": started_at,
         "host": "Codex CLI",
         "host_version": codex_version(args.codex_bin),
@@ -971,12 +1078,20 @@ def command_agent(args: argparse.Namespace) -> int:
 
     gate = evaluate_gate_corpus()
     agent = summarize_runs(records)
-    summary = {"manifest": manifest, "agent": agent, "gate": gate}
+    cases_summary = summarize_cases(records)
+    case_types = summarize_case_types(records)
+    summary = {
+        "manifest": manifest,
+        "agent": agent,
+        "cases": cases_summary,
+        "case_types": case_types,
+        "gate": gate,
+    }
     (output / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     (output / "summary.md").write_text(
-        summary_markdown(manifest, agent, gate), encoding="utf-8"
+        summary_markdown(manifest, agent, gate, cases_summary, case_types), encoding="utf-8"
     )
     print(f"RESULT {output / 'summary.md'}")
     return 0

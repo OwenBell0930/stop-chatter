@@ -16,8 +16,11 @@ SPEC.loader.exec_module(BENCHMARK)
 class BenchmarkTest(unittest.TestCase):
     def test_all_case_specs_load(self) -> None:
         cases = BENCHMARK.load_cases()
-        self.assertEqual(len(cases), 5)
-        self.assertEqual(len({case["id"] for case in cases}), 5)
+        self.assertEqual(len(cases), 6)
+        self.assertEqual(len({case["id"] for case in cases}), 6)
+        self.assertEqual(
+            {case["case_type"] for case in cases}, {"cleanup", "preservation_control"}
+        )
         for case in cases:
             for key in ("retired_patterns", "process_trace_patterns"):
                 for pattern in case[key]:
@@ -25,6 +28,17 @@ class BenchmarkTest(unittest.TestCase):
             fixture = Path(case["_directory"]) / "fixture"
             for requirement in case["requirements"]:
                 self.assertTrue((fixture / requirement["path"]).is_file())
+
+    def test_preservation_control_has_narrow_guard_exceptions(self) -> None:
+        case = BENCHMARK.load_cases(["compatibility_contract"])[0]
+        state = BENCHMARK.make_guard_state(case)
+        exceptions = state["delivery"]["exceptions"]
+        self.assertEqual(len(exceptions), 3)
+        self.assertTrue(all(item["requirement_id"] == "R1" for item in exceptions))
+        files = {"README.md": b'validate_token("  value  ")  # returns "value"\n'}
+        self.assertEqual(
+            BENCHMARK.requirement_failures(files, case["continuation_requirements"]), []
+        )
 
     def test_gate_corpus_exposes_known_limits(self) -> None:
         result = BENCHMARK.evaluate_gate_corpus()
@@ -64,6 +78,20 @@ class BenchmarkTest(unittest.TestCase):
         self.assertTrue(BENCHMARK.ignored_artifact(".pytest_cache/README.md"))
         self.assertTrue(BENCHMARK.ignored_artifact("tests/__pycache__/test_x.pyc"))
         self.assertFalse(BENCHMARK.ignored_artifact("tests/test_x.py"))
+
+    def test_public_turn_retains_auditable_response(self) -> None:
+        turn = {
+            "ok": True,
+            "returncode": 0,
+            "duration_seconds": 1.0,
+            "usage": {"input_tokens": 2, "cached_input_tokens": 1, "output_tokens": 3},
+            "response": "Current result.",
+            "event_types": ["turn.completed"],
+            "error": "",
+        }
+        public = BENCHMARK.public_turn(turn)
+        self.assertEqual(public["response"], "Current result.")
+        self.assertEqual(public["response_chars"], 15)
 
     def test_resume_places_exec_only_options_before_subcommand(self) -> None:
         command = BENCHMARK.build_codex_command(
