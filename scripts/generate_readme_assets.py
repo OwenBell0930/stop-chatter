@@ -168,6 +168,55 @@ def make_hero() -> str:
     return base_svg(1280, 720, NAVY, "".join(parts))
 
 
+def make_hero_en() -> str:
+    parts: list[str] = []
+    parts.append('<rect width="1280" height="720" fill="url(#hero-bg)"/>')
+    parts.append('<circle cx="1160" cy="90" r="170" fill="#FFFFFF" opacity="0.025"/>')
+    parts.append('<circle cx="70" cy="680" r="210" fill="#FF6B4A" opacity="0.055"/>')
+    parts.append(logo_mark(68, 58, 72))
+    parts.append(text(164, 96, "STOP CHATTER", size=24, color=WHITE, weight=800, spacing=3))
+    parts.append(text(72, 210, "Make LLMs output only", size=44, color=WHITE, weight=750))
+    parts.append(text(72, 274, "the result you asked for", size=52, color=CORAL, weight=850))
+    parts.append(text(72, 345, "No extra explanations. No process residue.", size=24, color="#CBD2E4", weight=500))
+
+    pills = [("CURSOR", 72, 126), ("CODEX", 214, 118), ("CLAUDE CODE", 348, 174)]
+    for label, x, width in pills:
+        parts.append(rect(x, 402, width, 42, fill="#FFFFFF", radius=21, opacity=0.08, stroke="#FFFFFF", stroke_width=1))
+        parts.append(text(x + width // 2, 424, label, size=13, color=WHITE, weight=700, anchor="middle", spacing=1))
+
+    parts.append(text(72, 520, "Lightweight skill", size=17, color=WHITE, weight=700))
+    parts.append(text(202, 520, "+", size=17, color=CORAL, weight=800))
+    parts.append(text(226, 520, "optional deterministic gate", size=17, color=WHITE, weight=700))
+    parts.append(text(72, 558, "After a correction, delete the old idea—do not keep explaining it.", size=16, color="#AAB3CB"))
+
+    parts.append(rect(748, 60, 472, 600, fill="#FFFFFF", radius=28, opacity=0.055, stroke="#FFFFFF", stroke_width=1))
+    parts.append(text(786, 102, "CONVERSATION NOISE", size=15, color="#AAB3CB", weight=700, spacing=1))
+
+    cards = [
+        (138, "REQUEST", "Tomato & egg stir-fry", WHITE, "#1B2340"),
+        (224, "UNASKED ADDITION", "+ Dongpo pork", "#FFD8CF", "#5D2B24"),
+        (310, "RESIDUE", "explanations / labels / tests / memory", "#FFD8CF", "#5D2B24"),
+    ]
+    for y, badge, value, color, text_color in cards:
+        parts.append(rect(786, y, 394, 64, fill=color, radius=14, opacity=0.96 if color == WHITE else 1))
+        parts.append(text(806, y + 21, badge, size=10, color=CORAL if color != WHITE else MUTED, weight=800, spacing=0.8))
+        parts.append(text(806, y + 44, value, size=17, color=text_color, weight=650))
+
+    parts.append('<line x1="983" y1="386" x2="983" y2="442" stroke="#FF6B4A" stroke-width="3" marker-end="url(#arrow-coral)"/>')
+    parts.append(rect(914, 397, 138, 30, fill=NAVY_2, radius=15, stroke=CORAL))
+    parts.append(text(983, 413, "RECOMPILE", size=10, color=CORAL, weight=800, anchor="middle", spacing=1.2))
+
+    parts.append(rect(786, 468, 394, 132, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
+    parts.append(text(812, 496, "CURRENT TARGET", size=11, color=GREEN, weight=800, spacing=1))
+    parts.append(text(812, 542, "Tomato & egg stir-fry", size=26, color=INK, weight=800))
+    parts.append(text(812, 574, "Only what the user wants now", size=14, color=MUTED))
+    parts.append('<circle cx="1140" cy="524" r="20" fill="#19A974"/>')
+    parts.append('<path d="M1130 524l7 7 14-16" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>')
+
+    parts.append(text(72, 664, "CURRENT TARGET IN · CORRECTION HISTORY OUT", size=12, color="#78839F", weight=700, spacing=1.4))
+    return base_svg(1280, 720, NAVY, "".join(parts))
+
+
 def step_card(
     x: int,
     y: int,
@@ -237,12 +286,61 @@ def make_user_story() -> str:
     return base_svg(1280, 720, PAPER, "".join(parts))
 
 
+def make_user_story_en() -> str:
+    parts: list[str] = []
+    parts.append(text(64, 54, "You asked for a dish. The agent shipped its correction history.", size=29, color=INK, weight=800))
+    parts.append(text(64, 90, "One correction can produce two very different artifacts", size=16, color=MUTED))
+
+    parts.append(rect(40, 122, 560, 548, fill=WHITE, radius=24, stroke="#F1BEB3", shadow=True))
+    parts.append(rect(680, 122, 560, 548, fill=WHITE, radius=24, stroke="#A9DFC9", shadow=True))
+    parts.append(rect(64, 144, 156, 34, fill=CORAL_LIGHT, radius=17))
+    parts.append(text(142, 162, "TYPICAL AGENT", size=13, color=CORAL, weight=800, anchor="middle"))
+    parts.append(rect(704, 144, 156, 34, fill=GREEN_LIGHT, radius=17))
+    parts.append(text(782, 162, "STOP CHATTER", size=14, color=GREEN, weight=800, anchor="middle", spacing=0.8))
+
+    left_steps = [
+        ("1", "User asks: tomato & egg", "The target starts clear"),
+        ("2", "Agent adds: Dongpo pork", "“Helpful” scope expansion begins"),
+        ("3", "User says: remove it", "The old idea stays inside the working target"),
+        ("4", 'PR: “Tomato & egg (no pork)”', "Titles, comments, and tests repeat the mistake"),
+        ("5", "Long task: pork elbow returns", "The rejected idea comes back under a nearby name"),
+    ]
+    for index, (number, title_, detail) in enumerate(left_steps):
+        parts.append(step_card(64, 194 + index * 72, 512, number, title_, detail, accent=CORAL, fill=CORAL_LIGHT))
+
+    parts.append(rect(64, 568, 512, 74, fill=NAVY, radius=14))
+    parts.append(text(88, 592, "RESULT", size=11, color="#AAB3CB", weight=800, spacing=1))
+    parts.append(text(88, 618, "Extra scope + explanations + process residue", size=17, color=WHITE, weight=750))
+
+    right_steps = [
+        ("1", "Recompile the positive target", "What is wanted now: tomato & egg"),
+        ("2", "Prune the old dependency cone", "Code, config, tests, comments, UI, PR, memory"),
+        ("3", "Trace changes to active needs", "Delete anything without independent support"),
+        ("4", "Ship the current state", "No correction history. No “without X” edition"),
+    ]
+    for index, (number, title_, detail) in enumerate(right_steps):
+        parts.append(step_card(704, 194 + index * 78, 512, number, title_, detail, accent=GREEN, fill=GREEN_LIGHT))
+
+    parts.append(rect(704, 520, 512, 122, fill=NAVY, radius=16))
+    parts.append(text(730, 548, "FINAL ARTIFACT", size=11, color="#AAB3CB", weight=800, spacing=1))
+    parts.append(text(730, 590, "Tomato & egg stir-fry", size=27, color=WHITE, weight=850))
+    parts.append(text(730, 620, "Only the current requested result", size=14, color="#A9DFC9", weight=650))
+    parts.append('<circle cx="1170" cy="581" r="22" fill="#19A974"/>')
+    parts.append('<path d="M1159 581l8 8 15-18" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>')
+
+    parts.append('<circle cx="640" cy="386" r="30" fill="#FFFFFF" stroke="#DDE1EA" filter="url(#shadow)"/>')
+    parts.append('<path d="M628 386h23m-8-9 9 9-9 9" fill="none" stroke="#19A974" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>')
+    return base_svg(1280, 720, PAPER, "".join(parts))
+
+
 def write_assets() -> list[Path]:
     ASSETS.mkdir(parents=True, exist_ok=True)
     outputs = {
         ASSETS / "logo.svg": make_logo(),
         ASSETS / "hero.svg": make_hero(),
+        ASSETS / "hero-en.svg": make_hero_en(),
         ASSETS / "user-story.svg": make_user_story(),
+        ASSETS / "user-story-en.svg": make_user_story_en(),
     }
     for path, content in outputs.items():
         path.write_text(content, encoding="utf-8")
