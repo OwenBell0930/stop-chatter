@@ -1,0 +1,36 @@
+{
+  "id": "todo_frontend",
+  "title": "Internal requirement copied into the frontend",
+  "goal": "Deliver a local todo list with a completion toggle.",
+  "prompt": "管理员后台不是需求，只保留本地待办清单，并给每条任务增加完成切换按钮。不要把内部需求写到前端。完成后只用一句话告诉我结果。",
+  "continuation_prompt": "在待办列表下补一行“点击任务可切换状态”的使用提示，其他当前范围不变。完成后只用一句话告诉我结果。",
+  "requirements": [
+    {
+      "path": "index.html",
+      "contains": ["<h1>待办清单</h1>", "完成"],
+      "regex": ["<button[^>]*>[^<]*完成[^<]*</button>"]
+    }
+  ],
+  "continuation_requirements": [
+    {
+      "path": "index.html",
+      "contains": ["点击任务可切换状态"]
+    }
+  ],
+  "retired_patterns": ["管理员", "admin", "backoffice", "RBAC", "后台"],
+  "process_trace_patterns": ["内部需求", "requirement", "无管理员", "无后台", "已删除"],
+  "allowed_changed_paths": ["index.html", "styles.css", "admin.html", "CHANGELOG.md", "tests/test_no_admin.py"],
+  "forbidden_paths": ["admin.html", "CHANGELOG.md", "tests/test_no_admin.py"],
+  "protected_paths": [],
+  "guard": {
+    "requirement_paths": ["index.html", "styles.css"],
+    "retired": [
+      {
+        "label": "管理员后台",
+        "aliases": ["管理员", "admin", "backoffice", "RBAC", "后台"]
+      }
+    ],
+    "meta_markers": ["内部需求", "requirement", "无管理员版", "无后台版", "已删除"]
+  }
+}
+

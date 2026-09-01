@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "samples": [
+    {
+      "id": "direct-retired-zh",
+      "retired_label": "东坡肉",
+      "content": "菜单包含东坡肉。\n",
+      "expected_codes": ["STC001"]
+    },
+    {
+      "id": "direct-retired-casefold-en",
+      "retired_label": "Dongpo Pork",
+      "content": "DONGPO PORK is listed.\n",
+      "expected_codes": ["STC001"]
+    },
+    {
+      "id": "configured-alias",
+      "retired_label": "Dongpo pork",
+      "retired_aliases": ["braised pork belly"],
+      "content": "Serve braised pork belly.\n",
+      "expected_codes": ["STC001"]
+    },
+    {
+      "id": "unlisted-semantic-alias-en",
+      "retired_label": "Dongpo pork",
+      "content": "Serve braised pork elbow.\n",
+      "expected_codes": ["STC001"]
+    },
+    {
+      "id": "unlisted-semantic-alias-zh",
+      "retired_label": "东坡肉",
+      "content": "菜单新增红烧肘子。\n",
+      "expected_codes": ["STC001"]
+    },
+    {
+      "id": "substring-collision",
+      "retired_label": "weather",
+      "content": "Use weathering steel for the sculpture.\n",
+      "expected_codes": []
+    },
+    {
+      "id": "clean-current-artifact",
+      "retired_label": "weather",
+      "content": "Portfolio total: 42,800.\n",
+      "expected_codes": []
+    },
+    {
+      "id": "active-contract-exception",
+      "retired_label": "legacy-wire-token",
+      "content": "Reject legacy-wire-token at the API boundary.\n",
+      "exceptions": [
+        {
+          "path": "artifact.txt",
+          "codes": ["STC001"],
+          "terms": ["legacy-wire-token"],
+          "requirement_id": "R1",
+          "reason": "The active external contract requires this rejection case."
+        }
+      ],
+      "expected_codes": []
+    },
+    {
+      "id": "default-process-label-zh",
+      "content": "# 方案 2.0（简洁高效版）\n",
+      "expected_codes": ["STC003"]
+    },
+    {
+      "id": "default-process-label-en",
+      "content": "# Roadmap — concise edition\n",
+      "expected_codes": ["STC003"]
+    },
+    {
+      "id": "ordinary-concise-instruction",
+      "content": "Keep the implementation concise while preserving behavior.\n",
+      "expected_codes": []
+    },
+    {
+      "id": "custom-meta-marker",
+      "meta_markers": ["internal requirement"],
+      "content": "Banner: internal requirement satisfied.\n",
+      "expected_codes": ["STC003"]
+    },
+    {
+      "id": "unmapped-artifact",
+      "path": "extra.txt",
+      "requirement_paths": ["artifact.txt"],
+      "content": "Unrequested side file.\n",
+      "expected_codes": ["STC002"]
+    },
+    {
+      "id": "mapped-artifact",
+      "path": "docs/current.md",
+      "requirement_paths": ["docs/**"],
+      "content": "Current result.\n",
+      "expected_codes": []
+    },
+    {
+      "id": "non-utf8-text",
+      "content_hex": "fffe8041",
+      "expected_codes": ["STC004"]
+    },
+    {
+      "id": "binary-with-nul",
+      "content_hex": "0001020304",
+      "expected_codes": []
+    },
+    {
+      "id": "ignored-path",
+      "path": "generated/output.txt",
+      "requirement_paths": ["artifact.txt"],
+      "ignore_paths": ["generated/**"],
+      "content": "retired-token\n",
+      "expected_codes": []
+    },
+    {
+      "id": "wrong-term-not-excepted",
+      "retired_label": "legacy-wire-token",
+      "retired_aliases": ["old-token"],
+      "content": "old-token remains.\n",
+      "exceptions": [
+        {
+          "path": "artifact.txt",
+          "codes": ["STC001"],
+          "terms": ["legacy-wire-token"],
+          "requirement_id": "R1",
+          "reason": "Only the wire token is part of the active contract."
+        }
+      ],
+      "expected_codes": ["STC001"]
+    },
+    {
+      "id": "process-allowlist",
+      "path": "audit/evidence.md",
+      "requirement_paths": ["audit/**"],
+      "allow_process_trace_paths": ["audit/**"],
+      "content": "# concise edition\n",
+      "expected_codes": []
+    },
+    {
+      "id": "two-simultaneous-findings",
+      "retired_label": "weather",
+      "meta_markers": ["internal requirement"],
+      "content": "Weather removed; internal requirement satisfied.\n",
+      "expected_codes": ["STC001", "STC003"]
+    }
+  ]
+}
+
