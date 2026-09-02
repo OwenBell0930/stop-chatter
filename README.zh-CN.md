@@ -54,23 +54,21 @@
 
 <div align="center">
   <a href="assets/benchmark-v2.svg">
-    <img src="assets/benchmark-v2.svg" width="100%" alt="ChatterBench 交付物数据对比：Baseline 20.0%，Light 80.0%，Guarded 86.7%，并展示 token 和耗时成本" />
+    <img src="assets/benchmark-v2.svg" width="100%" alt="ChatterBench 交付物数据对比：Baseline 20.0%，Light 80.0%，Guarded 86.7%" />
   </a>
 </div>
 
-| 模式 | 交付物成功 | 当前需求完整保留 | 已撤回内容无残留 | 文件改动不越界 | 中位 token | 中位耗时 |
-|---|---:|---:|---:|---:|---:|---:|
-| Baseline | 3/15，**20.0%**（95% CI 7.0–45.2） | 80.0% | 20.0% | 20.0% | 165.7k | 64.5 秒 |
-| Light | 12/15，**80.0%**（95% CI 54.8–93.0） | 80.0% | 86.7% | 86.7% | 178.9k（**+7.9%**） | 75.1 秒（**+16.4%**） |
-| Guarded | 13/15，**86.7%**（95% CI 62.1–96.3） | 93.3% | 93.3% | 93.3% | 225.3k（**+35.9%**） | 88.0 秒（**+36.4%**） |
+| 模式 | 交付物成功 | 当前需求完整保留 | 已撤回内容无残留 | 文件改动不越界 |
+|---|---:|---:|---:|---:|
+| Baseline | 3/15，**20.0%**（95% CI 7.0–45.2） | 80.0% | 20.0% | 20.0% |
+| Light | 12/15，**80.0%**（95% CI 54.8–93.0） | 80.0% | 86.7% | 86.7% |
+| Guarded | 13/15，**86.7%**（95% CI 62.1–96.3） | 93.3% | 93.3% | 93.3% |
 
-token 成本按宿主报告的“两回合 input + output”计算；cached input 已包含在 input 中，不重复相加。耗时为 Agent 实际墙钟时间。
-
-**数据能说明什么：**Light 用 **+7.9% 的中位 token**，把交付物成功率提高了 **60.0 个百分点**，适合作为低成本默认模式。Guarded 的实测成功率最高，但检查流程令中位 token 增加 **35.9%**，更适合长任务或容易反复残留的场景。把保留型安全对照也算进去，三种模式分别为 Baseline **3/18**、Light **14/18**、Guarded **16/18**；安全对照本身分别为 **0/3、2/3、3/3**。
+**数据能说明什么：**Light 把交付物成功率提高了 **60.0 个百分点**；Guarded 的实测结果最高，为 **86.7%**，比 Baseline 高 **66.7 个百分点**。把保留型安全对照也算进去，三种模式分别为 Baseline **3/18**、Light **14/18**、Guarded **16/18**；安全对照本身分别为 **0/3、2/3、3/3**。优化后的 Guarded 工作流尚未在同一受控环境中重跑，因此暂不发布成本结论。
 
 “交付物成功”很好理解：纠错回合和一次中性续写之后，该做的功能仍然可用、当前需求没有被误删、已撤回内容和“简洁版”等过程标签没有留在文件中、没有新增无关文件或改坏受保护文件、任务临时状态也已清掉，才算一次成功。**回复怎么措辞不参与评分**——Agent 仍应向用户说明真正改了什么、测了什么和有哪些限制。
 
-正式运行从冻结的干净 commit `5f830b4` 启动。当前公开视图由冻结的文件检查与 patch 确定性重算，没有重跑模型，也没有人工改分；运行记录只保留交付物证据、耗时和 token，不再保留 Agent 回复或会话标识。
+正式运行从冻结的干净 commit `5f830b4` 启动。当前公开视图由冻结的文件检查与 patch 确定性重算，没有重跑模型，也没有人工改分；运行记录只保留交付物证据与执行元数据，不再保留 Agent 回复或会话标识。
 
 这仍是小规模、合成场景、单模型、单宿主评测，不能外推到 Cursor、Claude Code、其他模型、英文任务或真实生产分布。可查看[评测方法](evals/README.md)、[交付物汇总](evals/results/2026-09-01-chatterbench-v2-r3/summary.md)、[机器可读数据](evals/results/2026-09-01-chatterbench-v2-r3/summary.json)、[54 组仅含交付物的运行记录](evals/results/2026-09-01-chatterbench-v2-r3/runs/)和[54 份 artifact patch](evals/results/2026-09-01-chatterbench-v2-r3/patches/)。
 
@@ -143,10 +141,10 @@ python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" init --root .
 编辑 `.stop-chatter/state.json`：写入当前正向目标、有效需求对应的路径、已撤回概念及必要的语义别名，然后把 `ready` 改为 `true`。模板未填写时，检查器会拒绝产生无意义的通过结果。
 
 ```bash
-python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" check --root .
+python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" check --root . --cleanup-state-on-pass
 ```
 
-默认检查 Git 工作区中已修改和未跟踪的文件。非 Git 流程可传入明确路径；检查暂存区用 `--mode staged`；有边界地扫描整个仓库用 `--mode all`。
+默认检查 Git 工作区中已修改和未跟踪的文件。最终检查通过时，同一条命令只删除任务临时状态；检查失败时会保留状态，供一次针对性修复和复检。非 Git 流程可传入明确路径；检查暂存区用 `--mode staged`；有边界地扫描整个仓库用 `--mode all`。
 
 完整状态结构与窄例外规则见 [target-state protocol](references/protocol.md)。
 
@@ -165,7 +163,7 @@ python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" check --root .
 
 - Skill、安装器、卸载器和确定性检查器都只使用 Python 标准库在本地运行：**零第三方运行依赖、不联网、无遥测**。
 - 安装器不会增加 Hook、修改宿主设置或写入长期记忆；Guarded 状态只存在于当前任务、默认被 Git 忽略，并在交付后删除。
-- 公开评测使用合成 fixture。当前运行记录只包含交付物检查、patch、耗时和 token，不包含 Agent 回复、会话 ID 或真实用户/项目数据。
+- 公开评测使用合成 fixture。当前运行记录只包含交付物检查、patch 和执行元数据，不包含 Agent 回复、会话 ID 或真实用户/项目数据。
 - Stop Chatter 不会改变 Cursor、Codex、Claude Code 或模型服务商自身的数据策略；宿主发送给模型的提示词和文件上下文，仍以宿主设置与政策为准。
 
 ## 边界

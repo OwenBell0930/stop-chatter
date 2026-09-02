@@ -27,6 +27,7 @@ INK = "#171C2C"
 MUTED = "#687086"
 CORAL = "#FF6B4A"
 CORAL_LIGHT = "#FFF0EC"
+SOFT_BLUE = "#5B8DEF"
 GREEN = "#19A974"
 GREEN_LIGHT = "#EAF8F2"
 LINE = "#DDE1EA"
@@ -367,13 +368,15 @@ def make_benchmark_chart(*, english: bool) -> str:
         "requirements": "Current requirements kept" if english else "当前需求完整保留",
         "artifact": "Rejected content absent" if english else "已撤回内容无残留",
         "scope": "File scope correct" if english else "文件改动不越界",
-        "time": "Median time" if english else "中位耗时",
-        "tokens": "Median tokens" if english else "中位 token",
-        "baseline": "baseline" if english else "基线",
         "footer": (
-            "Light: +60.0 points success for +7.9% tokens · Guarded: +66.7 points for +35.9% tokens"
+            "Light: +60.0 points · Guarded: +66.7 points over baseline"
             if english
-            else "Light：成功率 +60.0 个百分点，token +7.9% · Guarded：+66.7 个百分点，token +35.9%"
+            else "相较 Baseline：Light +60.0 个百分点 · Guarded +66.7 个百分点"
+        ),
+        "cost_status": (
+            "Cost comparison will be published after the optimized Guarded workflow is rerun."
+            if english
+            else "成本对比将在优化后的 Guarded 工作流重新评测后发布。"
         ),
         "limit": (
             "Reply wording is not scored · one model · one host · synthetic cases · not a guarantee"
@@ -385,6 +388,11 @@ def make_benchmark_chart(*, english: bool) -> str:
             if english
             else "保留型安全对照：0/3 · 2/3 · 3/3"
         ),
+        "mode_notes": {
+            "baseline": "No Stop Chatter" if english else "未使用 Stop Chatter",
+            "light": "Skill workflow" if english else "Skill 工作流",
+            "guarded": "Skill + deterministic gate" if english else "Skill + 确定性门禁",
+        },
     }
 
     parts: list[str] = []
@@ -395,23 +403,14 @@ def make_benchmark_chart(*, english: bool) -> str:
 
     cards = [
         ("baseline", "Baseline", "#7B8499", 40),
-        ("light", "Light", CORAL, 450),
+        ("light", "Light", SOFT_BLUE, 450),
         ("guarded", "Guarded", GREEN, 860),
     ]
-    baseline = agent["baseline"]
     for key, label, accent, x in cards:
         values = agent[key]
         metrics = values["metric_rates"]
         interval = values["artifact_delivery_wilson_95"]
-        time_delta = 100 * (
-            values["median_duration_seconds"] / baseline["median_duration_seconds"] - 1
-        )
-        token_delta = 100 * (
-            values["median_total_tokens"] / baseline["median_total_tokens"] - 1
-        )
-        time_compare = copy["baseline"] if key == "baseline" else f"+{time_delta:.1f}%"
-        token_compare = copy["baseline"] if key == "baseline" else f"+{token_delta:.1f}%"
-        parts.append(rect(x, 122, 380, 472, fill=WHITE, radius=22, stroke=accent, stroke_width=2, shadow=True))
+        parts.append(rect(x, 122, 380, 410, fill=WHITE, radius=22, stroke=accent, stroke_width=2, shadow=True))
         parts.append(rect(x, 122, 380, 58, fill=accent, radius=21))
         parts.append(f'<rect x="{x}" y="158" width="380" height="22" fill="{accent}"/>')
         parts.append(text(x + 190, 151, label, size=19, color=WHITE, weight=850, anchor="middle", spacing=0.6))
@@ -440,24 +439,12 @@ def make_benchmark_chart(*, english: bool) -> str:
         benchmark_metric_row(parts, x + 24, 286, copy["requirements"], metrics["active_requirements_preserved"], accent)
         benchmark_metric_row(parts, x + 24, 346, copy["artifact"], metrics["artifact_residue_free"], accent)
         benchmark_metric_row(parts, x + 24, 406, copy["scope"], metrics["scope_clean"], accent)
-        parts.append(rect(x + 24, 466, 332, 38, fill="#F4F5F8", radius=10))
+        parts.append(rect(x + 24, 472, 332, 36, fill="#F4F5F8", radius=10))
         parts.append(
             text(
                 x + 190,
-                486,
-                f"{copy['time']} {values['median_duration_seconds']:.1f}s · {time_compare}",
-                size=12,
-                color=INK,
-                weight=700,
-                anchor="middle",
-            )
-        )
-        parts.append(rect(x + 24, 516, 332, 38, fill="#F4F5F8", radius=10))
-        parts.append(
-            text(
-                x + 190,
-                536,
-                f"{copy['tokens']} {round(values['median_total_tokens'] / 1000)}k · {token_compare}",
+                491,
+                copy["mode_notes"][key],
                 size=12,
                 color=INK,
                 weight=700,
@@ -465,10 +452,11 @@ def make_benchmark_chart(*, english: bool) -> str:
             )
         )
 
-    parts.append(rect(40, 620, 1200, 70, fill=NAVY, radius=16))
-    parts.append(text(64, 644, copy["footer"], size=16, color=WHITE, weight=750))
-    parts.append(text(64, 672, copy["limit"], size=11, color="#AAB3CB", weight=500))
-    parts.append(text(1216, 672, copy["control"], size=11, color="#A9DFC9", weight=700, anchor="end"))
+    parts.append(rect(40, 558, 1200, 132, fill=NAVY, radius=16))
+    parts.append(text(64, 584, copy["footer"], size=16, color=WHITE, weight=750))
+    parts.append(text(64, 614, copy["cost_status"], size=12, color="#C9D5F1", weight=650))
+    parts.append(text(64, 666, copy["limit"], size=11, color="#AAB3CB", weight=500))
+    parts.append(text(1216, 666, copy["control"], size=11, color="#A9DFC9", weight=700, anchor="end"))
     return base_svg(1280, 720, PAPER, "".join(parts))
 
 

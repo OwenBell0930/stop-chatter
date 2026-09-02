@@ -401,9 +401,17 @@ def command_check(args: argparse.Namespace) -> int:
     state = load_state(state_path)
     paths = discover_paths(root, args.mode, args.paths)
     violations, checked = check_artifacts(root, state_path, state, paths)
+    state_removed = False
+    if not violations and args.cleanup_state_on_pass:
+        try:
+            state_path.unlink()
+        except OSError as exc:
+            raise ConfigError(f"check passed but transient state could not be removed: {exc}") from exc
+        state_removed = True
     payload = {
         "ok": not violations,
         "checked_files": checked,
+        "state_removed": state_removed,
         "violations": [asdict(violation) for violation in violations],
     }
     if args.format == "json":
@@ -417,7 +425,8 @@ def command_check(args: argparse.Namespace) -> int:
             suffix = f" [{violation.term}]" if violation.term else ""
             print(f"{violation.code} {location}: {violation.message}{suffix}")
     else:
-        print(f"PASS Stop Chatter: {checked} artifact(s) map to the active target")
+        suffix = "; transient state removed" if state_removed else ""
+        print(f"PASS Stop Chatter: {checked} artifact(s) map to the active target{suffix}")
     return 1 if violations else 0
 
 
@@ -442,6 +451,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="artifact discovery mode when explicit paths are absent",
     )
     check_parser.add_argument("--format", choices=("human", "json"), default="human")
+    check_parser.add_argument(
+        "--cleanup-state-on-pass",
+        action="store_true",
+        help="remove only the transient state file after a successful check",
+    )
     check_parser.set_defaults(handler=command_check)
     return parser
 

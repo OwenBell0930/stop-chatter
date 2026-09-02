@@ -85,6 +85,80 @@ class GateTest(unittest.TestCase):
         result = self.run_gate(state, {"recipe.md": "# 番茄炒蛋\n\n番茄、鸡蛋、盐。\n"})
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_cleanup_state_on_pass_removes_state_in_same_command(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            state_path = root / ".stop-chatter" / "state.json"
+            state_path.parent.mkdir(parents=True)
+            state_path.write_text(
+                json.dumps(make_state(requirement_paths=["recipe.md"]), ensure_ascii=False),
+                encoding="utf-8",
+            )
+            artifact = root / "recipe.md"
+            artifact.write_text("# 番茄炒蛋\n", encoding="utf-8")
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(GATE),
+                    "check",
+                    "--root",
+                    str(root),
+                    "--format",
+                    "json",
+                    "--cleanup-state-on-pass",
+                    "recipe.md",
+                ],
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+            )
+            payload = json.loads(result.stdout)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertTrue(payload["state_removed"])
+            self.assertFalse(state_path.exists())
+            self.assertTrue(artifact.is_file())
+
+    def test_cleanup_state_on_pass_preserves_state_after_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            state_path = root / ".stop-chatter" / "state.json"
+            state_path.parent.mkdir(parents=True)
+            state_path.write_text(
+                json.dumps(
+                    make_state(
+                        requirement_paths=["recipe.md"],
+                        retired=[
+                            {"id": "X1", "label": "东坡肉", "aliases": [], "scope": "task"}
+                        ],
+                    ),
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            (root / "recipe.md").write_text("# 东坡肉\n", encoding="utf-8")
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(GATE),
+                    "check",
+                    "--root",
+                    str(root),
+                    "--format",
+                    "json",
+                    "--cleanup-state-on-pass",
+                    "recipe.md",
+                ],
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+            )
+            payload = json.loads(result.stdout)
+            self.assertEqual(result.returncode, 1)
+            self.assertFalse(payload["state_removed"])
+            self.assertTrue(state_path.is_file())
+
     def test_rejected_item_in_title_fails(self) -> None:
         state = make_state(
             requirement_paths=["recipe.md"],

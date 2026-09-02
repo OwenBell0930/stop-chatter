@@ -74,6 +74,32 @@ class PackageTest(unittest.TestCase):
             self.assertIn("artifact_delivery", payload)
             walk(payload)
 
+    def test_public_facade_withholds_pre_optimization_cost_numbers(self) -> None:
+        forbidden = (
+            "165.7k",
+            "178.9k",
+            "225.3k",
+            "+7.9%",
+            "+16.4%",
+            "+35.9%",
+            "+36.4%",
+        )
+        for name in (
+            "README.md",
+            "README.zh-CN.md",
+            "assets/benchmark-v2.svg",
+            "assets/benchmark-v2-en.svg",
+        ):
+            text = (REPO_ROOT / name).read_text(encoding="utf-8")
+            for marker in forbidden:
+                self.assertNotIn(marker, text, f"{name} exposes stale cost number: {marker}")
+
+    def test_light_benchmark_card_uses_soft_blue(self) -> None:
+        source = (REPO_ROOT / "scripts" / "generate_readme_assets.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('("light", "Light", SOFT_BLUE, 450)', source)
+
 
 if __name__ == "__main__":
     unittest.main()

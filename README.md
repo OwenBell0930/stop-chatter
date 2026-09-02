@@ -54,23 +54,21 @@ On 2026-09-01, ChatterBench ran **5 core Chinese correction cases × 3 condition
 
 <div align="center">
   <a href="assets/benchmark-v2-en.svg">
-    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench deliverable comparison: Baseline 20.0%, Light 80.0%, Guarded 86.7%, with token and time costs" />
+    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench deliverable comparison: Baseline 20.0%, Light 80.0%, Guarded 86.7%" />
   </a>
 </div>
 
-| Condition | Deliverable success | Current requirements kept | Rejected content absent | File scope correct | Median tokens | Median time |
-|---|---:|---:|---:|---:|---:|---:|
-| Baseline | 3/15, **20.0%** (95% CI 7.0–45.2) | 80.0% | 20.0% | 20.0% | 165.7k | 64.5s |
-| Light | 12/15, **80.0%** (95% CI 54.8–93.0) | 80.0% | 86.7% | 86.7% | 178.9k (**+7.9%**) | 75.1s (**+16.4%**) |
-| Guarded | 13/15, **86.7%** (95% CI 62.1–96.3) | 93.3% | 93.3% | 93.3% | 225.3k (**+35.9%**) | 88.0s (**+36.4%**) |
+| Condition | Deliverable success | Current requirements kept | Rejected content absent | File scope correct |
+|---|---:|---:|---:|---:|
+| Baseline | 3/15, **20.0%** (95% CI 7.0–45.2) | 80.0% | 20.0% | 20.0% |
+| Light | 12/15, **80.0%** (95% CI 54.8–93.0) | 80.0% | 86.7% | 86.7% |
+| Guarded | 13/15, **86.7%** (95% CI 62.1–96.3) | 93.3% | 93.3% | 93.3% |
 
-Token cost is the host-reported input plus output tokens for both turns; cached input is already a subset of input and is not added twice. Time is measured agent wall time.
-
-**What the data supports:** Light increased deliverable success by **60.0 percentage points** with a **7.9% median-token increase**, making it the low-cost default. Guarded reached the highest observed success, but its extra checker workflow raised median tokens by **35.9%**; it is better reserved for long or high-residue tasks. Across all six cases including the preservation control, the result was Baseline **3/18**, Light **14/18**, and Guarded **16/18**. The control itself scored **0/3, 2/3, and 3/3**, respectively.
+**What the data supports:** Light increased deliverable success by **60.0 percentage points**; Guarded reached the highest observed result at **86.7%**, or **66.7 points** above Baseline. Across all six cases including the preservation control, the result was Baseline **3/18**, Light **14/18**, and Guarded **16/18**. The control itself scored **0/3, 2/3, and 3/3**, respectively. Cost claims are withheld until the optimized Guarded workflow is rerun under the same controlled setup.
 
 “Deliverable success” is deliberately plain: after both the correction turn and a neutral continuation, the required behavior must still work, active requirements must remain, rejected content and process labels must be absent from files, unrelated/protected files must stay untouched, and transient state must be removed. **Assistant reply wording does not affect the score**—the model should still tell the user what materially changed.
 
-The formal run started from frozen clean commit `5f830b4`. The artifact-only public view was recomputed deterministically from those frozen checks and patches; no model run was repeated and no score was manually changed. Public records retain artifact evidence, timings, and token usage, but omit assistant replies and session identifiers.
+The formal run started from frozen clean commit `5f830b4`. The artifact-only public view was recomputed deterministically from those frozen checks and patches; no model run was repeated and no score was manually changed. Public records retain artifact evidence and execution metadata, but omit assistant replies and session identifiers.
 
 This is still a small, synthetic, single-model and single-host benchmark—not a claim about Cursor, Claude Code, other models, English tasks, or production distributions. See the [method](evals/README.md), [artifact summary](evals/results/2026-09-01-chatterbench-v2-r3/summary.md), [machine-readable data](evals/results/2026-09-01-chatterbench-v2-r3/summary.json), [54 artifact-only run records](evals/results/2026-09-01-chatterbench-v2-r3/runs/), and [54 artifact patches](evals/results/2026-09-01-chatterbench-v2-r3/patches/).
 
@@ -143,10 +141,10 @@ python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" init --root .
 Edit `.stop-chatter/state.json`: enter the current positive target, paths for active requirements, retired concepts, and useful semantic aliases, then set `ready` to `true`. The checker rejects an untouched template instead of returning a meaningless pass.
 
 ```bash
-python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" check --root .
+python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" check --root . --cleanup-state-on-pass
 ```
 
-By default, the checker inspects modified and untracked files in the Git worktree. Pass explicit paths for a non-Git workflow, `--mode staged` for the index, or `--mode all` for a bounded repository scan.
+By default, the checker inspects modified and untracked files in the Git worktree. A passing final check removes only the transient state in the same command; a failed check keeps it for one targeted repair and rerun. Pass explicit paths for a non-Git workflow, `--mode staged` for the index, or `--mode all` for a bounded repository scan.
 
 See the [target-state protocol](references/protocol.md) for the full schema and narrow exception rules.
 
@@ -165,7 +163,7 @@ The checker enforces deterministic facts only. The Skill supplies task-relevant 
 
 - The Skill, installer, uninstaller, and deterministic checker run locally with the Python standard library: **zero third-party runtime dependencies, no network calls, no telemetry**.
 - The installer does not add hooks, edit host settings, or write durable memory. Guarded state is task-local, Git-ignored, and removed after delivery.
-- The public benchmark uses synthetic fixtures. Current run records contain artifact checks, patches, timings, and token counts—not assistant replies, session IDs, or user/project data.
+- The public benchmark uses synthetic fixtures. Current run records contain artifact checks, patches, and execution metadata—not assistant replies, session IDs, or user/project data.
 - Stop Chatter does not change the privacy policy of Cursor, Codex, Claude Code, or the model provider. Any prompt or file context sent by the host is still governed by that host's settings and policy.
 
 ## Boundaries

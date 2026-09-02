@@ -336,9 +336,10 @@ def condition_prompt(condition: str, case: dict[str, Any]) -> str:
     if condition == "guarded":
         return (
             "$stop-chatter\nUse Guarded mode for this task. The frozen task-local state already exists "
-            "at .stop-chatter/state.json. Run its deterministic check before delivery, fix only "
-            "reported residue or scope failures, run it once more if needed, then remove the "
-            "transient state.json.\n\n" + prompt
+            "at .stop-chatter/state.json. Run one final deterministic check with "
+            "--cleanup-state-on-pass. If it fails, fix only reported residue or scope failures "
+            "and rerun once. Do not run a second successful check or a separate cleanup command.\n\n"
+            + prompt
         )
     raise ValueError(f"unknown condition: {condition}")
 

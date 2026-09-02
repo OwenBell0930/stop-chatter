@@ -40,6 +40,11 @@ class BenchmarkTest(unittest.TestCase):
             BENCHMARK.requirement_failures(files, case["continuation_requirements"]), []
         )
 
+    def test_guarded_prompt_uses_one_pass_cleanup(self) -> None:
+        prompt = BENCHMARK.condition_prompt("guarded", {"prompt": "Do the task."})
+        self.assertIn("--cleanup-state-on-pass", prompt)
+        self.assertIn("Do not run a second successful check", prompt)
+
     def test_gate_corpus_exposes_known_limits(self) -> None:
         result = BENCHMARK.evaluate_gate_corpus()
         self.assertEqual(result["corpus_samples"], 20)

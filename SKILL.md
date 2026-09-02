@@ -60,12 +60,12 @@ python3 <skill-dir>/scripts/stop_chatter.py init --root .
 Replace the template values with the active target, path mappings, retired labels and semantic aliases, and meta-instruction leak markers. Set `ready` to `true` only after those values are current. Then check the changed artifacts:
 
 ```bash
-python3 <skill-dir>/scripts/stop_chatter.py check --root .
+python3 <skill-dir>/scripts/stop_chatter.py check --root . --cleanup-state-on-pass
 ```
 
-Fix only reported scope or residue failures, then run the check once more. The checker is deterministic: it cannot infer unlisted semantic aliases or prove that implementation behavior matches the goal. Use the reasoning workflow for those judgments.
+On success, this same command removes only `.stop-chatter/state.json`; do not run a second successful check or a separate cleanup command. On failure, it preserves the state. Fix only the reported scope or residue failures, then rerun once. The checker is deterministic: it cannot infer unlisted semantic aliases or prove that implementation behavior matches the goal. Use the reasoning workflow for those judgments.
 
-After the task ends, remove `.stop-chatter/state.json` unless an active handoff still needs it. A portable cleanup command is `python3 -c 'from pathlib import Path; Path(".stop-chatter/state.json").unlink(missing_ok=True)'`. Standard interpreter and test caches are outside the checker artifact set; do not delete them merely to satisfy this workflow. Never promote the transient retired ledger into memory.
+If an active handoff still needs the state, omit `--cleanup-state-on-pass` and remove the file when that handoff ends. Standard interpreter and test caches are outside the checker artifact set; do not delete them merely to satisfy this workflow. Never promote the transient retired ledger into memory.
 
 For installation paths and host-specific invocation, read [references/host-setup.md](references/host-setup.md) only when installing or diagnosing discovery.
 

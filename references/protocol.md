@@ -65,7 +65,9 @@ Write active requirements in positive current-state language. A negative stateme
 }
 ```
 
-The retired ledger may contain exact rejected labels because it is task-local, gitignored, and excluded from artifacts. Do not dump it into a PR, issue, memory file, or completion reply; summarize a materially relevant removal in the reply when the user needs that information. The generated template starts with `ready: false`; change it to `true` only after replacing every placeholder with the current task state. Remove the state file when the task or handoff ends.
+The retired ledger may contain exact rejected labels because it is task-local, gitignored, and excluded from artifacts. Do not dump it into a PR, issue, memory file, or completion reply; summarize a materially relevant removal in the reply when the user needs that information. The generated template starts with `ready: false`; change it to `true` only after replacing every placeholder with the current task state.
+
+For the final check, pass `--cleanup-state-on-pass`. A successful check removes only the exact state file in the same command; a failed check leaves it available for one targeted repair and rerun. Do not run a second check after success. Omit the option only when an active handoff still needs the state, then remove the file when that handoff ends.
 
 ## Dependency-cone review
 
