@@ -7,25 +7,25 @@
   "total_tasks": 180,
   "conditions": {
     "baseline": {
-      "successes": 18,
-      "rate": 30.0,
-      "active_requirements_preserved": 93.3,
-      "artifact_residue_free": 93.3,
-      "retired_surface_removed": 43.3
+      "successes": 20,
+      "rate": 33.3,
+      "active_requirements_preserved": 96.7,
+      "artifact_residue_free": 90.0,
+      "retired_surface_removed": 36.7
     },
     "light": {
-      "successes": 48,
-      "rate": 80.0,
-      "active_requirements_preserved": 89.8,
-      "artifact_residue_free": 93.2,
-      "retired_surface_removed": 88.1
-    },
-    "guarded": {
-      "successes": 53,
-      "rate": 88.3,
+      "successes": 52,
+      "rate": 86.7,
       "active_requirements_preserved": 96.7,
       "artifact_residue_free": 100.0,
-      "retired_surface_removed": 95.0
+      "retired_surface_removed": 90.0
+    },
+    "guarded": {
+      "successes": 58,
+      "rate": 96.7,
+      "active_requirements_preserved": 100.0,
+      "artifact_residue_free": 100.0,
+      "retired_surface_removed": 96.7
     }
   }
 }

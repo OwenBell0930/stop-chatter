@@ -54,7 +54,7 @@ The same 6 correction scenarios, 3 modes, and 5 repeats ran on **Grok Build / gr
 
 <div align="center">
   <a href="assets/benchmark-v2-en.svg">
-    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench deliverable comparison: Baseline 30.0%, Light 80.0%, Guarded 88.3%" />
+    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench deliverable comparison: Baseline 33.3%, Light 86.7%, Guarded 96.7%" />
   </a>
 </div>
 
@@ -71,29 +71,29 @@ The same 6 correction scenarios, 3 modes, and 5 repeats ran on **Grok Build / gr
   <tbody>
     <tr>
       <td>Baseline</td>
-      <td align="right">18/60, <strong>30.0%</strong></td>
-      <td align="right">93.3%</td>
-      <td align="right">93.3%</td>
-      <td align="right">43.3%</td>
+      <td align="right">20/60, <strong>33.3%</strong></td>
+      <td align="right">96.7%</td>
+      <td align="right">90.0%</td>
+      <td align="right">36.7%</td>
     </tr>
     <tr>
       <td>Light</td>
-      <td align="right">48/60, <strong>80.0%</strong></td>
-      <td align="right">89.8%</td>
-      <td align="right">93.2%</td>
-      <td align="right">88.1%</td>
+      <td align="right">52/60, <strong>86.7%</strong></td>
+      <td align="right">96.7%</td>
+      <td align="right">100%</td>
+      <td align="right">90.0%</td>
     </tr>
     <tr>
       <td>Guarded</td>
-      <td align="right">53/60, <strong>88.3%</strong></td>
-      <td align="right">96.7%</td>
+      <td align="right">58/60, <strong>96.7%</strong></td>
       <td align="right">100%</td>
-      <td align="right">95.0%</td>
+      <td align="right">100%</td>
+      <td align="right">96.7%</td>
     </tr>
   </tbody>
 </table>
 
-With the Skill installed, deliverable success moves from about three in ten to eight in ten. Adding the optional checker reaches 88.3%.
+With the Skill installed, deliverable success moves from about one in three to nearly nine in ten. Adding the optional checker reaches 96.7%.
 
 “Deliverable success” means the current behavior is still there, retracted ideas and process wording are gone from remaining files, and files that existed only for the retracted idea have been removed. **Reply wording is not scored.**
 

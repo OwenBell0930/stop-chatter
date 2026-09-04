@@ -79,7 +79,7 @@
 
 <div align="center">
   <a href="assets/benchmark-v2.svg">
-    <img src="assets/benchmark-v2.svg" width="100%" alt="ChatterBench 交付物数据对比：Baseline 30.0%，Light 80.0%，Guarded 88.3%" />
+    <img src="assets/benchmark-v2.svg" width="100%" alt="ChatterBench 交付物数据对比：Baseline 33.3%，Light 86.7%，Guarded 96.7%" />
   </a>
 </div>
 
@@ -103,29 +103,29 @@
   <tbody>
     <tr>
       <td>Baseline</td>
-      <td align="right">18/60，<strong>30.0%</strong></td>
-      <td align="right">93.3%</td>
-      <td align="right">93.3%</td>
-      <td align="right">43.3%</td>
+      <td align="right">20/60，<strong>33.3%</strong></td>
+      <td align="right">96.7%</td>
+      <td align="right">90.0%</td>
+      <td align="right">36.7%</td>
     </tr>
     <tr>
       <td>Light</td>
-      <td align="right">48/60，<strong>80.0%</strong></td>
-      <td align="right">89.8%</td>
-      <td align="right">93.2%</td>
-      <td align="right">88.1%</td>
+      <td align="right">52/60，<strong>86.7%</strong></td>
+      <td align="right">96.7%</td>
+      <td align="right">100%</td>
+      <td align="right">90.0%</td>
     </tr>
     <tr>
       <td>Guarded</td>
-      <td align="right">53/60，<strong>88.3%</strong></td>
-      <td align="right">96.7%</td>
+      <td align="right">58/60，<strong>96.7%</strong></td>
       <td align="right">100%</td>
-      <td align="right">95.0%</td>
+      <td align="right">100%</td>
+      <td align="right">96.7%</td>
     </tr>
   </tbody>
 </table>
 
-装上 Skill 之后，交付物成功率从约三成到八成；再加上可选门禁，到 88.3%。
+装上 Skill 之后，交付物成功率从大约三分之一到接近九成；再加上可选门禁，到 96.7%。
 
 “交付物成功”很好理解：当前功能还在、撤回内容和过程措辞不在剩下的文件里、只为撤回项存在的文件已经删掉。**回复怎么写不评分。**
 

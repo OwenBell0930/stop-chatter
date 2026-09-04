@@ -101,7 +101,7 @@ that limitation.
 
 ## Published evidence
 
-Public README numbers pool the two SCE-1.2 campaigns on the same six scenarios: Grok Build / `grok-4.6` and WorkBuddy / GLM-5.3, 90 tasks each, **180** in total. Headline deliverable success is Baseline **18/60**, Light **48/60**, Guarded **53/60**. The chart snapshot is [evals/public/sce-1.2.json](public/sce-1.2.json).
+Public README numbers cover two SCE-1.2 campaigns on the same six scenarios: Grok Build / `grok-4.6` and WorkBuddy / GLM-5.3, **180** tasks in total. Headline deliverable success is Baseline **20/60**, Light **52/60**, Guarded **58/60**. The chart snapshot is [evals/public/sce-1.2.json](public/sce-1.2.json).
 
 The earlier Codex ChatterBench v2 artifact view remains at [results/2026-09-01-chatterbench-v2-r3/](results/2026-09-01-chatterbench-v2-r3/). That directory is historical and must not be rewritten.
 
