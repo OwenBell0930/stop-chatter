@@ -143,29 +143,39 @@ def make_hero() -> str:
     parts.append(text(196, 520, "可选确定性门禁", size=17, color=WHITE, weight=700))
     parts.append(text(72, 558, "纠正需求后，删除旧想法，而不是继续解释它。", size=17, color="#AAB3CB"))
 
-    parts.append(rect(748, 60, 472, 600, fill="#FFFFFF", radius=28, opacity=0.055, stroke="#FFFFFF", stroke_width=1))
-    parts.append(text(786, 102, "对话噪音", size=15, color="#AAB3CB", weight=700, spacing=1))
+    parts.append(rect(748, 48, 472, 624, fill="#FFFFFF", radius=28, opacity=0.055, stroke="#FFFFFF", stroke_width=1))
+    parts.append(text(786, 86, "对话噪音", size=14, color="#AAB3CB", weight=700, spacing=1))
 
-    cards = [
-        (138, "需求", "番茄炒蛋", WHITE, "#1B2340"),
-        (224, "擅自扩展", "+ 东坡肉", "#FFD8CF", "#5D2B24"),
-        (310, "残留", "解释 / 标签 / 测试 / 记忆", "#FFD8CF", "#5D2B24"),
+    parts.append(rect(786, 108, 394, 50, fill=WHITE, radius=12, opacity=0.96))
+    parts.append(text(806, 124, "需求", size=11, color=MUTED, weight=800, spacing=1))
+    parts.append(text(806, 144, "番茄炒蛋", size=18, color="#1B2340", weight=700))
+
+    parts.append(rect(786, 166, 394, 50, fill="#FFD8CF", radius=12))
+    parts.append(text(806, 182, "擅自扩展", size=11, color=CORAL, weight=800, spacing=1))
+    parts.append(text(806, 202, "+ 东坡肉", size=18, color="#5D2B24", weight=700))
+
+    parts.append(text(786, 238, "纠正之后还留下", size=12, color="#E7A193", weight=700, spacing=0.6))
+    residue = [
+        (252, "解释：", "PR 写成「番茄炒蛋（无东坡肉）」"),
+        (308, "标签：", "方案被叫成「简洁高效不啰嗦版」"),
+        (364, "测试：", "用例还在测「为什么没有东坡肉」"),
+        (420, "记忆：", "记下「用户不喜欢东坡肉」"),
     ]
-    for y, badge, value, color, text_color in cards:
-        parts.append(rect(786, y, 394, 64, fill=color, radius=14, opacity=0.96 if color == WHITE else 1))
-        parts.append(text(806, y + 21, badge, size=11, color=CORAL if color != WHITE else MUTED, weight=800, spacing=1))
-        parts.append(text(806, y + 44, value, size=18, color=text_color, weight=650))
+    for y, label, detail in residue:
+        parts.append(rect(786, y, 394, 50, fill="#FFD8CF", radius=12))
+        parts.append(text(806, y + 16, label, size=11, color=CORAL, weight=800, spacing=1))
+        parts.append(text(806, y + 36, detail, size=15, color="#5D2B24", weight=650))
 
-    parts.append('<line x1="983" y1="386" x2="983" y2="442" stroke="#FF6B4A" stroke-width="3" marker-end="url(#arrow-coral)"/>')
-    parts.append(rect(914, 397, 138, 30, fill=NAVY_2, radius=15, stroke=CORAL))
-    parts.append(text(983, 413, "RECOMPILE", size=10, color=CORAL, weight=800, anchor="middle", spacing=1.2))
+    parts.append('<line x1="983" y1="478" x2="983" y2="508" stroke="#FF6B4A" stroke-width="3" marker-end="url(#arrow-coral)"/>')
+    parts.append(rect(914, 484, 138, 26, fill=NAVY_2, radius=13, stroke=CORAL))
+    parts.append(text(983, 498, "RECOMPILE", size=10, color=CORAL, weight=800, anchor="middle", spacing=1.2))
 
-    parts.append(rect(786, 468, 394, 132, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
-    parts.append(text(812, 496, "当前目标", size=12, color=GREEN, weight=800, spacing=1))
-    parts.append(text(812, 542, "番茄炒蛋", size=32, color=INK, weight=800))
-    parts.append(text(812, 574, "只输出你要的最终结果", size=14, color=MUTED))
-    parts.append('<circle cx="1140" cy="524" r="20" fill="#19A974"/>')
-    parts.append('<path d="M1130 524l7 7 14-16" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>')
+    parts.append(rect(786, 518, 394, 122, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
+    parts.append(text(812, 544, "当前目标", size=12, color=GREEN, weight=800, spacing=1))
+    parts.append(text(812, 586, "番茄炒蛋", size=30, color=INK, weight=800))
+    parts.append(text(812, 616, "只输出你要的最终结果", size=14, color=MUTED))
+    parts.append('<circle cx="1140" cy="568" r="20" fill="#19A974"/>')
+    parts.append('<path d="M1130 568l7 7 14-16" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>')
 
     parts.append(text(72, 664, "CURRENT TARGET IN · CORRECTION HISTORY OUT", size=12, color="#78839F", weight=700, spacing=1.4))
     return base_svg(1280, 720, NAVY, "".join(parts))
@@ -192,29 +202,39 @@ def make_hero_en() -> str:
     parts.append(text(226, 520, "optional deterministic gate", size=17, color=WHITE, weight=700))
     parts.append(text(72, 558, "After a correction, delete the old idea—do not keep explaining it.", size=16, color="#AAB3CB"))
 
-    parts.append(rect(748, 60, 472, 600, fill="#FFFFFF", radius=28, opacity=0.055, stroke="#FFFFFF", stroke_width=1))
-    parts.append(text(786, 102, "CONVERSATION NOISE", size=15, color="#AAB3CB", weight=700, spacing=1))
+    parts.append(rect(748, 48, 472, 624, fill="#FFFFFF", radius=28, opacity=0.055, stroke="#FFFFFF", stroke_width=1))
+    parts.append(text(786, 86, "CONVERSATION NOISE", size=14, color="#AAB3CB", weight=700, spacing=1))
 
-    cards = [
-        (138, "REQUEST", "Tomato & egg stir-fry", WHITE, "#1B2340"),
-        (224, "UNASKED ADDITION", "+ Dongpo pork", "#FFD8CF", "#5D2B24"),
-        (310, "RESIDUE", "explanations / labels / tests / memory", "#FFD8CF", "#5D2B24"),
+    parts.append(rect(786, 108, 394, 50, fill=WHITE, radius=12, opacity=0.96))
+    parts.append(text(806, 124, "REQUEST", size=11, color=MUTED, weight=800, spacing=0.8))
+    parts.append(text(806, 144, "Tomato and egg stir-fry", size=16, color="#1B2340", weight=700))
+
+    parts.append(rect(786, 166, 394, 50, fill="#FFD8CF", radius=12))
+    parts.append(text(806, 182, "UNASKED ADDITION", size=11, color=CORAL, weight=800, spacing=0.8))
+    parts.append(text(806, 202, "+ Dongpo pork", size=16, color="#5D2B24", weight=700))
+
+    parts.append(text(786, 238, "STILL LEFT AFTER THE CORRECTION", size=11, color="#E7A193", weight=700, spacing=0.6))
+    residue = [
+        (252, "EXPLAIN:", 'PR titled "stir-fry (no pork)"'),
+        (308, "LABEL:", 'shipped as "no-fluff edition"'),
+        (364, "TEST:", "tests still prove the pork is gone"),
+        (420, "MEMORY:", '"user dislikes Dongpo pork"'),
     ]
-    for y, badge, value, color, text_color in cards:
-        parts.append(rect(786, y, 394, 64, fill=color, radius=14, opacity=0.96 if color == WHITE else 1))
-        parts.append(text(806, y + 21, badge, size=10, color=CORAL if color != WHITE else MUTED, weight=800, spacing=0.8))
-        parts.append(text(806, y + 44, value, size=17, color=text_color, weight=650))
+    for y, label, detail in residue:
+        parts.append(rect(786, y, 394, 50, fill="#FFD8CF", radius=12))
+        parts.append(text(806, y + 16, label, size=11, color=CORAL, weight=800, spacing=0.8))
+        parts.append(text(806, y + 36, detail, size=14, color="#5D2B24", weight=650))
 
-    parts.append('<line x1="983" y1="386" x2="983" y2="442" stroke="#FF6B4A" stroke-width="3" marker-end="url(#arrow-coral)"/>')
-    parts.append(rect(914, 397, 138, 30, fill=NAVY_2, radius=15, stroke=CORAL))
-    parts.append(text(983, 413, "RECOMPILE", size=10, color=CORAL, weight=800, anchor="middle", spacing=1.2))
+    parts.append('<line x1="983" y1="478" x2="983" y2="508" stroke="#FF6B4A" stroke-width="3" marker-end="url(#arrow-coral)"/>')
+    parts.append(rect(914, 484, 138, 26, fill=NAVY_2, radius=13, stroke=CORAL))
+    parts.append(text(983, 498, "RECOMPILE", size=10, color=CORAL, weight=800, anchor="middle", spacing=1.2))
 
-    parts.append(rect(786, 468, 394, 132, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
-    parts.append(text(812, 496, "CURRENT TARGET", size=11, color=GREEN, weight=800, spacing=1))
-    parts.append(text(812, 542, "Tomato & egg stir-fry", size=26, color=INK, weight=800))
-    parts.append(text(812, 574, "Only what the user wants now", size=14, color=MUTED))
-    parts.append('<circle cx="1140" cy="524" r="20" fill="#19A974"/>')
-    parts.append('<path d="M1130 524l7 7 14-16" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>')
+    parts.append(rect(786, 518, 394, 122, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
+    parts.append(text(812, 544, "CURRENT TARGET", size=11, color=GREEN, weight=800, spacing=1))
+    parts.append(text(812, 586, "Tomato and egg stir-fry", size=22, color=INK, weight=800))
+    parts.append(text(812, 616, "Only the result you asked for", size=14, color=MUTED))
+    parts.append('<circle cx="1140" cy="568" r="20" fill="#19A974"/>')
+    parts.append('<path d="M1130 568l7 7 14-16" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>')
 
     parts.append(text(72, 664, "CURRENT TARGET IN · CORRECTION HISTORY OUT", size=12, color="#78839F", weight=700, spacing=1.4))
     return base_svg(1280, 720, NAVY, "".join(parts))
@@ -437,14 +457,61 @@ def make_benchmark_chart(*, english: bool) -> str:
     return base_svg(1280, 720, PAPER, "".join(parts))
 
 
+def make_results_table(*, english: bool) -> str:
+    summary = json.loads(BENCHMARK_RESULT.read_text(encoding="utf-8"))
+    tasks = int(summary["tasks_per_condition"])
+    headers = (
+        ["Mode", "Deliverable success", "Requirements kept", "Rejected content gone", "Retired files removed"]
+        if english
+        else ["模式", "交付物成功", "当前需求仍在", "仍在文件无撤回词", "撤回功能面已删除"]
+    )
+    col_x = [40, 248, 496, 744, 992]
+    parts: list[str] = []
+    parts.append(rect(24, 16, 1232, 268, fill=WHITE, radius=20, stroke=LINE, shadow=True))
+    for x, label in zip(col_x, headers):
+        parts.append(text(x + 16, 52, label, size=14, color=MUTED, weight=700))
+    parts.append(f'<line x1="48" y1="76" x2="1232" y2="76" stroke="{LINE}" stroke-width="1"/>')
+    rows = [
+        ("baseline", "Baseline", "#7B8499"),
+        ("light", "Light", SOFT_BLUE),
+        ("guarded", "Guarded", GREEN),
+    ]
+    for index, (key, label, accent) in enumerate(rows):
+        y = 110 + index * 54
+        values = summary["conditions"][key]
+        parts.append(rect(40, y - 22, 1200, 48, fill="#F7F8FB" if index % 2 else WHITE, radius=10))
+        parts.append(text(col_x[0] + 16, y, label, size=18, color=accent, weight=800))
+        success = f"{values['successes']} / {tasks}   {values['rate']:.1f}%"
+        parts.append(text(col_x[1] + 16, y, success, size=16, color=INK, weight=700))
+        parts.append(text(col_x[2] + 16, y, f"{values['active_requirements_preserved']:.1f}%", size=16, color=INK, weight=650))
+        parts.append(text(col_x[3] + 16, y, f"{values['artifact_residue_free']:.1f}%", size=16, color=INK, weight=650))
+        parts.append(text(col_x[4] + 16, y, f"{values['retired_surface_removed']:.1f}%", size=16, color=INK, weight=650))
+    return base_svg(1280, 300, PAPER, "".join(parts))
+
+
+def make_spacer() -> str:
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1" '
+        'viewBox="0 0 1280 1" role="presentation"></svg>\n'
+    )
+
+
 def write_assets() -> list[Path]:
     ASSETS.mkdir(parents=True, exist_ok=True)
     outputs = {
         ASSETS / "logo.svg": make_logo(),
         ASSETS / "hero.svg": make_hero(),
         ASSETS / "hero-en.svg": make_hero_en(),
+        ASSETS / "cover.svg": make_hero(),
+        ASSETS / "cover-en.svg": make_hero_en(),
         ASSETS / "user-story.svg": make_user_story(),
         ASSETS / "user-story-en.svg": make_user_story_en(),
+        ASSETS / "chatterbench.svg": make_benchmark_chart(english=False),
+        ASSETS / "chatterbench-en.svg": make_benchmark_chart(english=True),
+        ASSETS / "results-table.svg": make_results_table(english=False),
+        ASSETS / "results-table-en.svg": make_results_table(english=True),
+        ASSETS / "spacer.svg": make_spacer(),
         ASSETS / "benchmark-v2.svg": make_benchmark_chart(english=False),
         ASSETS / "benchmark-v2-en.svg": make_benchmark_chart(english=True),
     }

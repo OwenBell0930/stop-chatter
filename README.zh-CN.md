@@ -3,8 +3,8 @@
 </p>
 
 <div align="center">
-  <a href="assets/hero.svg">
-    <img src="assets/hero.svg" width="100%" alt="Stop Chatter — 让 LLM 只输出你要的最终结果，避免多余解释和过程留痕" />
+  <a href="assets/cover.svg">
+    <img src="assets/cover.svg" width="100%" alt="Stop Chatter — 让 LLM 只输出你要的最终结果，避免多余解释和过程留痕" />
   </a>
 </div>
 
@@ -44,6 +44,9 @@
 <table width="100%">
   <thead>
     <tr>
+      <td colspan="3"><img src="assets/spacer.svg" width="1280" height="1" alt=""></td>
+    </tr>
+    <tr>
       <th align="left">你做了什么</th>
       <th align="left">常见错误结果</th>
       <th align="left"><code>stop-chatter</code> 的目标</th>
@@ -78,52 +81,14 @@
 同一套 6 个纠错场景、3 种模式、5 次重复，在 **Grok Build / grok-4.6** 和 **WorkBuddy / GLM-5.3** 上各跑一轮，共 **180 次任务**，每种模式 60 次。纠正后再做一次普通补充，两次都把文件留在当前要的状态，才算成功。
 
 <div align="center">
-  <a href="assets/benchmark-v2.svg">
-    <img src="assets/benchmark-v2.svg" width="100%" alt="ChatterBench 交付物数据对比：Baseline 33.3%，Light 86.7%，Guarded 96.7%" />
+  <a href="assets/chatterbench.svg">
+    <img src="assets/chatterbench.svg" width="100%" alt="ChatterBench 交付物数据对比：Baseline 33.3%，Light 86.7%，Guarded 96.7%" />
   </a>
 </div>
 
-<table width="100%">
-  <colgroup>
-    <col style="width:16%">
-    <col style="width:21%">
-    <col style="width:21%">
-    <col style="width:21%">
-    <col style="width:21%">
-  </colgroup>
-  <thead>
-    <tr>
-      <th align="left">模式</th>
-      <th align="right">交付物成功</th>
-      <th align="right">当前需求仍在</th>
-      <th align="right">仍在文件无撤回词</th>
-      <th align="right">撤回功能面已删除</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Baseline</td>
-      <td align="right">20/60，<strong>33.3%</strong></td>
-      <td align="right">96.7%</td>
-      <td align="right">90.0%</td>
-      <td align="right">36.7%</td>
-    </tr>
-    <tr>
-      <td>Light</td>
-      <td align="right">52/60，<strong>86.7%</strong></td>
-      <td align="right">96.7%</td>
-      <td align="right">100%</td>
-      <td align="right">90.0%</td>
-    </tr>
-    <tr>
-      <td>Guarded</td>
-      <td align="right">58/60，<strong>96.7%</strong></td>
-      <td align="right">100%</td>
-      <td align="right">100%</td>
-      <td align="right">96.7%</td>
-    </tr>
-  </tbody>
-</table>
+<div>
+  <img src="assets/results-table.svg" width="100%" alt="交付物成功 Baseline 20/60 33.3%，Light 52/60 86.7%，Guarded 58/60 96.7%" />
+</div>
 
 装上 Skill 之后，交付物成功率从大约三分之一到接近九成；再加上可选门禁，到 96.7%。
 
@@ -148,6 +113,9 @@
 
 <table width="100%">
   <thead>
+    <tr>
+      <td colspan="3"><img src="assets/spacer.svg" width="1280" height="1" alt=""></td>
+    </tr>
     <tr>
       <th align="left">模式</th>
       <th align="left">适用场景</th>
@@ -187,6 +155,9 @@ python3 scripts/install.py --host all --scope project --target /path/to/project
 
 <table width="100%">
   <thead>
+    <tr>
+      <td colspan="2"><img src="assets/spacer.svg" width="1280" height="1" alt=""></td>
+    </tr>
     <tr>
       <th align="left">宿主</th>
       <th align="left">调用方式</th>
@@ -243,6 +214,9 @@ python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" check --root . --clean
 
 <table width="100%">
   <thead>
+    <tr>
+      <td colspan="2"><img src="assets/spacer.svg" width="1280" height="1" alt=""></td>
+    </tr>
     <tr>
       <th align="left">Code</th>
       <th align="left">含义</th>

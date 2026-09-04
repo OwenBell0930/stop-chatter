@@ -3,8 +3,8 @@
 </p>
 
 <div align="center">
-  <a href="assets/hero-en.svg">
-    <img src="assets/hero-en.svg" width="100%" alt="Stop Chatter — Make LLMs output only the result you asked for, with no extra explanation or process residue" />
+  <a href="assets/cover-en.svg">
+    <img src="assets/cover-en.svg" width="100%" alt="Stop Chatter — Make LLMs output only the result you asked for, with no extra explanation or process residue" />
   </a>
 </div>
 
@@ -53,45 +53,14 @@ This is not just verbosity. It is **dangling negation**: content already rejecte
 The same 6 correction scenarios, 3 modes, and 5 repeats ran on **Grok Build / grok-4.6** and **WorkBuddy / GLM-5.3**: **180 tasks**, 60 per mode. A task counts as success only after both the correction and one ordinary follow-up leave the files in the current requested state.
 
 <div align="center">
-  <a href="assets/benchmark-v2-en.svg">
-    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench deliverable comparison: Baseline 33.3%, Light 86.7%, Guarded 96.7%" />
+  <a href="assets/chatterbench-en.svg">
+    <img src="assets/chatterbench-en.svg" width="100%" alt="ChatterBench deliverable comparison: Baseline 33.3%, Light 86.7%, Guarded 96.7%" />
   </a>
 </div>
 
-<table width="100%">
-  <thead>
-    <tr>
-      <th align="left">Mode</th>
-      <th align="right">Deliverable success</th>
-      <th align="right">Current requirements kept</th>
-      <th align="right">Rejected content absent</th>
-      <th align="right">Retired files removed</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Baseline</td>
-      <td align="right">20/60, <strong>33.3%</strong></td>
-      <td align="right">96.7%</td>
-      <td align="right">90.0%</td>
-      <td align="right">36.7%</td>
-    </tr>
-    <tr>
-      <td>Light</td>
-      <td align="right">52/60, <strong>86.7%</strong></td>
-      <td align="right">96.7%</td>
-      <td align="right">100%</td>
-      <td align="right">90.0%</td>
-    </tr>
-    <tr>
-      <td>Guarded</td>
-      <td align="right">58/60, <strong>96.7%</strong></td>
-      <td align="right">100%</td>
-      <td align="right">100%</td>
-      <td align="right">96.7%</td>
-    </tr>
-  </tbody>
-</table>
+<div>
+  <img src="assets/results-table-en.svg" width="100%" alt="Deliverable success Baseline 20/60 33.3%, Light 52/60 86.7%, Guarded 58/60 96.7%" />
+</div>
 
 With the Skill installed, deliverable success moves from about one in three to nearly nine in ten. Adding the optional checker reaches 96.7%.
 

@@ -89,6 +89,10 @@ class PackageTest(unittest.TestCase):
             "README.zh-CN.md",
             "assets/benchmark-v2.svg",
             "assets/benchmark-v2-en.svg",
+            "assets/chatterbench.svg",
+            "assets/chatterbench-en.svg",
+            "assets/results-table.svg",
+            "assets/cover.svg",
         ):
             text = (REPO_ROOT / name).read_text(encoding="utf-8")
             for marker in forbidden:
@@ -101,6 +105,9 @@ class PackageTest(unittest.TestCase):
             "README.zh-CN.md",
             "assets/benchmark-v2.svg",
             "assets/benchmark-v2-en.svg",
+            "assets/chatterbench.svg",
+            "assets/results-table.svg",
+            "assets/cover.svg",
         ):
             text = (REPO_ROOT / name).read_text(encoding="utf-8")
             for marker in forbidden:
@@ -110,9 +117,21 @@ class PackageTest(unittest.TestCase):
         self.assertIn("86.7%", chinese)
         self.assertIn("96.7%", chinese)
         self.assertIn("180 次任务", chinese)
-        self.assertIn('width="100%"', chinese)
-        self.assertIn("撤回功能面已删除", chinese)
+        self.assertIn("assets/cover.svg", chinese)
+        self.assertIn("assets/chatterbench.svg", chinese)
+        self.assertIn("assets/results-table.svg", chinese)
+        self.assertIn('width="1280"', chinese)
         self.assertIn("避免多余解释和过程留痕", chinese)
+        hero = (REPO_ROOT / "assets" / "cover.svg").read_text(encoding="utf-8")
+        self.assertIn("解释：", hero)
+        self.assertIn("PR 写成「番茄炒蛋（无东坡肉）」", hero)
+        self.assertIn("方案被叫成「简洁高效不啰嗦版」", hero)
+        self.assertIn("用例还在测「为什么没有东坡肉」", hero)
+        self.assertIn("记下「用户不喜欢东坡肉」", hero)
+        chart = (REPO_ROOT / "assets" / "chatterbench.svg").read_text(encoding="utf-8")
+        self.assertIn("33.3%", chart)
+        self.assertIn("86.7%", chart)
+        self.assertIn("96.7%", chart)
 
     def test_light_benchmark_card_uses_soft_blue(self) -> None:
         source = (REPO_ROOT / "scripts" / "generate_readme_assets.py").read_text(
