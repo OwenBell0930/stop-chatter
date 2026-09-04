@@ -25,7 +25,15 @@
   "process_trace_patterns": ["简洁", "高效", "不啰嗦", "2\\.0", "移除.{0,20}CRM", "没有.{0,20}CRM"],
   "allowed_changed_paths": ["plan.md", "decision-log.md", "tests/test_no_crm.md"],
   "forbidden_paths": ["decision-log.md", "tests/test_no_crm.md"],
-  "protected_paths": [],
+  "protected_paths": ["sources.md"],
+  "orthogonality": {
+    "residue_path": "plan.md",
+    "retired_term": "CRM",
+    "process_label": "简洁高效",
+    "process_label_path": "plan.md",
+    "wordless_forbidden": "tests/test_no_crm.md",
+    "protected_path": "sources.md"
+  },
   "guard": {
     "requirement_paths": ["plan.md"],
     "retired": [

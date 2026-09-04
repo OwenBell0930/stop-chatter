@@ -31,14 +31,19 @@
     "无东坡",
     "为什么.{0,20}不需要",
     "简洁高效",
-    "不啰嗦",
-    "r23",
-    "不可变发布",
-    "哈希"
+    "不啰嗦"
   ],
   "allowed_changed_paths": ["recipe.md", "RELEASE.md", "tests/test_no_pork.py"],
   "forbidden_paths": ["RELEASE.md", "tests/test_no_pork.py"],
   "protected_paths": ["shopping-list.md"],
+  "orthogonality": {
+    "residue_path": "recipe.md",
+    "retired_term": "东坡肉",
+    "process_label": "无东坡",
+    "process_label_path": "recipe.md",
+    "wordless_forbidden": "tests/test_no_pork.py",
+    "protected_path": "shopping-list.md"
+  },
   "guard": {
     "requirement_paths": ["recipe.md"],
     "retired": [
@@ -47,6 +52,6 @@
         "aliases": ["东坡肘子", "红烧肘子", "肘子", "Dongpo pork", "pork belly", "pork elbow", "酱油", "soy sauce"]
       }
     ],
-    "meta_markers": ["无东坡肉", "简洁高效版", "不啰嗦版", "r23", "不可变发布"]
+    "meta_markers": ["无东坡肉", "简洁高效版", "不啰嗦版"]
   }
 }

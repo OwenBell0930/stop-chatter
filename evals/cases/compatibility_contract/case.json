@@ -38,7 +38,15 @@
     "tests/test_no_analytics.py"
   ],
   "forbidden_paths": ["analytics-dashboard.md", "analytics.json", "tests/test_no_analytics.py"],
-  "protected_paths": [],
+  "protected_paths": ["NOTICE"],
+  "orthogonality": {
+    "residue_path": "README.md",
+    "retired_term": "analytics",
+    "process_label": "简洁高效",
+    "process_label_path": "README.md",
+    "wordless_forbidden": "tests/test_no_analytics.py",
+    "protected_path": "NOTICE"
+  },
   "hidden_check": [
     "python3",
     "-c",

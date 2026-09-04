@@ -23,9 +23,17 @@
   ],
   "retired_patterns": ["天气", "weather", "forecast", "temperature", "永久偏好"],
   "process_trace_patterns": ["简洁高效", "无天气", "本任务纠正", "需求已移除"],
-  "allowed_changed_paths": ["index.html", "styles.css", "app.js", "MEMORY.md"],
-  "forbidden_paths": [],
-  "protected_paths": [],
+  "allowed_changed_paths": ["index.html", "styles.css", "app.js", "MEMORY.md", "weather-card.placeholder"],
+  "forbidden_paths": ["weather-card.placeholder"],
+  "protected_paths": ["brand.txt"],
+  "orthogonality": {
+    "residue_path": "index.html",
+    "retired_term": "天气",
+    "process_label": "本任务纠正",
+    "process_label_path": "index.html",
+    "wordless_forbidden": "weather-card.placeholder",
+    "protected_path": "brand.txt"
+  },
   "guard": {
     "requirement_paths": ["index.html", "styles.css", "app.js", "MEMORY.md"],
     "retired": [

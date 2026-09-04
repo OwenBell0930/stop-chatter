@@ -1,4 +1,2 @@
-# Analytics Dashboard
-
-Shows validation telemetry, tracking totals, and daily metrics.
-
+上一轮超范围草稿遗留，不属于当前交付。
+deprecated extra module

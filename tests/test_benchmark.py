@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -40,10 +41,58 @@ class BenchmarkTest(unittest.TestCase):
             BENCHMARK.requirement_failures(files, case["continuation_requirements"]), []
         )
 
-    def test_guarded_prompt_uses_one_pass_cleanup(self) -> None:
-        prompt = BENCHMARK.condition_prompt("guarded", {"prompt": "Do the task."})
-        self.assertIn("--cleanup-state-on-pass", prompt)
-        self.assertIn("Do not run a second successful check", prompt)
+    def test_condition_prompt_names_mode_only(self) -> None:
+        light = BENCHMARK.condition_prompt("light", {"prompt": "Do the task."})
+        guarded = BENCHMARK.condition_prompt("guarded", {"prompt": "Do the task."})
+        self.assertIn("Light mode", light)
+        self.assertIn("Guarded mode", guarded)
+        self.assertIn("Do the task.", guarded)
+        self.assertNotIn("$stop-chatter", light)
+        self.assertNotIn("$stop-chatter", guarded)
+        self.assertNotIn("--cleanup-state-on-pass", guarded)
+        self.assertNotIn("state.json", guarded)
+
+    def test_condition_schedule_rotates(self) -> None:
+        order = ["baseline", "light", "guarded"]
+        self.assertEqual(
+            BENCHMARK.schedule_conditions(order, repeat=1, case_index=0),
+            ["baseline", "light", "guarded"],
+        )
+        self.assertEqual(
+            BENCHMARK.schedule_conditions(order, repeat=2, case_index=0),
+            ["light", "guarded", "baseline"],
+        )
+
+    def test_parse_grok_missing_usage_is_unknown(self) -> None:
+        parsed = BENCHMARK.parse_grok_payload(
+            '{"sessionId":"abc","stopReason":"stop","num_turns":2}'
+        )
+        self.assertEqual(parsed["session_id"], "abc")
+        self.assertIsNone(parsed["usage"]["input_tokens"])
+        self.assertIsNone(parsed["usage"]["cached_input_tokens"])
+        self.assertIsNone(parsed["usage"]["output_tokens"])
+        self.assertIsNone(parsed["cost_usd"])
+        self.assertEqual(parsed["num_turns"], 2)
+
+    def test_parse_grok_keeps_zero_and_does_not_fold_cache_into_input(self) -> None:
+        parsed = BENCHMARK.parse_grok_payload(
+            json.dumps(
+                {
+                    "usage": {
+                        "input_tokens": 0,
+                        "cache_read_input_tokens": 9,
+                        "output_tokens": 4,
+                    },
+                    "total_cost_usd": 0.0,
+                    "modelUsage": {"grok-4.6-build": {}},
+                }
+            )
+        )
+        self.assertEqual(parsed["usage"]["input_tokens"], 0)
+        self.assertEqual(parsed["usage"]["cached_input_tokens"], 9)
+        self.assertEqual(parsed["usage"]["output_tokens"], 4)
+        self.assertEqual(parsed["cost_usd"], 0.0)
+        self.assertEqual(parsed["model_slug"], "grok-4.6-build")
 
     def test_gate_corpus_exposes_known_limits(self) -> None:
         result = BENCHMARK.evaluate_gate_corpus()
@@ -51,6 +100,108 @@ class BenchmarkTest(unittest.TestCase):
         self.assertLess(result["code_level"]["recall"], 100.0)
         self.assertLess(result["code_level"]["precision"], 100.0)
         self.assertGreater(result["code_level"]["f1"], 0.0)
+
+    def test_grok_command_uses_headless_json(self) -> None:
+        command = BENCHMARK.build_grok_command(
+            grok_bin="grok",
+            prompt="continue",
+            model="grok-4.6",
+            reasoning="medium",
+            cwd=Path("/tmp/chatterbench-fixture"),
+            session_id="01a0602f-e86f-74b1-8f27-0ae0b8902089",
+        )
+        self.assertEqual(command[0], "grok")
+        self.assertIn("--output-format", command)
+        self.assertIn("json", command)
+        self.assertIn("grok-4.6", command)
+        self.assertIn("--resume", command)
+        self.assertIn("01a0602f-e86f-74b1-8f27-0ae0b8902089", command)
+
+    def test_codebuddy_command_uses_headless_json(self) -> None:
+        command = BENCHMARK.build_codebuddy_command(
+            codebuddy_bin="codebuddy",
+            prompt="continue",
+            model="glm-5",
+            reasoning="medium",
+            session_id="cfde1a68-bbfd-403f-a890-89cc65c2bc3a",
+        )
+        self.assertEqual(command[0], "codebuddy")
+        self.assertIn("--output-format", command)
+        self.assertIn("json", command)
+        self.assertIn("glm-5", command)
+        self.assertIn("--resume", command)
+        self.assertIn("cfde1a68-bbfd-403f-a890-89cc65c2bc3a", command)
+        self.assertNotIn("WebFetch", command[command.index("--tools") + 1].split(","))
+
+    def test_parse_codebuddy_payload_reads_result_and_actual_slug(self) -> None:
+        parsed = BENCHMARK.parse_codebuddy_payload(
+            json.dumps(
+                [
+                    {
+                        "type": "message",
+                        "role": "assistant",
+                        "providerData": {
+                            "model": "glm-5.3",
+                            "requestModelId": "custom-local:glm-5",
+                        },
+                    },
+                    {
+                        "type": "result",
+                        "subtype": "success",
+                        "session_id": "sess-1",
+                        "is_error": False,
+                        "num_turns": 2,
+                        "total_cost_usd": 0,
+                        "usage": {
+                            "input_tokens": 10,
+                            "cache_read_input_tokens": 3,
+                            "output_tokens": 4,
+                        },
+                    },
+                ]
+            )
+        )
+        self.assertEqual(parsed["session_id"], "sess-1")
+        self.assertEqual(parsed["usage"]["input_tokens"], 10)
+        self.assertEqual(parsed["usage"]["cached_input_tokens"], 3)
+        self.assertEqual(parsed["usage"]["output_tokens"], 4)
+        self.assertIsNone(parsed["cost_usd"])
+        self.assertEqual(parsed["model_slug"], "glm-5.3")
+        self.assertEqual(parsed["stop_reason"], "success")
+        self.assertEqual(parsed["num_turns"], 2)
+
+    def test_codebuddy_skill_copy_is_ignored_by_artifact_scan(self) -> None:
+        self.assertTrue(BENCHMARK.ignored_artifact(".codebuddy/skills/stop-chatter/SKILL.md"))
+
+    def test_metrics_split_residue_from_unrelated_file(self) -> None:
+        case = {
+            "requirements": [{"path": "result.md", "contains": ["Current result"]}],
+            "continuation_requirements": [],
+            "retired_patterns": ["retired"],
+            "process_trace_patterns": ["concise edition"],
+            "allowed_changed_paths": ["result.md"],
+            "forbidden_paths": ["tests/test_no_x.py"],
+            "protected_paths": ["keep.md"],
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "result.md").write_text("Current result\n", encoding="utf-8")
+            (root / "keep.md").write_text("stable\n", encoding="utf-8")
+            before = BENCHMARK.snapshot(root)
+            residue_only = BENCHMARK.score_workspace(root, before, case, continuation=False)
+            self.assertTrue(residue_only["metrics"]["retired_surface_removed"])
+            self.assertTrue(residue_only["metrics"]["no_unrelated_mutation"])
+            (root / "result.md").write_text("Current result retired\n", encoding="utf-8")
+            residue = BENCHMARK.score_workspace(root, before, case, continuation=False)
+            self.assertFalse(residue["metrics"]["artifact_residue_free"])
+            self.assertTrue(residue["metrics"]["retired_surface_removed"])
+            self.assertTrue(residue["metrics"]["no_unrelated_mutation"])
+            (root / "result.md").write_text("Current result\n", encoding="utf-8")
+            (root / "extra.md").write_text("helper\n", encoding="utf-8")
+            unrelated = BENCHMARK.score_workspace(root, before, case, continuation=False)
+            self.assertTrue(unrelated["metrics"]["artifact_residue_free"])
+            self.assertFalse(unrelated["metrics"]["no_unrelated_mutation"])
+            self.assertTrue(unrelated["metrics"]["retired_surface_removed"])
 
     def test_score_requires_positive_result_and_clean_scope(self) -> None:
         case = {
@@ -71,6 +222,13 @@ class BenchmarkTest(unittest.TestCase):
                 root, before, case, continuation=False
             )
             self.assertTrue(clean["artifact_success"])
+            (root / ".stop-chatter").mkdir()
+            (root / ".stop-chatter" / "state.json").write_text("{}\n", encoding="utf-8")
+            leftover_state = BENCHMARK.score_workspace(
+                root, before, case, continuation=False
+            )
+            self.assertTrue(leftover_state["artifact_success"])
+            self.assertFalse(leftover_state["metrics"]["transient_state_clean"])
             (root / "extra.md").write_text("retired concise edition\n", encoding="utf-8")
             dirty = BENCHMARK.score_workspace(
                 root, before, case, continuation=False
@@ -95,13 +253,22 @@ class BenchmarkTest(unittest.TestCase):
             "session_id": "private-session",
             "event_types": ["turn.completed"],
             "error": "",
+            "model_slug": "grok-4.6-build",
+            "cost_usd": 0.02,
+            "num_turns": 3,
+            "stop_reason": "stop",
+            "thought": "hidden",
         }
         public = BENCHMARK.public_turn(turn)
         self.assertEqual(public["usage"]["input_tokens"], 2)
+        self.assertEqual(public["num_turns"], 3)
+        self.assertEqual(public["stop_reason"], "stop")
+        self.assertTrue(public["cost_usd_estimated"])
         self.assertNotIn("response", public)
         self.assertNotIn("response_sha256", public)
         self.assertNotIn("response_chars", public)
         self.assertNotIn("session_id", public)
+        self.assertNotIn("thought", public)
 
     def test_resume_places_exec_only_options_before_subcommand(self) -> None:
         command = BENCHMARK.build_codex_command(

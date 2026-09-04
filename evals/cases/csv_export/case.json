@@ -25,7 +25,15 @@
   "process_trace_patterns": ["无分析", "without analytics", "简洁高效", "不啰嗦", "已移除"],
   "allowed_changed_paths": ["exporter.py", "README.md", "tests/test_export.py", "tests/test_no_analytics.py"],
   "forbidden_paths": ["tests/test_no_analytics.py"],
-  "protected_paths": [],
+  "protected_paths": ["NOTICE"],
+  "orthogonality": {
+    "residue_path": "README.md",
+    "retired_term": "analytics",
+    "process_label": "简洁高效",
+    "process_label_path": "README.md",
+    "wordless_forbidden": "tests/test_no_analytics.py",
+    "protected_path": "NOTICE"
+  },
   "hidden_check": [
     "python3",
     "-c",

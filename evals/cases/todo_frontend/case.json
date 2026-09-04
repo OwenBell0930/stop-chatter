@@ -25,7 +25,15 @@
   "process_trace_patterns": ["内部需求", "requirement", "无管理员", "无后台", "已删除"],
   "allowed_changed_paths": ["index.html", "styles.css", "admin.html", "CHANGELOG.md", "tests/test_no_admin.py"],
   "forbidden_paths": ["admin.html", "CHANGELOG.md", "tests/test_no_admin.py"],
-  "protected_paths": [],
+  "protected_paths": ["assets/brand.txt"],
+  "orthogonality": {
+    "residue_path": "index.html",
+    "retired_term": "管理员",
+    "process_label": "内部需求",
+    "process_label_path": "index.html",
+    "wordless_forbidden": "tests/test_no_admin.py",
+    "protected_path": "assets/brand.txt"
+  },
   "guard": {
     "requirement_paths": ["index.html", "styles.css"],
     "retired": [

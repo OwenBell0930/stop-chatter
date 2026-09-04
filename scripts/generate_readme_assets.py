@@ -15,9 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
-BENCHMARK_RESULT = (
-    ROOT / "evals" / "results" / "2026-09-01-chatterbench-v2-r3" / "summary.json"
-)
+BENCHMARK_RESULT = ROOT / "evals" / "public" / "sce-1.2-grok46.json"
 
 NAVY = "#0B1020"
 NAVY_2 = "#141B31"
@@ -355,43 +353,33 @@ def benchmark_metric_row(
 
 def make_benchmark_chart(*, english: bool) -> str:
     summary = json.loads(BENCHMARK_RESULT.read_text(encoding="utf-8"))
-    agent = summary["artifact_delivery"]["case_types"]["cleanup"]
+    tasks = int(summary["tasks_per_condition"])
     copy = {
         "title": "ChatterBench — deliverable success" if english else "ChatterBench — 交付物成功率",
         "subtitle": (
-            "5 core Chinese correction cases × 3 repeats × 3 conditions · same model and host"
+            f"{summary['cases']} correction scenarios × {summary['repeats']} repeats × 3 modes · {summary['model']}"
             if english
-            else "5 个核心中文纠错场景 × 3 次重复 × 3 个条件 · 同模型、同宿主"
+            else f"{summary['cases']} 个纠错场景 × {summary['repeats']} 次重复 × 3 种模式 · {summary['model']}"
         ),
-        "badge": "45 CORE RUNS · 90 VALID TURNS" if english else "45 次核心运行 · 90 个有效回合",
-        "success": "successful deliverables" if english else "次交付物成功",
-        "requirements": "Current requirements kept" if english else "当前需求完整保留",
-        "artifact": "Rejected content absent" if english else "已撤回内容无残留",
-        "scope": "File scope correct" if english else "文件改动不越界",
+        "badge": "90 TASKS · GROK BUILD" if english else "90 次任务 · GROK BUILD",
+        "success": "successful" if english else "次成功",
+        "requirements": "Current requirements kept" if english else "当前需求仍在",
+        "artifact": "Rejected content absent" if english else "仍在文件无撤回词",
+        "surface": "Retired files removed" if english else "撤回功能面已删除",
         "footer": (
-            "Light: +60.0 points · Guarded: +66.7 points over baseline"
+            "Light reaches 86.7%. Guarded reaches 96.7%."
             if english
-            else "相较 Baseline：Light +60.0 个百分点 · Guarded +66.7 个百分点"
-        ),
-        "cost_status": (
-            "Cost comparison will be published after the optimized Guarded workflow is rerun."
-            if english
-            else "成本对比将在优化后的 Guarded 工作流重新评测后发布。"
+            else "Light 86.7% · Guarded 96.7%"
         ),
         "limit": (
-            "Reply wording is not scored · one model · one host · synthetic cases · not a guarantee"
+            "Synthetic correction tasks · one model · reply wording is not scored"
             if english
-            else "回复措辞不计分 · 单模型 · 单宿主 · 合成场景 · 不是效果保证"
-        ),
-        "control": (
-            "Preservation control: 0/3 · 2/3 · 3/3"
-            if english
-            else "保留型安全对照：0/3 · 2/3 · 3/3"
+            else "合成纠错场景 · 单模型 · 回复措辞不计分"
         ),
         "mode_notes": {
             "baseline": "No Stop Chatter" if english else "未使用 Stop Chatter",
-            "light": "Skill workflow" if english else "Skill 工作流",
-            "guarded": "Skill + deterministic gate" if english else "Skill + 确定性门禁",
+            "light": "Skill only" if english else "只使用 Skill",
+            "guarded": "Skill + checker" if english else "Skill + 确定性门禁",
         },
     }
 
@@ -407,38 +395,26 @@ def make_benchmark_chart(*, english: bool) -> str:
         ("guarded", "Guarded", GREEN, 860),
     ]
     for key, label, accent, x in cards:
-        values = agent[key]
-        metrics = values["metric_rates"]
-        interval = values["artifact_delivery_wilson_95"]
+        values = summary["conditions"][key]
         parts.append(rect(x, 122, 380, 410, fill=WHITE, radius=22, stroke=accent, stroke_width=2, shadow=True))
         parts.append(rect(x, 122, 380, 58, fill=accent, radius=21))
         parts.append(f'<rect x="{x}" y="158" width="380" height="22" fill="{accent}"/>')
         parts.append(text(x + 190, 151, label, size=19, color=WHITE, weight=850, anchor="middle", spacing=0.6))
-        parts.append(text(x + 28, 222, f"{values['artifact_delivery_rate']:.1f}%", size=46, color=accent, weight=900))
+        parts.append(text(x + 28, 228, f"{values['rate']:.1f}%", size=46, color=accent, weight=900))
         parts.append(
             text(
                 x + 352,
-                210,
-                f"{values['artifact_deliveries']} / {values['runs']} {copy['success']}",
-                size=12,
+                228,
+                f"{values['successes']} / {tasks} {copy['success']}",
+                size=13,
                 color=INK,
                 weight=700,
                 anchor="end",
             )
         )
-        parts.append(
-            text(
-                x + 352,
-                234,
-                f"95% CI {interval[0]:.1f}–{interval[1]:.1f}",
-                size=11,
-                color=MUTED,
-                anchor="end",
-            )
-        )
-        benchmark_metric_row(parts, x + 24, 286, copy["requirements"], metrics["active_requirements_preserved"], accent)
-        benchmark_metric_row(parts, x + 24, 346, copy["artifact"], metrics["artifact_residue_free"], accent)
-        benchmark_metric_row(parts, x + 24, 406, copy["scope"], metrics["scope_clean"], accent)
+        benchmark_metric_row(parts, x + 24, 286, copy["requirements"], values["active_requirements_preserved"], accent)
+        benchmark_metric_row(parts, x + 24, 346, copy["artifact"], values["artifact_residue_free"], accent)
+        benchmark_metric_row(parts, x + 24, 406, copy["surface"], values["retired_surface_removed"], accent)
         parts.append(rect(x + 24, 472, 332, 36, fill="#F4F5F8", radius=10))
         parts.append(
             text(
@@ -453,10 +429,8 @@ def make_benchmark_chart(*, english: bool) -> str:
         )
 
     parts.append(rect(40, 558, 1200, 132, fill=NAVY, radius=16))
-    parts.append(text(64, 584, copy["footer"], size=16, color=WHITE, weight=750))
-    parts.append(text(64, 614, copy["cost_status"], size=12, color="#C9D5F1", weight=650))
-    parts.append(text(64, 666, copy["limit"], size=11, color="#AAB3CB", weight=500))
-    parts.append(text(1216, 666, copy["control"], size=11, color="#A9DFC9", weight=700, anchor="end"))
+    parts.append(text(64, 604, copy["footer"], size=22, color=WHITE, weight=750))
+    parts.append(text(64, 650, copy["limit"], size=14, color="#AAB3CB", weight=500))
     return base_svg(1280, 720, PAPER, "".join(parts))
 
 

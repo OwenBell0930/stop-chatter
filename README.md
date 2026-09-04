@@ -50,29 +50,25 @@ This is not just verbosity. It is **dangling negation**: content already rejecte
 
 ## Measured deliverable results
 
-On 2026-09-01, ChatterBench ran **5 core Chinese correction cases × 3 conditions × 3 fresh repeats** on the same `gpt-5.6-luna` / Codex CLI setup: **45 core runs and 90 valid turns**. A separate 9-run preservation control checks that the tool does not delete an explicitly required compatibility contract. All **54 runs / 108 turns** completed successfully.
+On 2026-09-03, ChatterBench (SCE-1.2) ran **6 correction scenarios × 3 modes × 5 repeats** on local Grok Build with `grok-4.6`: **90 tasks**, 30 per mode. A task counts as success only after both the correction and one ordinary follow-up leave the files in the current requested state.
 
 <div align="center">
   <a href="assets/benchmark-v2-en.svg">
-    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench deliverable comparison: Baseline 20.0%, Light 80.0%, Guarded 86.7%" />
+    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench deliverable comparison: Baseline 33.3%, Light 86.7%, Guarded 96.7%" />
   </a>
 </div>
 
-| Condition | Deliverable success | Current requirements kept | Rejected content absent | File scope correct |
+| Mode | Deliverable success | Current requirements kept | Rejected content absent | Retired files removed |
 |---|---:|---:|---:|---:|
-| Baseline | 3/15, **20.0%** (95% CI 7.0–45.2) | 80.0% | 20.0% | 20.0% |
-| Light | 12/15, **80.0%** (95% CI 54.8–93.0) | 80.0% | 86.7% | 86.7% |
-| Guarded | 13/15, **86.7%** (95% CI 62.1–96.3) | 93.3% | 93.3% | 93.3% |
+| Baseline | 10/30, **33.3%** | 96.7% | 90.0% | 36.7% |
+| Light | 26/30, **86.7%** | 96.7% | 100% | 90.0% |
+| Guarded | 29/30, **96.7%** | 100% | 100% | 96.7% |
 
-**What the data supports:** Light increased deliverable success by **60.0 percentage points**; Guarded reached the highest observed result at **86.7%**, or **66.7 points** above Baseline. Across all six cases including the preservation control, the result was Baseline **3/18**, Light **14/18**, and Guarded **16/18**. The control itself scored **0/3, 2/3, and 3/3**, respectively. Cost claims are withheld until the optimized Guarded workflow is rerun under the same controlled setup.
+With the Skill installed, deliverable success moves from about one in three to nearly nine in ten. Adding the optional checker brings it to 29 out of 30. Light and Guarded keep process labels out of the files.
 
-“Deliverable success” is deliberately plain: after both the correction turn and a neutral continuation, the required behavior must still work, active requirements must remain, rejected content and process labels must be absent from files, unrelated/protected files must stay untouched, and transient state must be removed. **Assistant reply wording does not affect the score**—the model should still tell the user what materially changed.
+“Deliverable success” means the current behavior is still there, retracted ideas and process wording are gone from remaining files, and files that existed only for the retracted idea have been removed. **Reply wording is not scored.**
 
-The formal run started from frozen clean commit `5f830b4`. The artifact-only public view was recomputed deterministically from those frozen checks and patches; no model run was repeated and no score was manually changed. Public records retain artifact evidence and execution metadata, but omit assistant replies and session identifiers.
-
-This is still a small, synthetic, single-model and single-host benchmark—not a claim about Cursor, Claude Code, other models, English tasks, or production distributions. See the [method](evals/README.md), [artifact summary](evals/results/2026-09-01-chatterbench-v2-r3/summary.md), [machine-readable data](evals/results/2026-09-01-chatterbench-v2-r3/summary.json), [54 artifact-only run records](evals/results/2026-09-01-chatterbench-v2-r3/runs/), and [54 artifact patches](evals/results/2026-09-01-chatterbench-v2-r3/patches/).
-
-The deterministic gate was evaluated separately on 20 labeled samples: code-level precision **91.7%**, recall **84.6%**, and F1 **88.0%**. Its two known misses were unlisted semantic aliases; its false positive was a substring collision. These numbers describe the checker only, not the whole Skill.
+This is a synthetic, single-model measurement of correction hygiene—not a claim about every host or production task. See the [method](evals/README.md). The checker script was scored separately on 20 labeled samples: precision **91.7%**, recall **84.6%**, F1 **88.0%**.
 
 ## How it works
 
@@ -91,10 +87,10 @@ Current positive target  →  necessary implementation  →  necessary validatio
 
 | Mode | Use when | Added machinery |
 |---|---|---|
-| Light | One correction, small output, easy to inspect | `SKILL.md` only |
-| Guarded | Long task, multiple files, Git changes, repeated resurrection | transient target state + deterministic checker |
+| Light | Default for ordinary corrections and later supplements | `SKILL.md` only |
+| Guarded | Explicit request, or a repeated regression whose check scope can be bounded | transient target state + deterministic checker |
 
-Light mode keeps the Skill lightweight. Guarded mode creates task-local transient state and checks observable residue before delivery. Neither mode modifies global configuration or durable memory automatically.
+Light is the default. Do not enter Guarded merely because the task is long, touches Git, or spans multiple files. Guarded mode creates task-local transient state and checks configured residue before delivery. Neither mode modifies global configuration or durable memory automatically.
 
 ## Install and uninstall
 
@@ -109,7 +105,7 @@ This creates:
 - Cursor / Codex: `.agents/skills/stop-chatter`
 - Claude Code: `.claude/skills/stop-chatter`
 
-The installer never overwrites an existing destination. Invoke the Skill explicitly with:
+The installer never overwrites an existing destination. After install, type `/stop-chatter` (Codex: `$stop-chatter`) when you correct a requirement. You do not need to attach it on every message; Cursor may also apply it when the request looks like a correction.
 
 | Host | Invocation |
 |---|---|
@@ -129,7 +125,7 @@ The uninstaller first verifies that each exact destination is a `stop-chatter` i
 
 ## Guarded mode in 30 seconds
 
-After the first material correction, initialize task-local state:
+Initialize before changing deliverables. If valid state for this root already exists, `init` reuses it and does not reset the start baseline:
 
 ```bash
 STOP_CHATTER_SKILL_DIR=.agents/skills/stop-chatter
@@ -138,13 +134,13 @@ STOP_CHATTER_SKILL_DIR=.agents/skills/stop-chatter
 python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" init --root .
 ```
 
-Edit `.stop-chatter/state.json`: enter the current positive target, paths for active requirements, retired concepts, and useful semantic aliases, then set `ready` to `true`. The checker rejects an untouched template instead of returning a meaningless pass.
+Edit `.stop-chatter/state.json`: enter the current positive target, the narrowest add/modify paths, exact `must_remove` paths that visible evidence supports deleting, retired concepts, and useful semantic aliases. Leave the captured baseline unchanged. Set `ready` to `true` only after those values are current. The checker rejects an untouched template instead of returning a meaningless pass.
 
 ```bash
 python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" check --root . --cleanup-state-on-pass
 ```
 
-By default, the checker inspects modified and untracked files in the Git worktree. A passing final check removes only the transient state in the same command; a failed check keeps it for one targeted repair and rerun. Pass explicit paths for a non-Git workflow, `--mode staged` for the index, or `--mode all` for a bounded repository scan.
+By default, this-round file operations are compared with the task-start Git baseline when one exists; `must_remove` paths are existence-checked even if they were not modified. A passing final check removes only the transient state in the same command; a failed check keeps it for one targeted repair and rerun. Without a complete baseline, the result is labeled limited coverage and does not claim that original user changes were verified. Pass explicit paths for a non-Git workflow, `--mode staged` for the index, or `--mode all` for a bounded repository scan.
 
 See the [target-state protocol](references/protocol.md) for the full schema and narrow exception rules.
 
@@ -153,9 +149,11 @@ See the [target-state protocol](references/protocol.md) for the full schema and 
 | Code | Meaning |
 |---|---|
 | `STC001` | A retired term or configured semantic alias remains in an artifact |
-| `STC002` | A changed file maps to no active requirement |
+| `STC002` | A this-round added or modified file maps to no active requirement |
 | `STC003` | A meta-instruction or compliance label leaked into an artifact |
 | `STC004` | A file could not be safely inspected |
+| `STC005` | A file was deleted without being listed in `delivery.must_remove` |
+| `STC006` | A path listed in `delivery.must_remove` still exists |
 
 The checker enforces deterministic facts only. The Skill supplies task-relevant aliases; the script does not pretend to understand arbitrary semantics.
 

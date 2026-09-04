@@ -50,29 +50,25 @@
 
 ## 交付物效果实测
 
-2026-09-01，ChatterBench 在同一套 `gpt-5.6-luna` / Codex CLI 环境中运行了 **5 个核心中文纠错场景 × 3 个条件 × 3 次全新重复**，共 **45 次核心运行、90 个有效回合**。另有 9 次“保留型安全对照”，用于确认工具不会把明确要求保留的兼容性契约一并删掉。全部 **54 次运行、108 个回合**均有效。
+2026-09-03，ChatterBench（SCE-1.2）在本地 Grok Build、`grok-4.6` 上跑完 **6 个纠错场景 × 3 种模式 × 5 次重复**，共 **90 次任务**，每种模式 30 次。纠正后再做一次普通补充，两次都把文件留在当前要的状态，才算成功。
 
 <div align="center">
   <a href="assets/benchmark-v2.svg">
-    <img src="assets/benchmark-v2.svg" width="100%" alt="ChatterBench 交付物数据对比：Baseline 20.0%，Light 80.0%，Guarded 86.7%" />
+    <img src="assets/benchmark-v2.svg" width="100%" alt="ChatterBench 交付物数据对比：Baseline 33.3%，Light 86.7%，Guarded 96.7%" />
   </a>
 </div>
 
-| 模式 | 交付物成功 | 当前需求完整保留 | 已撤回内容无残留 | 文件改动不越界 |
+| 模式 | 交付物成功 | 当前需求仍在 | 仍在文件无撤回词 | 撤回功能面已删除 |
 |---|---:|---:|---:|---:|
-| Baseline | 3/15，**20.0%**（95% CI 7.0–45.2） | 80.0% | 20.0% | 20.0% |
-| Light | 12/15，**80.0%**（95% CI 54.8–93.0） | 80.0% | 86.7% | 86.7% |
-| Guarded | 13/15，**86.7%**（95% CI 62.1–96.3） | 93.3% | 93.3% | 93.3% |
+| Baseline | 10/30，**33.3%** | 96.7% | 90.0% | 36.7% |
+| Light | 26/30，**86.7%** | 96.7% | 100% | 90.0% |
+| Guarded | 29/30，**96.7%** | 100% | 100% | 96.7% |
 
-**数据能说明什么：**Light 把交付物成功率提高了 **60.0 个百分点**；Guarded 的实测结果最高，为 **86.7%**，比 Baseline 高 **66.7 个百分点**。把保留型安全对照也算进去，三种模式分别为 Baseline **3/18**、Light **14/18**、Guarded **16/18**；安全对照本身分别为 **0/3、2/3、3/3**。优化后的 Guarded 工作流尚未在同一受控环境中重跑，因此暂不发布成本结论。
+装上 Skill 之后，交付物成功率从大约三分之一到接近九成；再加上可选门禁，是 29/30。Light 和 Guarded 都没有把过程套话写进交付文件。
 
-“交付物成功”很好理解：纠错回合和一次中性续写之后，该做的功能仍然可用、当前需求没有被误删、已撤回内容和“简洁版”等过程标签没有留在文件中、没有新增无关文件或改坏受保护文件、任务临时状态也已清掉，才算一次成功。**回复怎么措辞不参与评分**——Agent 仍应向用户说明真正改了什么、测了什么和有哪些限制。
+“交付物成功”很好理解：当前功能还在、撤回内容和过程措辞不在剩下的文件里、只为撤回项存在的文件已经删掉。**回复怎么写不评分。**
 
-正式运行从冻结的干净 commit `5f830b4` 启动。当前公开视图由冻结的文件检查与 patch 确定性重算，没有重跑模型，也没有人工改分；运行记录只保留交付物证据与执行元数据，不再保留 Agent 回复或会话标识。
-
-这仍是小规模、合成场景、单模型、单宿主评测，不能外推到 Cursor、Claude Code、其他模型、英文任务或真实生产分布。可查看[评测方法](evals/README.md)、[交付物汇总](evals/results/2026-09-01-chatterbench-v2-r3/summary.md)、[机器可读数据](evals/results/2026-09-01-chatterbench-v2-r3/summary.json)、[54 组仅含交付物的运行记录](evals/results/2026-09-01-chatterbench-v2-r3/runs/)和[54 份 artifact patch](evals/results/2026-09-01-chatterbench-v2-r3/patches/)。
-
-确定性门禁另用 20 条标注样本评测：代码级 Precision **91.7%**、Recall **84.6%**、F1 **88.0%**。两次漏检来自未配置的语义别名，一次误报来自子串碰撞；这些数字只代表门禁脚本，不代表整个 Skill。
+这是合成场景、单模型的纠正卫生测量，不是对所有宿主或真实任务的保证。评测方法见 [evals/README.md](evals/README.md)。门禁脚本另用 20 条标注样本：Precision **91.7%**、Recall **84.6%**、F1 **88.0%**。
 
 ## 它怎么工作
 
@@ -91,10 +87,10 @@
 
 | 模式 | 适用场景 | 增加的机制 |
 |---|---|---|
-| Light | 一次纠正、小输出、容易人工检查 | 只使用 `SKILL.md` |
-| Guarded | 长任务、多文件、Git 改动、曾经反复复活 | 临时目标状态 + 确定性检查器 |
+| Light | 普通纠错和后续补充的默认模式 | 只使用 `SKILL.md` |
+| Guarded | 用户明确要求，或同一撤回项已经复发且检查范围能限定 | 临时目标状态 + 确定性检查器 |
 
-Light 模式保持 Skill 的轻量性。Guarded 模式才会创建任务内临时状态，并在交付前检查可观察的残留；两种模式都不会自动修改全局配置或长期记忆。
+Light 是默认模式。不要只因为任务长、涉及 Git 或多文件就进入 Guarded。Guarded 模式才会创建任务内临时状态，并在交付前检查已配置的残留；两种模式都不会自动修改全局配置或长期记忆。
 
 ## 安装与卸载
 
@@ -109,7 +105,7 @@ python3 scripts/install.py --host all --scope project --target /path/to/project
 - Cursor / Codex：`.agents/skills/stop-chatter`
 - Claude Code：`.claude/skills/stop-chatter`
 
-安装器不会覆盖已有目录。按宿主显式调用：
+安装器不会覆盖已有目录。装好后，纠正需求时输入 `/stop-chatter`（Codex 为 `$stop-chatter`）即可。不必每条消息都再选一次；Cursor 也可能在纠正类任务里自动选用。
 
 | 宿主 | 调用方式 |
 |---|---|
@@ -129,7 +125,7 @@ python3 scripts/uninstall.py --host all --scope project --target /path/to/projec
 
 ## Guarded 模式：30 秒上手
 
-第一次发生实质性纠正后，初始化任务内状态：
+在改交付物之前初始化。如果当前根目录已有有效状态，`init` 会复用它，不会重置开始基线：
 
 ```bash
 STOP_CHATTER_SKILL_DIR=.agents/skills/stop-chatter
@@ -138,13 +134,13 @@ STOP_CHATTER_SKILL_DIR=.agents/skills/stop-chatter
 python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" init --root .
 ```
 
-编辑 `.stop-chatter/state.json`：写入当前正向目标、有效需求对应的路径、已撤回概念及必要的语义别名，然后把 `ready` 改为 `true`。模板未填写时，检查器会拒绝产生无意义的通过结果。
+编辑 `.stop-chatter/state.json`：写入当前正向目标、本轮允许新增/修改的最窄路径、有可见依据才填写的精确 `must_remove` 路径、已撤回概念及必要的语义别名。不要改 init 写入的基线。这些值就绪后再把 `ready` 改为 `true`。模板未填写时，检查器会拒绝产生无意义的通过结果。
 
 ```bash
 python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" check --root . --cleanup-state-on-pass
 ```
 
-默认检查 Git 工作区中已修改和未跟踪的文件。最终检查通过时，同一条命令只删除任务临时状态；检查失败时会保留状态，供一次针对性修复和复检。非 Git 流程可传入明确路径；检查暂存区用 `--mode staged`；有边界地扫描整个仓库用 `--mode all`。
+默认会把本轮文件操作与任务开始时的 Git 基线比较；`must_remove` 中的路径即使未被改动也会检查是否仍存在。最终检查通过时，同一条命令只删除任务临时状态；检查失败时会保留状态，供一次针对性修复和复检。没有完整基线时，结果会标明有限覆盖，并不会声称已经核实用户原有改动未被覆盖。非 Git 流程可传入明确路径；检查暂存区用 `--mode staged`；有边界地扫描整个仓库用 `--mode all`。
 
 完整状态结构与窄例外规则见 [target-state protocol](references/protocol.md)。
 
@@ -153,9 +149,11 @@ python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" check --root . --clean
 | Code | 含义 |
 |---|---|
 | `STC001` | 已撤回词或配置的语义别名仍留在 artifact 中 |
-| `STC002` | 改动文件无法映射到任何当前有效需求 |
+| `STC002` | 本轮新增或修改的文件无法映射到任何当前有效需求 |
 | `STC003` | “简洁版”等执行约束或合规标签泄漏进 artifact |
 | `STC004` | 文件无法被安全检查 |
+| `STC005` | 删除了未列入 `delivery.must_remove` 的文件 |
+| `STC006` | `delivery.must_remove` 中的路径仍然存在 |
 
 检查器只负责确定性事实。语义别名由 Skill 根据当前任务提供；脚本不会假装理解任意语义。
 

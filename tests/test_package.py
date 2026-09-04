@@ -94,6 +94,23 @@ class PackageTest(unittest.TestCase):
             for marker in forbidden:
                 self.assertNotIn(marker, text, f"{name} exposes stale cost number: {marker}")
 
+    def test_public_facade_uses_current_deliverable_labels(self) -> None:
+        forbidden = ("文件改动不越界", "95% CI", "Unevaluable", "无法评价")
+        for name in (
+            "README.md",
+            "README.zh-CN.md",
+            "assets/benchmark-v2.svg",
+            "assets/benchmark-v2-en.svg",
+        ):
+            text = (REPO_ROOT / name).read_text(encoding="utf-8")
+            for marker in forbidden:
+                self.assertNotIn(marker, text, f"{name} exposes internal eval wording: {marker}")
+        chinese = (REPO_ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+        self.assertIn("33.3%", chinese)
+        self.assertIn("86.7%", chinese)
+        self.assertIn("96.7%", chinese)
+        self.assertIn("撤回功能面已删除", chinese)
+
     def test_light_benchmark_card_uses_soft_blue(self) -> None:
         source = (REPO_ROOT / "scripts" / "generate_readme_assets.py").read_text(
             encoding="utf-8"

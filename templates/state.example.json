@@ -38,6 +38,7 @@
       ".stop-chatter/**"
     ],
     "allow_process_trace_paths": [],
+    "must_remove": [],
     "exceptions": []
   }
 }
