@@ -4,7 +4,7 @@
 
 <div align="center">
   <a href="assets/hero-en.svg">
-    <img src="assets/hero-en.svg" width="100%" alt="Stop Chatter — Make LLMs deliver only what you want now, without rejected scope or process residue" />
+    <img src="assets/hero-en.svg" width="100%" alt="Stop Chatter — Make LLMs output only the result you asked for, with no extra explanation or process residue" />
   </a>
 </div>
 
@@ -12,7 +12,7 @@
 
 <div align="center">
 
-**Make LLMs deliver only what you want now—without rejected scope or process residue.**
+**Make LLMs output only the result you asked for—no extra explanation, no process residue.**
 
 [![CI](https://github.com/OwenBell0930/stop-chatter/actions/workflows/ci.yml/badge.svg)](https://github.com/OwenBell0930/stop-chatter/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-0B1020.svg)](LICENSE)
@@ -50,25 +50,54 @@ This is not just verbosity. It is **dangling negation**: content already rejecte
 
 ## Measured deliverable results
 
-On 2026-09-03, ChatterBench (SCE-1.2) ran **6 correction scenarios × 3 modes × 5 repeats** on local Grok Build with `grok-4.6`: **90 tasks**, 30 per mode. A task counts as success only after both the correction and one ordinary follow-up leave the files in the current requested state.
+The same 6 correction scenarios, 3 modes, and 5 repeats ran on **Grok Build / grok-4.6** and **WorkBuddy / GLM-5.3**: **180 tasks**, 60 per mode. A task counts as success only after both the correction and one ordinary follow-up leave the files in the current requested state.
 
 <div align="center">
   <a href="assets/benchmark-v2-en.svg">
-    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench deliverable comparison: Baseline 33.3%, Light 86.7%, Guarded 96.7%" />
+    <img src="assets/benchmark-v2-en.svg" width="100%" alt="ChatterBench deliverable comparison: Baseline 30.0%, Light 80.0%, Guarded 88.3%" />
   </a>
 </div>
 
-| Mode | Deliverable success | Current requirements kept | Rejected content absent | Retired files removed |
-|---|---:|---:|---:|---:|
-| Baseline | 10/30, **33.3%** | 96.7% | 90.0% | 36.7% |
-| Light | 26/30, **86.7%** | 96.7% | 100% | 90.0% |
-| Guarded | 29/30, **96.7%** | 100% | 100% | 96.7% |
+<table width="100%">
+  <thead>
+    <tr>
+      <th align="left">Mode</th>
+      <th align="right">Deliverable success</th>
+      <th align="right">Current requirements kept</th>
+      <th align="right">Rejected content absent</th>
+      <th align="right">Retired files removed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Baseline</td>
+      <td align="right">18/60, <strong>30.0%</strong></td>
+      <td align="right">93.3%</td>
+      <td align="right">93.3%</td>
+      <td align="right">43.3%</td>
+    </tr>
+    <tr>
+      <td>Light</td>
+      <td align="right">48/60, <strong>80.0%</strong></td>
+      <td align="right">89.8%</td>
+      <td align="right">93.2%</td>
+      <td align="right">88.1%</td>
+    </tr>
+    <tr>
+      <td>Guarded</td>
+      <td align="right">53/60, <strong>88.3%</strong></td>
+      <td align="right">96.7%</td>
+      <td align="right">100%</td>
+      <td align="right">95.0%</td>
+    </tr>
+  </tbody>
+</table>
 
-With the Skill installed, deliverable success moves from about one in three to nearly nine in ten. Adding the optional checker brings it to 29 out of 30. Light and Guarded keep process labels out of the files.
+With the Skill installed, deliverable success moves from about three in ten to eight in ten. Adding the optional checker reaches 88.3%.
 
 “Deliverable success” means the current behavior is still there, retracted ideas and process wording are gone from remaining files, and files that existed only for the retracted idea have been removed. **Reply wording is not scored.**
 
-This is a synthetic, single-model measurement of correction hygiene—not a claim about every host or production task. See the [method](evals/README.md). The checker script was scored separately on 20 labeled samples: precision **91.7%**, recall **84.6%**, F1 **88.0%**.
+This is a synthetic, two-host measurement of correction hygiene—not a claim about every environment or production task. See the [method](evals/README.md). The checker script was scored separately on 20 labeled samples: precision **91.7%**, recall **84.6%**, F1 **88.0%**.
 
 ## How it works
 

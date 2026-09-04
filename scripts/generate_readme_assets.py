@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
-BENCHMARK_RESULT = ROOT / "evals" / "public" / "sce-1.2-grok46.json"
+BENCHMARK_RESULT = ROOT / "evals" / "public" / "sce-1.2.json"
 
 NAVY = "#0B1020"
 NAVY_2 = "#141B31"
@@ -129,9 +129,9 @@ def make_hero() -> str:
     parts.append('<circle cx="70" cy="680" r="210" fill="#FF6B4A" opacity="0.055"/>')
     parts.append(logo_mark(68, 58, 72))
     parts.append(text(164, 96, "STOP CHATTER", size=24, color=WHITE, weight=800, spacing=3))
-    parts.append(text(72, 210, "让 LLM 只交付你现在要的", size=44, color=WHITE, weight=750))
-    parts.append(text(72, 274, "交付物", size=64, color=CORAL, weight=850))
-    parts.append(text(72, 345, "避免错误扩展和过程留痕！", size=28, color="#CBD2E4", weight=500))
+    parts.append(text(72, 198, "让 LLM 只输出你要的最终结果", size=22, color="#CBD2E4", weight=600))
+    parts.append(text(72, 268, "避免多余解释", size=52, color=CORAL, weight=850))
+    parts.append(text(72, 338, "和过程留痕！", size=56, color=CORAL, weight=850))
 
     pills = [("CURSOR", 72, 126), ("CODEX", 214, 118), ("CLAUDE CODE", 348, 174)]
     for label, x, width in pills:
@@ -163,7 +163,7 @@ def make_hero() -> str:
     parts.append(rect(786, 468, 394, 132, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
     parts.append(text(812, 496, "当前目标", size=12, color=GREEN, weight=800, spacing=1))
     parts.append(text(812, 542, "番茄炒蛋", size=32, color=INK, weight=800))
-    parts.append(text(812, 574, "只交付用户现在要的结果", size=14, color=MUTED))
+    parts.append(text(812, 574, "只输出你要的最终结果", size=14, color=MUTED))
     parts.append('<circle cx="1140" cy="524" r="20" fill="#19A974"/>')
     parts.append('<path d="M1130 524l7 7 14-16" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>')
 
@@ -178,9 +178,9 @@ def make_hero_en() -> str:
     parts.append('<circle cx="70" cy="680" r="210" fill="#FF6B4A" opacity="0.055"/>')
     parts.append(logo_mark(68, 58, 72))
     parts.append(text(164, 96, "STOP CHATTER", size=24, color=WHITE, weight=800, spacing=3))
-    parts.append(text(72, 210, "Make LLMs deliver only", size=44, color=WHITE, weight=750))
-    parts.append(text(72, 274, "what you want now", size=52, color=CORAL, weight=850))
-    parts.append(text(72, 345, "No rejected scope. No process residue.", size=24, color="#CBD2E4", weight=500))
+    parts.append(text(72, 198, "Make LLMs output only the result you asked for", size=20, color="#CBD2E4", weight=600))
+    parts.append(text(72, 268, "No extra explanation.", size=40, color=CORAL, weight=850))
+    parts.append(text(72, 338, "No process residue.", size=44, color=CORAL, weight=850))
 
     pills = [("CURSOR", 72, 126), ("CODEX", 214, 118), ("CLAUDE CODE", 348, 174)]
     for label, x, width in pills:
@@ -354,27 +354,30 @@ def benchmark_metric_row(
 def make_benchmark_chart(*, english: bool) -> str:
     summary = json.loads(BENCHMARK_RESULT.read_text(encoding="utf-8"))
     tasks = int(summary["tasks_per_condition"])
+    total = int(summary["total_tasks"])
+    light_rate = summary["conditions"]["light"]["rate"]
+    guarded_rate = summary["conditions"]["guarded"]["rate"]
     copy = {
         "title": "ChatterBench — deliverable success" if english else "ChatterBench — 交付物成功率",
         "subtitle": (
-            f"{summary['cases']} correction scenarios × {summary['repeats']} repeats × 3 modes · {summary['model']}"
+            f"{summary['cases']} correction scenarios × {summary['repeats']} repeats × 3 modes · grok-4.6 + GLM-5.3"
             if english
-            else f"{summary['cases']} 个纠错场景 × {summary['repeats']} 次重复 × 3 种模式 · {summary['model']}"
+            else f"{summary['cases']} 个纠错场景 × {summary['repeats']} 次重复 × 3 种模式 · grok-4.6 + GLM-5.3"
         ),
-        "badge": "90 TASKS · GROK BUILD" if english else "90 次任务 · GROK BUILD",
+        "badge": f"{total} TASKS · 2 HOSTS" if english else f"{total} 次任务 · 两套宿主",
         "success": "successful" if english else "次成功",
         "requirements": "Current requirements kept" if english else "当前需求仍在",
         "artifact": "Rejected content absent" if english else "仍在文件无撤回词",
         "surface": "Retired files removed" if english else "撤回功能面已删除",
         "footer": (
-            "Light reaches 86.7%. Guarded reaches 96.7%."
+            f"Light {light_rate:.1f}%. Guarded {guarded_rate:.1f}%."
             if english
-            else "Light 86.7% · Guarded 96.7%"
+            else f"Light {light_rate:.1f}% · Guarded {guarded_rate:.1f}%"
         ),
         "limit": (
-            "Synthetic correction tasks · one model · reply wording is not scored"
+            "Synthetic correction tasks · two hosts · reply wording is not scored"
             if english
-            else "合成纠错场景 · 单模型 · 回复措辞不计分"
+            else "合成纠错场景 · 两套宿主 · 回复措辞不计分"
         ),
         "mode_notes": {
             "baseline": "No Stop Chatter" if english else "未使用 Stop Chatter",

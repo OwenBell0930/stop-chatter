@@ -4,7 +4,7 @@
 
 <div align="center">
   <a href="assets/hero.svg">
-    <img src="assets/hero.svg" width="100%" alt="Stop Chatter — 让 LLM 只交付你现在要的交付物，避免错误扩展和过程留痕" />
+    <img src="assets/hero.svg" width="100%" alt="Stop Chatter — 让 LLM 只输出你要的最终结果，避免多余解释和过程留痕" />
   </a>
 </div>
 
@@ -12,7 +12,7 @@
 
 <div align="center">
 
-**让 LLM 只交付你现在要的结果，避免错误扩展和过程留痕！**
+**让 LLM 只输出你要的最终结果，避免多余解释和过程留痕！**
 
 [![CI](https://github.com/OwenBell0930/stop-chatter/actions/workflows/ci.yml/badge.svg)](https://github.com/OwenBell0930/stop-chatter/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-0B1020.svg)](LICENSE)
@@ -41,34 +41,95 @@
 
 这不是普通的“话多”，而是 **dangling negation（悬空否定）**：对话里已经被否定的内容，没有从工作目标中真正删除，反而泄漏进了最终 artifact。
 
-| 你做了什么 | 常见错误结果 | `stop-chatter` 的目标 |
-|---|---|---|
-| 删除一个擅自添加的功能 | 标题、注释和 PR 反复声明“无该功能” | 交付物只描述现在存在什么 |
-| 要求简洁高效 | 生成“简洁高效版”标签和大段合规说明 | 约束执行方式，不变成产品内容 |
-| 长任务中纠正方向 | 相近概念换个名字重新出现 | 连同依赖链和语义别名一起清理 |
-| 纠正一次任务 | 被写成跨任务的永久偏好 | 默认只在当前任务生效 |
+<table width="100%">
+  <thead>
+    <tr>
+      <th align="left">你做了什么</th>
+      <th align="left">常见错误结果</th>
+      <th align="left"><code>stop-chatter</code> 的目标</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>删除一个擅自添加的功能</td>
+      <td>标题、注释和 PR 反复声明“无该功能”</td>
+      <td>交付物只描述现在存在什么</td>
+    </tr>
+    <tr>
+      <td>要求简洁高效</td>
+      <td>生成“简洁高效版”标签和大段合规说明</td>
+      <td>约束执行方式，不变成产品内容</td>
+    </tr>
+    <tr>
+      <td>长任务中纠正方向</td>
+      <td>相近概念换个名字重新出现</td>
+      <td>连同依赖链和语义别名一起清理</td>
+    </tr>
+    <tr>
+      <td>纠正一次任务</td>
+      <td>被写成跨任务的永久偏好</td>
+      <td>默认只在当前任务生效</td>
+    </tr>
+  </tbody>
+</table>
 
 ## 交付物效果实测
 
-2026-09-03，ChatterBench（SCE-1.2）在本地 Grok Build、`grok-4.6` 上跑完 **6 个纠错场景 × 3 种模式 × 5 次重复**，共 **90 次任务**，每种模式 30 次。纠正后再做一次普通补充，两次都把文件留在当前要的状态，才算成功。
+同一套 6 个纠错场景、3 种模式、5 次重复，在 **Grok Build / grok-4.6** 和 **WorkBuddy / GLM-5.3** 上各跑一轮，共 **180 次任务**，每种模式 60 次。纠正后再做一次普通补充，两次都把文件留在当前要的状态，才算成功。
 
 <div align="center">
   <a href="assets/benchmark-v2.svg">
-    <img src="assets/benchmark-v2.svg" width="100%" alt="ChatterBench 交付物数据对比：Baseline 33.3%，Light 86.7%，Guarded 96.7%" />
+    <img src="assets/benchmark-v2.svg" width="100%" alt="ChatterBench 交付物数据对比：Baseline 30.0%，Light 80.0%，Guarded 88.3%" />
   </a>
 </div>
 
-| 模式 | 交付物成功 | 当前需求仍在 | 仍在文件无撤回词 | 撤回功能面已删除 |
-|---|---:|---:|---:|---:|
-| Baseline | 10/30，**33.3%** | 96.7% | 90.0% | 36.7% |
-| Light | 26/30，**86.7%** | 96.7% | 100% | 90.0% |
-| Guarded | 29/30，**96.7%** | 100% | 100% | 96.7% |
+<table width="100%">
+  <colgroup>
+    <col style="width:16%">
+    <col style="width:21%">
+    <col style="width:21%">
+    <col style="width:21%">
+    <col style="width:21%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th align="left">模式</th>
+      <th align="right">交付物成功</th>
+      <th align="right">当前需求仍在</th>
+      <th align="right">仍在文件无撤回词</th>
+      <th align="right">撤回功能面已删除</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Baseline</td>
+      <td align="right">18/60，<strong>30.0%</strong></td>
+      <td align="right">93.3%</td>
+      <td align="right">93.3%</td>
+      <td align="right">43.3%</td>
+    </tr>
+    <tr>
+      <td>Light</td>
+      <td align="right">48/60，<strong>80.0%</strong></td>
+      <td align="right">89.8%</td>
+      <td align="right">93.2%</td>
+      <td align="right">88.1%</td>
+    </tr>
+    <tr>
+      <td>Guarded</td>
+      <td align="right">53/60，<strong>88.3%</strong></td>
+      <td align="right">96.7%</td>
+      <td align="right">100%</td>
+      <td align="right">95.0%</td>
+    </tr>
+  </tbody>
+</table>
 
-装上 Skill 之后，交付物成功率从大约三分之一到接近九成；再加上可选门禁，是 29/30。Light 和 Guarded 都没有把过程套话写进交付文件。
+装上 Skill 之后，交付物成功率从约三成到八成；再加上可选门禁，到 88.3%。
 
 “交付物成功”很好理解：当前功能还在、撤回内容和过程措辞不在剩下的文件里、只为撤回项存在的文件已经删掉。**回复怎么写不评分。**
 
-这是合成场景、单模型的纠正卫生测量，不是对所有宿主或真实任务的保证。评测方法见 [evals/README.md](evals/README.md)。门禁脚本另用 20 条标注样本：Precision **91.7%**、Recall **84.6%**、F1 **88.0%**。
+这是合成场景、两套宿主的纠正卫生测量，不是对所有环境或真实任务的保证。评测方法见 [evals/README.md](evals/README.md)。门禁脚本另用 20 条标注样本：Precision **91.7%**、Recall **84.6%**、F1 **88.0%**。
 
 ## 它怎么工作
 
@@ -85,10 +146,27 @@
 
 ## 两种模式
 
-| 模式 | 适用场景 | 增加的机制 |
-|---|---|---|
-| Light | 普通纠错和后续补充的默认模式 | 只使用 `SKILL.md` |
-| Guarded | 用户明确要求，或同一撤回项已经复发且检查范围能限定 | 临时目标状态 + 确定性检查器 |
+<table width="100%">
+  <thead>
+    <tr>
+      <th align="left">模式</th>
+      <th align="left">适用场景</th>
+      <th align="left">增加的机制</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Light</td>
+      <td>普通纠错和后续补充的默认模式</td>
+      <td>只使用 <code>SKILL.md</code></td>
+    </tr>
+    <tr>
+      <td>Guarded</td>
+      <td>用户明确要求，或同一撤回项已经复发且检查范围能限定</td>
+      <td>临时目标状态 + 确定性检查器</td>
+    </tr>
+  </tbody>
+</table>
 
 Light 是默认模式。不要只因为任务长、涉及 Git 或多文件就进入 Guarded。Guarded 模式才会创建任务内临时状态，并在交付前检查已配置的残留；两种模式都不会自动修改全局配置或长期记忆。
 
@@ -107,11 +185,28 @@ python3 scripts/install.py --host all --scope project --target /path/to/project
 
 安装器不会覆盖已有目录。装好后，纠正需求时输入 `/stop-chatter`（Codex 为 `$stop-chatter`）即可。不必每条消息都再选一次；Cursor 也可能在纠正类任务里自动选用。
 
-| 宿主 | 调用方式 |
-|---|---|
-| Cursor | `/stop-chatter` |
-| OpenAI Codex | `$stop-chatter` |
-| Claude Code | `/stop-chatter` |
+<table width="100%">
+  <thead>
+    <tr>
+      <th align="left">宿主</th>
+      <th align="left">调用方式</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Cursor</td>
+      <td><code>/stop-chatter</code></td>
+    </tr>
+    <tr>
+      <td>OpenAI Codex</td>
+      <td><code>$stop-chatter</code></td>
+    </tr>
+    <tr>
+      <td>Claude Code</td>
+      <td><code>/stop-chatter</code></td>
+    </tr>
+  </tbody>
+</table>
 
 也可以只安装单个宿主或安装到用户级目录，详见 [host setup](references/host-setup.md)。
 
@@ -146,14 +241,40 @@ python3 "$STOP_CHATTER_SKILL_DIR/scripts/stop_chatter.py" check --root . --clean
 
 ## 门禁会报告什么
 
-| Code | 含义 |
-|---|---|
-| `STC001` | 已撤回词或配置的语义别名仍留在 artifact 中 |
-| `STC002` | 本轮新增或修改的文件无法映射到任何当前有效需求 |
-| `STC003` | “简洁版”等执行约束或合规标签泄漏进 artifact |
-| `STC004` | 文件无法被安全检查 |
-| `STC005` | 删除了未列入 `delivery.must_remove` 的文件 |
-| `STC006` | `delivery.must_remove` 中的路径仍然存在 |
+<table width="100%">
+  <thead>
+    <tr>
+      <th align="left">Code</th>
+      <th align="left">含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>STC001</code></td>
+      <td>已撤回词或配置的语义别名仍留在 artifact 中</td>
+    </tr>
+    <tr>
+      <td><code>STC002</code></td>
+      <td>本轮新增或修改的文件无法映射到任何当前有效需求</td>
+    </tr>
+    <tr>
+      <td><code>STC003</code></td>
+      <td>“简洁版”等执行约束或合规标签泄漏进 artifact</td>
+    </tr>
+    <tr>
+      <td><code>STC004</code></td>
+      <td>文件无法被安全检查</td>
+    </tr>
+    <tr>
+      <td><code>STC005</code></td>
+      <td>删除了未列入 <code>delivery.must_remove</code> 的文件</td>
+    </tr>
+    <tr>
+      <td><code>STC006</code></td>
+      <td><code>delivery.must_remove</code> 中的路径仍然存在</td>
+    </tr>
+  </tbody>
+</table>
 
 检查器只负责确定性事实。语义别名由 Skill 根据当前任务提供；脚本不会假装理解任意语义。
 

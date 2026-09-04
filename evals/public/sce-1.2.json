@@ -1,0 +1,31 @@
+{
+  "benchmark": "sce-1.2",
+  "hosts": ["Grok Build / grok-4.6", "WorkBuddy / GLM-5.3"],
+  "cases": 6,
+  "repeats": 5,
+  "tasks_per_condition": 60,
+  "total_tasks": 180,
+  "conditions": {
+    "baseline": {
+      "successes": 18,
+      "rate": 30.0,
+      "active_requirements_preserved": 93.3,
+      "artifact_residue_free": 93.3,
+      "retired_surface_removed": 43.3
+    },
+    "light": {
+      "successes": 48,
+      "rate": 80.0,
+      "active_requirements_preserved": 89.8,
+      "artifact_residue_free": 93.2,
+      "retired_surface_removed": 88.1
+    },
+    "guarded": {
+      "successes": 53,
+      "rate": 88.3,
+      "active_requirements_preserved": 96.7,
+      "artifact_residue_free": 100.0,
+      "retired_surface_removed": 95.0
+    }
+  }
+}

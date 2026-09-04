@@ -106,10 +106,13 @@ class PackageTest(unittest.TestCase):
             for marker in forbidden:
                 self.assertNotIn(marker, text, f"{name} exposes internal eval wording: {marker}")
         chinese = (REPO_ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
-        self.assertIn("33.3%", chinese)
-        self.assertIn("86.7%", chinese)
-        self.assertIn("96.7%", chinese)
+        self.assertIn("30.0%", chinese)
+        self.assertIn("80.0%", chinese)
+        self.assertIn("88.3%", chinese)
+        self.assertIn("180 次任务", chinese)
+        self.assertIn('width="100%"', chinese)
         self.assertIn("撤回功能面已删除", chinese)
+        self.assertIn("避免多余解释和过程留痕", chinese)
 
     def test_light_benchmark_card_uses_soft_blue(self) -> None:
         source = (REPO_ROOT / "scripts" / "generate_readme_assets.py").read_text(
