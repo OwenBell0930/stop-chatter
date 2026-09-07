@@ -4,3 +4,4 @@ __pycache__/
 .venv/
 .stop-chatter/state.json
 evals/results/*/
+.preview/

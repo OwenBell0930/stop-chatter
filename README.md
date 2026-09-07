@@ -3,8 +3,8 @@
 </p>
 
 <div align="center">
-  <a href="assets/cover-en-2.svg">
-    <img src="assets/cover-en-2.svg" width="100%" alt="Stop Chatter — Make LLMs output only the result you asked for, with no extra explanation or process residue" />
+  <a href="assets/cover-en-3.svg">
+    <img src="assets/cover-en-3.svg" width="100%" alt="Stop Chatter — Make LLMs output only the result you asked for, with no extra explanation or process residue" />
   </a>
 </div>
 
