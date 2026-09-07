@@ -122,17 +122,78 @@ def make_logo() -> str:
     return base_svg(512, 512, NAVY, body)
 
 
-# Right-panel stack above the arrow. One rhythm: 24 top pad, 16 after a card,
-# 10 from a section label to the card it introduces, 16 between residue cards.
-HERO_REQ_Y = 72
-HERO_REQ_H = 54
-HERO_FIRST_LABEL_Y = 142
-HERO_ADD_Y = 152
-HERO_ADD_H = 54
-HERO_CORRECT_LABEL_Y = 222
-HERO_RES_YS = (232, 304, 376, 448)
-HERO_RES_H = 56
-HERO_RES_BOTTOM = HERO_RES_YS[-1] + HERO_RES_H
+# Right column: flush rectangle. One stack, one rhythm — do not hand-place labels.
+HERO_PANEL_X = 720
+HERO_PANEL_W = 560
+HERO_CARD_X = 756
+HERO_CARD_W = 420
+HERO_CARD_TEXT_X = 776
+HERO_CX = HERO_CARD_X + HERO_CARD_W // 2
+HERO_CARD_H = 58
+HERO_PAD_TOP = 34
+HERO_AFTER_CARD = 20
+HERO_AFTER_LABEL = 20
+HERO_RES_GAP = 22
+HERO_SECTION_LABEL_SIZE = 13
+HERO_SECTION_LABEL_COLOR = "#C3B4AC"
+HERO_REQ_Y = HERO_PAD_TOP
+HERO_FIRST_LABEL_Y = HERO_REQ_Y + HERO_CARD_H + HERO_AFTER_CARD
+HERO_ADD_Y = HERO_FIRST_LABEL_Y + HERO_AFTER_LABEL
+HERO_CORRECT_LABEL_Y = HERO_ADD_Y + HERO_CARD_H + HERO_AFTER_CARD
+HERO_RES_Y0 = HERO_CORRECT_LABEL_Y + HERO_AFTER_LABEL
+HERO_RES_YS = tuple(HERO_RES_Y0 + index * (HERO_CARD_H + HERO_RES_GAP) for index in range(4))
+HERO_RES_BOTTOM = HERO_RES_YS[-1] + HERO_CARD_H
+HERO_GREEN_Y = HERO_RES_BOTTOM + 58
+HERO_GREEN_H = 720 - 32 - HERO_GREEN_Y
+HERO_CHECK_X = HERO_CARD_X + HERO_CARD_W - 36
+
+
+def hero_section_label(content: str, y: int) -> str:
+    return text(
+        HERO_CARD_X,
+        y,
+        content,
+        size=HERO_SECTION_LABEL_SIZE,
+        color=HERO_SECTION_LABEL_COLOR,
+        weight=700,
+        spacing=0.4,
+    )
+
+
+def hero_pair_card(
+    y: int,
+    fill: str,
+    eyebrow: str,
+    title: str,
+    *,
+    eyebrow_color: str,
+    title_color: str,
+    title_size: int = 18,
+    eyebrow_spacing: float = 1,
+    opacity: float = 1,
+) -> str:
+    return "".join(
+        [
+            rect(HERO_CARD_X, y, HERO_CARD_W, HERO_CARD_H, fill=fill, radius=12, opacity=opacity),
+            text(
+                HERO_CARD_TEXT_X,
+                y + 17,
+                eyebrow,
+                size=11,
+                color=eyebrow_color,
+                weight=800,
+                spacing=eyebrow_spacing,
+            ),
+            text(
+                HERO_CARD_TEXT_X,
+                y + 39,
+                title,
+                size=title_size,
+                color=title_color,
+                weight=700,
+            ),
+        ]
+    )
 
 
 def recompile_connector(cx: int, last_bottom: int) -> str:
@@ -193,36 +254,60 @@ def make_hero() -> str:
     parts.append(text(196, 520, "可选确定性门禁", size=17, color=WHITE, weight=700))
     parts.append(text(72, 558, "纠正需求后，删除旧想法，而不是继续解释它。", size=17, color="#AAB3CB"))
 
-    parts.append(rect(748, 48, 472, 624, fill="#FFFFFF", radius=28, opacity=0.055, stroke="#FFFFFF", stroke_width=1))
+    parts.append(rect(HERO_PANEL_X, 0, HERO_PANEL_W, 720, fill="#FFFFFF", radius=0, opacity=0.07))
 
-    parts.append(rect(786, HERO_REQ_Y, 394, HERO_REQ_H, fill=WHITE, radius=12, opacity=0.96))
-    parts.append(text(806, HERO_REQ_Y + 17, "你的需求", size=11, color=MUTED, weight=800, spacing=1))
-    parts.append(text(806, HERO_REQ_Y + 38, "番茄炒蛋", size=18, color="#1B2340", weight=700))
-
-    parts.append(text(786, HERO_FIRST_LABEL_Y, "首次实现", size=14, color="#AAB3CB", weight=700, spacing=1))
-    parts.append(rect(786, HERO_ADD_Y, 394, HERO_ADD_H, fill="#FFD8CF", radius=12))
-    parts.append(text(806, HERO_ADD_Y + 17, "擅自扩展", size=11, color=CORAL, weight=800, spacing=1))
-    parts.append(text(806, HERO_ADD_Y + 38, "+ 东坡肉", size=18, color="#5D2B24", weight=700))
-
-    parts.append(text(786, HERO_CORRECT_LABEL_Y, "当你纠正LLM后", size=12, color="#E7A193", weight=700, spacing=0.6))
+    parts.append(
+        hero_pair_card(
+            HERO_REQ_Y,
+            WHITE,
+            "你的需求",
+            "番茄炒蛋",
+            eyebrow_color=MUTED,
+            title_color="#1B2340",
+            opacity=0.96,
+        )
+    )
+    parts.append(hero_section_label("首次实现", HERO_FIRST_LABEL_Y))
+    parts.append(
+        hero_pair_card(
+            HERO_ADD_Y,
+            "#FFD8CF",
+            "擅自扩展",
+            "+ 东坡肉",
+            eyebrow_color=CORAL,
+            title_color="#5D2B24",
+        )
+    )
+    parts.append(hero_section_label("当你纠正LLM后", HERO_CORRECT_LABEL_Y))
     residue = [
-        (HERO_RES_YS[0], "解释：", "PR 写成「番茄炒蛋（无东坡肉）」"),
-        (HERO_RES_YS[1], "标签：", "方案被叫成「简洁高效不啰嗦版」"),
-        (HERO_RES_YS[2], "测试：", "用例还在测「为什么没有东坡肉」"),
-        (HERO_RES_YS[3], "记忆：", "记下「用户不喜欢东坡肉」"),
+        ("解释：", "PR 写成「番茄炒蛋（无东坡肉）」"),
+        ("标签：", "方案被叫成「简洁高效不啰嗦版」"),
+        ("测试：", "用例还在测「为什么没有东坡肉」"),
+        ("记忆：", "记下「用户不喜欢东坡肉」"),
     ]
-    for y, label, detail in residue:
-        parts.append(rect(786, y, 394, HERO_RES_H, fill="#FFD8CF", radius=12))
-        parts.append(text(806, y + 18, label, size=11, color=CORAL, weight=800, spacing=1))
-        parts.append(text(806, y + 40, detail, size=15, color="#5D2B24", weight=650))
+    for y, (label, detail) in zip(HERO_RES_YS, residue):
+        parts.append(
+            hero_pair_card(
+                y,
+                "#FFD8CF",
+                label,
+                detail,
+                eyebrow_color=CORAL,
+                title_color="#5D2B24",
+                title_size=15,
+            )
+        )
 
-    parts.append(rect(786, 562, 394, 90, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
-    parts.append(text(812, 580, "当前目标", size=12, color=GREEN, weight=800, spacing=1))
-    parts.append(text(812, 610, "番茄炒蛋", size=26, color=INK, weight=800))
-    parts.append(text(812, 634, "只输出你要的最终结果", size=13, color=MUTED))
-    parts.append('<circle cx="1140" cy="605" r="18" fill="#19A974"/>')
-    parts.append('<path d="M1131 605l6 6 12-14" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>')
-    parts.append(recompile_connector(983, HERO_RES_BOTTOM))
+    parts.append(rect(HERO_CARD_X, HERO_GREEN_Y, HERO_CARD_W, HERO_GREEN_H, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
+    parts.append(text(HERO_CARD_TEXT_X + 6, HERO_GREEN_Y + 20, "当前目标", size=12, color=GREEN, weight=800, spacing=1))
+    parts.append(text(HERO_CARD_TEXT_X + 6, HERO_GREEN_Y + 54, "番茄炒蛋", size=26, color=INK, weight=800))
+    parts.append(text(HERO_CARD_TEXT_X + 6, HERO_GREEN_Y + 80, "只输出你要的最终结果", size=13, color=MUTED))
+    parts.append(f'<circle cx="{HERO_CHECK_X}" cy="{HERO_GREEN_Y + 51}" r="18" fill="#19A974"/>')
+    parts.append(
+        f'<path d="M{HERO_CHECK_X - 9} {HERO_GREEN_Y + 51}l6 6 12-14" fill="none" '
+        f'stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>'
+    )
+    parts.append(recompile_connector(HERO_CX, HERO_RES_BOTTOM))
 
     parts.append(text(72, 664, "CURRENT TARGET IN · CORRECTION HISTORY OUT", size=12, color="#78839F", weight=700, spacing=1.4))
     return base_svg(1280, 720, NAVY, "".join(parts))
@@ -249,36 +334,65 @@ def make_hero_en() -> str:
     parts.append(text(226, 520, "optional deterministic gate", size=17, color=WHITE, weight=700))
     parts.append(text(72, 558, "After a correction, delete the old idea—do not keep explaining it.", size=16, color="#AAB3CB"))
 
-    parts.append(rect(748, 48, 472, 624, fill="#FFFFFF", radius=28, opacity=0.055, stroke="#FFFFFF", stroke_width=1))
+    parts.append(rect(HERO_PANEL_X, 0, HERO_PANEL_W, 720, fill="#FFFFFF", radius=0, opacity=0.07))
 
-    parts.append(rect(786, HERO_REQ_Y, 394, HERO_REQ_H, fill=WHITE, radius=12, opacity=0.96))
-    parts.append(text(806, HERO_REQ_Y + 17, "YOUR REQUEST", size=11, color=MUTED, weight=800, spacing=0.8))
-    parts.append(text(806, HERO_REQ_Y + 38, "Tomato and egg stir-fry", size=16, color="#1B2340", weight=700))
-
-    parts.append(text(786, HERO_FIRST_LABEL_Y, "FIRST IMPLEMENTATION", size=14, color="#AAB3CB", weight=700, spacing=1))
-    parts.append(rect(786, HERO_ADD_Y, 394, HERO_ADD_H, fill="#FFD8CF", radius=12))
-    parts.append(text(806, HERO_ADD_Y + 17, "UNASKED ADDITION", size=11, color=CORAL, weight=800, spacing=0.8))
-    parts.append(text(806, HERO_ADD_Y + 38, "+ Dongpo pork", size=16, color="#5D2B24", weight=700))
-
-    parts.append(text(786, HERO_CORRECT_LABEL_Y, "AFTER YOU CORRECT THE LLM", size=11, color="#E7A193", weight=700, spacing=0.6))
+    parts.append(
+        hero_pair_card(
+            HERO_REQ_Y,
+            WHITE,
+            "YOUR REQUEST",
+            "Tomato and egg stir-fry",
+            eyebrow_color=MUTED,
+            title_color="#1B2340",
+            title_size=16,
+            eyebrow_spacing=0.8,
+            opacity=0.96,
+        )
+    )
+    parts.append(hero_section_label("FIRST IMPLEMENTATION", HERO_FIRST_LABEL_Y))
+    parts.append(
+        hero_pair_card(
+            HERO_ADD_Y,
+            "#FFD8CF",
+            "UNASKED ADDITION",
+            "+ Dongpo pork",
+            eyebrow_color=CORAL,
+            title_color="#5D2B24",
+            title_size=16,
+            eyebrow_spacing=0.8,
+        )
+    )
+    parts.append(hero_section_label("AFTER YOU CORRECT THE LLM", HERO_CORRECT_LABEL_Y))
     residue = [
-        (HERO_RES_YS[0], "EXPLAIN:", 'PR titled "stir-fry (no pork)"'),
-        (HERO_RES_YS[1], "LABEL:", 'shipped as "no-fluff edition"'),
-        (HERO_RES_YS[2], "TEST:", "tests still prove the pork is gone"),
-        (HERO_RES_YS[3], "MEMORY:", '"user dislikes Dongpo pork"'),
+        ("EXPLAIN:", 'PR titled "stir-fry (no pork)"'),
+        ("LABEL:", 'shipped as "no-fluff edition"'),
+        ("TEST:", "tests still prove the pork is gone"),
+        ("MEMORY:", '"user dislikes Dongpo pork"'),
     ]
-    for y, label, detail in residue:
-        parts.append(rect(786, y, 394, HERO_RES_H, fill="#FFD8CF", radius=12))
-        parts.append(text(806, y + 18, label, size=11, color=CORAL, weight=800, spacing=0.8))
-        parts.append(text(806, y + 40, detail, size=14, color="#5D2B24", weight=650))
+    for y, (label, detail) in zip(HERO_RES_YS, residue):
+        parts.append(
+            hero_pair_card(
+                y,
+                "#FFD8CF",
+                label,
+                detail,
+                eyebrow_color=CORAL,
+                title_color="#5D2B24",
+                title_size=14,
+                eyebrow_spacing=0.8,
+            )
+        )
 
-    parts.append(rect(786, 562, 394, 90, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
-    parts.append(text(812, 580, "CURRENT TARGET", size=11, color=GREEN, weight=800, spacing=1))
-    parts.append(text(812, 610, "Tomato and egg stir-fry", size=20, color=INK, weight=800))
-    parts.append(text(812, 634, "Only the result you asked for", size=13, color=MUTED))
-    parts.append('<circle cx="1140" cy="605" r="18" fill="#19A974"/>')
-    parts.append('<path d="M1131 605l6 6 12-14" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>')
-    parts.append(recompile_connector(983, HERO_RES_BOTTOM))
+    parts.append(rect(HERO_CARD_X, HERO_GREEN_Y, HERO_CARD_W, HERO_GREEN_H, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
+    parts.append(text(HERO_CARD_TEXT_X + 6, HERO_GREEN_Y + 20, "CURRENT TARGET", size=11, color=GREEN, weight=800, spacing=1))
+    parts.append(text(HERO_CARD_TEXT_X + 6, HERO_GREEN_Y + 54, "Tomato and egg stir-fry", size=20, color=INK, weight=800))
+    parts.append(text(HERO_CARD_TEXT_X + 6, HERO_GREEN_Y + 80, "Only the result you asked for", size=13, color=MUTED))
+    parts.append(f'<circle cx="{HERO_CHECK_X}" cy="{HERO_GREEN_Y + 51}" r="18" fill="#19A974"/>')
+    parts.append(
+        f'<path d="M{HERO_CHECK_X - 9} {HERO_GREEN_Y + 51}l6 6 12-14" fill="none" '
+        f'stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>'
+    )
+    parts.append(recompile_connector(HERO_CX, HERO_RES_BOTTOM))
 
     parts.append(text(72, 664, "CURRENT TARGET IN · CORRECTION HISTORY OUT", size=12, color="#78839F", weight=700, spacing=1.4))
     return base_svg(1280, 720, NAVY, "".join(parts))
@@ -553,6 +667,8 @@ def write_assets() -> list[Path]:
         ASSETS / "cover-en-2.svg": make_hero_en(),
         ASSETS / "cover-3.svg": make_hero(),
         ASSETS / "cover-en-3.svg": make_hero_en(),
+        ASSETS / "cover-4.svg": make_hero(),
+        ASSETS / "cover-en-4.svg": make_hero_en(),
         ASSETS / "user-story.svg": make_user_story(),
         ASSETS / "user-story-en.svg": make_user_story_en(),
         ASSETS / "chatterbench.svg": make_benchmark_chart(english=False),

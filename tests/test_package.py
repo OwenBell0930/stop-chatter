@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import unittest
 from pathlib import Path
@@ -117,7 +118,7 @@ class PackageTest(unittest.TestCase):
         self.assertIn("86.7%", chinese)
         self.assertIn("96.7%", chinese)
         self.assertIn("180 次任务", chinese)
-        self.assertIn("assets/cover-3.svg", chinese)
+        self.assertIn("assets/cover-4.svg", chinese)
         self.assertIn("assets/chatterbench.svg", chinese)
         self.assertIn("assets/results-table.svg", chinese)
         self.assertIn('width="1280"', chinese)
@@ -131,10 +132,38 @@ class PackageTest(unittest.TestCase):
         self.assertIn("方案被叫成「简洁高效不啰嗦版」", hero)
         self.assertIn("用例还在测「为什么没有东坡肉」", hero)
         self.assertIn("记下「用户不喜欢东坡肉」", hero)
+        self.assertIn("font-size=\"13\"", hero)
         chart = (REPO_ROOT / "assets" / "chatterbench.svg").read_text(encoding="utf-8")
         self.assertIn("33.3%", chart)
         self.assertIn("86.7%", chart)
         self.assertIn("96.7%", chart)
+
+    def test_hero_section_labels_share_type_and_gaps(self) -> None:
+        spec = importlib.util.spec_from_file_location(
+            "generate_readme_assets",
+            REPO_ROOT / "scripts" / "generate_readme_assets.py",
+        )
+        module = importlib.util.module_from_spec(spec)
+        assert spec.loader is not None
+        spec.loader.exec_module(module)
+        self.assertEqual(module.HERO_SECTION_LABEL_SIZE, 13)
+        self.assertEqual(
+            module.HERO_ADD_Y - module.HERO_FIRST_LABEL_Y,
+            module.HERO_RES_YS[0] - module.HERO_CORRECT_LABEL_Y,
+        )
+        self.assertEqual(
+            module.HERO_FIRST_LABEL_Y - (module.HERO_REQ_Y + module.HERO_CARD_H),
+            module.HERO_CORRECT_LABEL_Y - (module.HERO_ADD_Y + module.HERO_CARD_H),
+        )
+        self.assertEqual(
+            module.HERO_RES_YS[1] - module.HERO_RES_YS[0],
+            module.HERO_RES_YS[2] - module.HERO_RES_YS[1],
+        )
+        self.assertEqual(
+            module.HERO_RES_YS[2] - module.HERO_RES_YS[1],
+            module.HERO_RES_YS[3] - module.HERO_RES_YS[2],
+        )
+
 
     def test_light_benchmark_card_uses_soft_blue(self) -> None:
         source = (REPO_ROOT / "scripts" / "generate_readme_assets.py").read_text(
