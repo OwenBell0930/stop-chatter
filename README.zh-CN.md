@@ -3,8 +3,8 @@
 </p>
 
 <div align="center">
-  <a href="assets/cover.svg">
-    <img src="assets/cover.svg" width="100%" alt="Stop Chatter — 让 LLM 只输出你要的最终结果，避免多余解释和过程留痕" />
+  <a href="assets/cover-2.svg">
+    <img src="assets/cover-2.svg" width="100%" alt="Stop Chatter — 让 LLM 只输出你要的最终结果，避免多余解释和过程留痕" />
   </a>
 </div>
 

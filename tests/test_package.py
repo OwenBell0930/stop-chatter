@@ -117,7 +117,7 @@ class PackageTest(unittest.TestCase):
         self.assertIn("86.7%", chinese)
         self.assertIn("96.7%", chinese)
         self.assertIn("180 次任务", chinese)
-        self.assertIn("assets/cover.svg", chinese)
+        self.assertIn("assets/cover-2.svg", chinese)
         self.assertIn("assets/chatterbench.svg", chinese)
         self.assertIn("assets/results-table.svg", chinese)
         self.assertIn('width="1280"', chinese)

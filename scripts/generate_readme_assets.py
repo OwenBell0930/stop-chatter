@@ -122,6 +122,43 @@ def make_logo() -> str:
     return base_svg(512, 512, NAVY, body)
 
 
+def recompile_connector(cx: int, last_bottom: int) -> str:
+    """Pill, then a full shaft and a filled chevron — never overlaid on each other."""
+    pill_w, pill_h = 138, 26
+    pill_y = last_bottom + 14
+    shaft_top = pill_y + pill_h + 10
+    tip = shaft_top + 34
+    return "".join(
+        [
+            f'<line x1="{cx}" y1="{last_bottom + 6}" x2="{cx}" y2="{pill_y - 3}" '
+            f'stroke="{CORAL}" stroke-width="2.5" stroke-linecap="round"/>',
+            rect(
+                cx - pill_w // 2,
+                pill_y,
+                pill_w,
+                pill_h,
+                fill=NAVY_2,
+                radius=13,
+                stroke=CORAL,
+                stroke_width=2,
+            ),
+            text(
+                cx,
+                pill_y + pill_h // 2 + 1,
+                "RECOMPILE",
+                size=10,
+                color=CORAL,
+                weight=800,
+                anchor="middle",
+                spacing=1.2,
+            ),
+            f'<line x1="{cx}" y1="{shaft_top}" x2="{cx}" y2="{tip - 12}" '
+            f'stroke="{CORAL}" stroke-width="2.5" stroke-linecap="round"/>',
+            f'<path d="M{cx - 8} {tip - 13} L{cx} {tip} L{cx + 8} {tip - 13} Z" fill="{CORAL}"/>',
+        ]
+    )
+
+
 def make_hero() -> str:
     parts: list[str] = []
     parts.append('<rect width="1280" height="720" fill="url(#hero-bg)"/>')
@@ -146,36 +183,34 @@ def make_hero() -> str:
     parts.append(rect(748, 48, 472, 624, fill="#FFFFFF", radius=28, opacity=0.055, stroke="#FFFFFF", stroke_width=1))
     parts.append(text(786, 86, "对话噪音", size=14, color="#AAB3CB", weight=700, spacing=1))
 
-    parts.append(rect(786, 108, 394, 50, fill=WHITE, radius=12, opacity=0.96))
-    parts.append(text(806, 124, "需求", size=11, color=MUTED, weight=800, spacing=1))
-    parts.append(text(806, 144, "番茄炒蛋", size=18, color="#1B2340", weight=700))
+    parts.append(rect(786, 108, 394, 48, fill=WHITE, radius=12, opacity=0.96))
+    parts.append(text(806, 123, "需求", size=11, color=MUTED, weight=800, spacing=1))
+    parts.append(text(806, 142, "番茄炒蛋", size=18, color="#1B2340", weight=700))
 
-    parts.append(rect(786, 166, 394, 50, fill="#FFD8CF", radius=12))
-    parts.append(text(806, 182, "擅自扩展", size=11, color=CORAL, weight=800, spacing=1))
-    parts.append(text(806, 202, "+ 东坡肉", size=18, color="#5D2B24", weight=700))
+    parts.append(rect(786, 164, 394, 48, fill="#FFD8CF", radius=12))
+    parts.append(text(806, 179, "擅自扩展", size=11, color=CORAL, weight=800, spacing=1))
+    parts.append(text(806, 198, "+ 东坡肉", size=18, color="#5D2B24", weight=700))
 
-    parts.append(text(786, 238, "纠正之后还留下", size=12, color="#E7A193", weight=700, spacing=0.6))
+    parts.append(text(786, 228, "纠正之后还留下", size=12, color="#E7A193", weight=700, spacing=0.6))
     residue = [
-        (252, "解释：", "PR 写成「番茄炒蛋（无东坡肉）」"),
-        (308, "标签：", "方案被叫成「简洁高效不啰嗦版」"),
-        (364, "测试：", "用例还在测「为什么没有东坡肉」"),
-        (420, "记忆：", "记下「用户不喜欢东坡肉」"),
+        (240, "解释：", "PR 写成「番茄炒蛋（无东坡肉）」"),
+        (294, "标签：", "方案被叫成「简洁高效不啰嗦版」"),
+        (348, "测试：", "用例还在测「为什么没有东坡肉」"),
+        (402, "记忆：", "记下「用户不喜欢东坡肉」"),
     ]
     for y, label, detail in residue:
-        parts.append(rect(786, y, 394, 50, fill="#FFD8CF", radius=12))
-        parts.append(text(806, y + 16, label, size=11, color=CORAL, weight=800, spacing=1))
-        parts.append(text(806, y + 36, detail, size=15, color="#5D2B24", weight=650))
+        parts.append(rect(786, y, 394, 48, fill="#FFD8CF", radius=12))
+        parts.append(text(806, y + 15, label, size=11, color=CORAL, weight=800, spacing=1))
+        parts.append(text(806, y + 34, detail, size=15, color="#5D2B24", weight=650))
 
-    parts.append('<line x1="983" y1="478" x2="983" y2="508" stroke="#FF6B4A" stroke-width="3" marker-end="url(#arrow-coral)"/>')
-    parts.append(rect(914, 484, 138, 26, fill=NAVY_2, radius=13, stroke=CORAL))
-    parts.append(text(983, 498, "RECOMPILE", size=10, color=CORAL, weight=800, anchor="middle", spacing=1.2))
+    parts.append(recompile_connector(983, 450))
 
-    parts.append(rect(786, 518, 394, 122, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
-    parts.append(text(812, 544, "当前目标", size=12, color=GREEN, weight=800, spacing=1))
-    parts.append(text(812, 586, "番茄炒蛋", size=30, color=INK, weight=800))
-    parts.append(text(812, 616, "只输出你要的最终结果", size=14, color=MUTED))
-    parts.append('<circle cx="1140" cy="568" r="20" fill="#19A974"/>')
-    parts.append('<path d="M1130 568l7 7 14-16" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>')
+    parts.append(rect(786, 556, 394, 96, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
+    parts.append(text(812, 576, "当前目标", size=12, color=GREEN, weight=800, spacing=1))
+    parts.append(text(812, 610, "番茄炒蛋", size=26, color=INK, weight=800))
+    parts.append(text(812, 634, "只输出你要的最终结果", size=13, color=MUTED))
+    parts.append('<circle cx="1140" cy="602" r="18" fill="#19A974"/>')
+    parts.append('<path d="M1131 602l6 6 12-14" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>')
 
     parts.append(text(72, 664, "CURRENT TARGET IN · CORRECTION HISTORY OUT", size=12, color="#78839F", weight=700, spacing=1.4))
     return base_svg(1280, 720, NAVY, "".join(parts))
@@ -205,36 +240,34 @@ def make_hero_en() -> str:
     parts.append(rect(748, 48, 472, 624, fill="#FFFFFF", radius=28, opacity=0.055, stroke="#FFFFFF", stroke_width=1))
     parts.append(text(786, 86, "CONVERSATION NOISE", size=14, color="#AAB3CB", weight=700, spacing=1))
 
-    parts.append(rect(786, 108, 394, 50, fill=WHITE, radius=12, opacity=0.96))
-    parts.append(text(806, 124, "REQUEST", size=11, color=MUTED, weight=800, spacing=0.8))
-    parts.append(text(806, 144, "Tomato and egg stir-fry", size=16, color="#1B2340", weight=700))
+    parts.append(rect(786, 108, 394, 48, fill=WHITE, radius=12, opacity=0.96))
+    parts.append(text(806, 123, "REQUEST", size=11, color=MUTED, weight=800, spacing=0.8))
+    parts.append(text(806, 142, "Tomato and egg stir-fry", size=16, color="#1B2340", weight=700))
 
-    parts.append(rect(786, 166, 394, 50, fill="#FFD8CF", radius=12))
-    parts.append(text(806, 182, "UNASKED ADDITION", size=11, color=CORAL, weight=800, spacing=0.8))
-    parts.append(text(806, 202, "+ Dongpo pork", size=16, color="#5D2B24", weight=700))
+    parts.append(rect(786, 164, 394, 48, fill="#FFD8CF", radius=12))
+    parts.append(text(806, 179, "UNASKED ADDITION", size=11, color=CORAL, weight=800, spacing=0.8))
+    parts.append(text(806, 198, "+ Dongpo pork", size=16, color="#5D2B24", weight=700))
 
-    parts.append(text(786, 238, "STILL LEFT AFTER THE CORRECTION", size=11, color="#E7A193", weight=700, spacing=0.6))
+    parts.append(text(786, 228, "STILL LEFT AFTER THE CORRECTION", size=11, color="#E7A193", weight=700, spacing=0.6))
     residue = [
-        (252, "EXPLAIN:", 'PR titled "stir-fry (no pork)"'),
-        (308, "LABEL:", 'shipped as "no-fluff edition"'),
-        (364, "TEST:", "tests still prove the pork is gone"),
-        (420, "MEMORY:", '"user dislikes Dongpo pork"'),
+        (240, "EXPLAIN:", 'PR titled "stir-fry (no pork)"'),
+        (294, "LABEL:", 'shipped as "no-fluff edition"'),
+        (348, "TEST:", "tests still prove the pork is gone"),
+        (402, "MEMORY:", '"user dislikes Dongpo pork"'),
     ]
     for y, label, detail in residue:
-        parts.append(rect(786, y, 394, 50, fill="#FFD8CF", radius=12))
-        parts.append(text(806, y + 16, label, size=11, color=CORAL, weight=800, spacing=0.8))
-        parts.append(text(806, y + 36, detail, size=14, color="#5D2B24", weight=650))
+        parts.append(rect(786, y, 394, 48, fill="#FFD8CF", radius=12))
+        parts.append(text(806, y + 15, label, size=11, color=CORAL, weight=800, spacing=0.8))
+        parts.append(text(806, y + 34, detail, size=14, color="#5D2B24", weight=650))
 
-    parts.append('<line x1="983" y1="478" x2="983" y2="508" stroke="#FF6B4A" stroke-width="3" marker-end="url(#arrow-coral)"/>')
-    parts.append(rect(914, 484, 138, 26, fill=NAVY_2, radius=13, stroke=CORAL))
-    parts.append(text(983, 498, "RECOMPILE", size=10, color=CORAL, weight=800, anchor="middle", spacing=1.2))
+    parts.append(recompile_connector(983, 450))
 
-    parts.append(rect(786, 518, 394, 122, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
-    parts.append(text(812, 544, "CURRENT TARGET", size=11, color=GREEN, weight=800, spacing=1))
-    parts.append(text(812, 586, "Tomato and egg stir-fry", size=22, color=INK, weight=800))
-    parts.append(text(812, 616, "Only the result you asked for", size=14, color=MUTED))
-    parts.append('<circle cx="1140" cy="568" r="20" fill="#19A974"/>')
-    parts.append('<path d="M1130 568l7 7 14-16" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>')
+    parts.append(rect(786, 556, 394, 96, fill=GREEN_LIGHT, radius=18, stroke=GREEN, stroke_width=2, shadow=True))
+    parts.append(text(812, 576, "CURRENT TARGET", size=11, color=GREEN, weight=800, spacing=1))
+    parts.append(text(812, 610, "Tomato and egg stir-fry", size=20, color=INK, weight=800))
+    parts.append(text(812, 634, "Only the result you asked for", size=13, color=MUTED))
+    parts.append('<circle cx="1140" cy="602" r="18" fill="#19A974"/>')
+    parts.append('<path d="M1131 602l6 6 12-14" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>')
 
     parts.append(text(72, 664, "CURRENT TARGET IN · CORRECTION HISTORY OUT", size=12, color="#78839F", weight=700, spacing=1.4))
     return base_svg(1280, 720, NAVY, "".join(parts))
@@ -505,6 +538,8 @@ def write_assets() -> list[Path]:
         ASSETS / "hero-en.svg": make_hero_en(),
         ASSETS / "cover.svg": make_hero(),
         ASSETS / "cover-en.svg": make_hero_en(),
+        ASSETS / "cover-2.svg": make_hero(),
+        ASSETS / "cover-en-2.svg": make_hero_en(),
         ASSETS / "user-story.svg": make_user_story(),
         ASSETS / "user-story-en.svg": make_user_story_en(),
         ASSETS / "chatterbench.svg": make_benchmark_chart(english=False),
