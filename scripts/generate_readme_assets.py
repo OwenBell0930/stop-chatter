@@ -655,6 +655,111 @@ def make_spacer() -> str:
     )
 
 
+USER_FIELD_RUNS = [
+    {
+        "host": "Codex CLI 0.153.4",
+        "model": "gpt-6-astra",
+        "date": "2026-09-08",
+        "baseline": {"successes": 2, "tasks": 5, "rate": 40.0, "residue": 40.0},
+        "light": {"successes": 5, "tasks": 5, "rate": 100.0, "residue": 0.0},
+        "guarded": {"successes": 5, "tasks": 5, "rate": 100.0, "residue": 0.0},
+    },
+    {
+        "host": "Doubao agent",
+        "model": "doubao",
+        "date": "2026-09-09",
+        "baseline": {"successes": 1, "tasks": 6, "rate": 16.7, "residue": 0.0},
+        "light": {"successes": 6, "tasks": 6, "rate": 100.0, "residue": 0.0},
+        "guarded": {"successes": 6, "tasks": 6, "rate": 100.0, "residue": 0.0},
+    },
+]
+
+
+def make_user_field_table(*, english: bool) -> str:
+    headers = (
+        ["Host / model", "Date", "Tasks", "Baseline", "Light", "Guarded"]
+        if english
+        else ["宿主 / 模型", "日期", "任务数", "无技能", "Light", "Guarded"]
+    )
+    col_x = [40, 400, 560, 720, 880, 1040]
+    width = 1280
+    parts: list[str] = []
+    parts.append(rect(24, 16, width - 48, 40 + 56 * (len(USER_FIELD_RUNS) + 1), fill=WHITE, radius=20, stroke=LINE, shadow=True))
+    for x, label in zip(col_x, headers):
+        parts.append(text(x + 16, 52, label, size=14, color=MUTED, weight=700))
+    parts.append(f'<line x1="48" y1="76" x2="1232" y2="76" stroke="{LINE}" stroke-width="1"/>')
+    accents = (MUTED, SOFT_BLUE, GREEN)
+    for index, run in enumerate(USER_FIELD_RUNS):
+        y = 110 + index * 56
+        parts.append(rect(40, y - 22, width - 80, 48, fill="#F7F8FB" if index % 2 else WHITE, radius=10))
+        parts.append(text(col_x[0] + 16, y, f"{run['host']} / {run['model']}", size=16, color=INK, weight=750))
+        parts.append(text(col_x[1] + 16, y, run["date"], size=15, color=MUTED, weight=650))
+        parts.append(text(col_x[2] + 16, y, str(run["baseline"]["tasks"]), size=15, color=MUTED, weight=650))
+        for column, key in enumerate(("baseline", "light", "guarded")):
+            accent = accents[column]
+            values = run[key]
+            success = f"{values['successes']} / {values['tasks']}   {values['rate']:.1f}%"
+            parts.append(text(col_x[3 + column] + 16, y, success, size=16, color=accent, weight=800))
+    return base_svg(1280, 40 + 56 * (len(USER_FIELD_RUNS) + 1) + 16, PAPER, "".join(parts))
+
+
+def make_user_field_chart(*, english: bool) -> str:
+    copy = {
+        "title": "User-run replications — deliverable success" if english else "用户自测 — 交付物成功率",
+        "subtitle": (
+            "Two independent user runs on 3 of the 6 official scenarios · skill explicitly attached"
+            if english
+            else "两位用户各自复测官方 6 个场景中的 3 个 · 显式挂上 Skill"
+        ),
+        "badge": "2 USER RUNS" if english else "两次用户复测",
+        "group": ("Host / model" if english else "宿主 / 模型"),
+        "labels": {
+            "gpt": ("Codex / gpt-6-astra", "n=5"),
+            "doubao": ("Doubao / doubao", "n=6"),
+        },
+        "modes": ("Baseline", "Light", "Guarded"),
+        "note": (
+            "Synthetic fixtures · 3 of 6 official scenarios · Light capped both runs"
+            if english
+            else "合成场景 · 官方 6 选 3 · 两次复测中 Light 都已拿到全部通过"
+        ),
+    }
+    parts: list[str] = []
+    parts.append(text(48, 52, copy["title"], size=30, color=INK, weight=850))
+    parts.append(text(48, 88, copy["subtitle"], size=15, color=MUTED, weight=500))
+    parts.append(rect(1028, 34, 204, 40, fill=NAVY, radius=20))
+    parts.append(text(1130, 55, copy["badge"], size=12, color=WHITE, weight=800, anchor="middle", spacing=0.5))
+
+    group_titles = {"gpt": copy["labels"]["gpt"], "doubao": copy["labels"]["doubao"]}
+    bar_colors = (MUTED, SOFT_BLUE, GREEN)
+    bar_height = 26
+    group_gap = 58
+    first_bar_y = 168
+
+    for run_index, (run_key, run) in enumerate(
+        (("gpt", USER_FIELD_RUNS[0]), ("doubao", USER_FIELD_RUNS[1]))
+    ):
+        group_y = 116 + run_index * (group_gap * 3 + 92)
+        parts.append(text(48, group_y + 8, group_titles[run_key][0], size=16, color=INK, weight=800))
+        parts.append(text(48, group_y + 32, f"{group_titles[run_key][1]} · {run['date']}", size=12, color=MUTED, weight=600))
+        for bar_index, key in enumerate(("baseline", "light", "guarded")):
+            bar_y = first_bar_y + run_index * (group_gap * 3 + 92) + bar_index * group_gap
+            values = run[key]
+            parts.append(text(48, bar_y + bar_height // 2, copy["modes"][bar_index], size=13, color=MUTED, weight=700))
+            track_w = 800
+            parts.append(rect(180, bar_y, track_w, bar_height, fill="#E8EAF0", radius=6))
+            fill_w = round(track_w * values["rate"] / 100)
+            if fill_w:
+                parts.append(rect(180, bar_y, fill_w, bar_height, fill=bar_colors[bar_index], radius=6))
+            parts.append(text(180 + track_w + 24, bar_y + bar_height // 2, f"{values['successes']} / {values['tasks']}   {values['rate']:.1f}%", size=15, color=INK, weight=800))
+
+    footer_y = first_bar_y + 2 * (group_gap * 3 + 92) - 8
+    parts.append(rect(40, footer_y, 1200, 56, fill=NAVY, radius=14))
+    parts.append(text(64, footer_y + 28, copy["note"], size=15, color=WHITE, weight=650))
+    return base_svg(1280, footer_y + 56 + 32, PAPER, "".join(parts))
+
+
+
 def write_assets() -> list[Path]:
     ASSETS.mkdir(parents=True, exist_ok=True)
     outputs = {
@@ -675,6 +780,10 @@ def write_assets() -> list[Path]:
         ASSETS / "chatterbench-en.svg": make_benchmark_chart(english=True),
         ASSETS / "results-table.svg": make_results_table(english=False),
         ASSETS / "results-table-en.svg": make_results_table(english=True),
+        ASSETS / "user-field-table.svg": make_user_field_table(english=False),
+        ASSETS / "user-field-table-en.svg": make_user_field_table(english=True),
+        ASSETS / "user-field-chart.svg": make_user_field_chart(english=False),
+        ASSETS / "user-field-chart-en.svg": make_user_field_chart(english=True),
         ASSETS / "spacer.svg": make_spacer(),
         ASSETS / "benchmark-v2.svg": make_benchmark_chart(english=False),
         ASSETS / "benchmark-v2-en.svg": make_benchmark_chart(english=True),

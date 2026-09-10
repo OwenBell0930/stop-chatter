@@ -96,6 +96,20 @@
 
 这是合成场景、两套宿主的纠正卫生测量，不是对所有环境或真实任务的保证。评测方法见 [evals/README.md](evals/README.md)。门禁脚本另用 20 条标注样本：Precision **91.7%**、Recall **84.6%**、F1 **88.0%**。
 
+## 用户实测
+
+两位用户安装 Stop Chatter 后，各自用官方 6 个场景中的 3 个独立复测（Codex CLI / gpt-6-astra、豆包 agent），每条件 5–6 个任务，纠正加一次普通补充。无技能完整交付 **2/5** 与 **1/6**；装上 Skill 后，**Light 与 Guarded 都是 100%**。两次复测是官方场景子集、各自的执行宿主，结果不并入上面的公开表。
+
+<div align="center">
+  <a href="assets/user-field-chart.svg">
+    <img src="assets/user-field-chart.svg" width="100%" alt="用户自测：gpt-6-astra 无技能 40%、豆包无技能 16.7%，Light 与 Guarded 均 100%" />
+  </a>
+</div>
+
+<div>
+  <img src="assets/user-field-table.svg" width="100%" alt="用户自测明细：Codex CLI gpt-6-astra 2/5、5/5、5/5；豆包 1/6、6/6、6/6" />
+</div>
+
 ## 它怎么工作
 
 1. **重编译当前目标**：把最新需求写成正向、当前态的目标；撤回项直接删除，不保留成“禁止清单”。

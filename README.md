@@ -68,6 +68,20 @@ With the Skill installed, deliverable success moves from about one in three to n
 
 This is a synthetic, two-host measurement of correction hygiene—not a claim about every environment or production task. See the [method](evals/README.md). The checker script was scored separately on 20 labeled samples: precision **91.7%**, recall **84.6%**, F1 **88.0%**.
 
+## User-run replications
+
+Two users independently re-ran 3 of the 6 official scenarios after installing Stop Chatter (Codex CLI / gpt-6-astra and a Doubao agent), 5–6 tasks per condition, each a correction plus one ordinary follow-up. Baseline deliverable success was **2/5** and **1/6**; with the Skill installed, **both Light and Guarded reached 100%**. These runs cover a scenario subset on their own hosts and do not merge into the public table above.
+
+<div align="center">
+  <a href="assets/user-field-chart-en.svg">
+    <img src="assets/user-field-chart-en.svg" width="100%" alt="User-run replications: gpt-6-astra baseline 40%, Doubao baseline 16.7%, Light and Guarded 100%" />
+  </a>
+</div>
+
+<div>
+  <img src="assets/user-field-table-en.svg" width="100%" alt="User-run details: Codex CLI gpt-6-astra 2/5, 5/5, 5/5; Doubao 1/6, 6/6, 6/6" />
+</div>
+
 ## How it works
 
 1. **Recompile the current target:** express the latest request as a positive current-state goal; delete retracted items instead of preserving them as a ban list.

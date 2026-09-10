@@ -121,6 +121,8 @@ class PackageTest(unittest.TestCase):
         self.assertIn("assets/cover-4.svg", chinese)
         self.assertIn("assets/chatterbench.svg", chinese)
         self.assertIn("assets/results-table.svg", chinese)
+        self.assertIn("assets/user-field-chart.svg", chinese)
+        self.assertIn("assets/user-field-table.svg", chinese)
         self.assertIn('width="1280"', chinese)
         self.assertIn("避免多余解释和过程留痕", chinese)
         hero = (REPO_ROOT / "assets" / "cover.svg").read_text(encoding="utf-8")
