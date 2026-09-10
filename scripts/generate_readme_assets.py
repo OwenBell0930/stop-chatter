@@ -683,8 +683,10 @@ def make_user_field_table(*, english: bool) -> str:
     )
     col_x = [40, 400, 560, 720, 880, 1040]
     width = 1280
+    card_y = 16
+    card_h = 40 + 56 * (len(USER_FIELD_RUNS) + 1)
     parts: list[str] = []
-    parts.append(rect(24, 16, width - 48, 40 + 56 * (len(USER_FIELD_RUNS) + 1), fill=WHITE, radius=20, stroke=LINE, shadow=True))
+    parts.append(rect(24, card_y, width - 48, card_h, fill=WHITE, radius=20, stroke=LINE, shadow=True))
     for x, label in zip(col_x, headers):
         parts.append(text(x + 16, 52, label, size=14, color=MUTED, weight=700))
     parts.append(f'<line x1="48" y1="76" x2="1232" y2="76" stroke="{LINE}" stroke-width="1"/>')
@@ -700,7 +702,7 @@ def make_user_field_table(*, english: bool) -> str:
             values = run[key]
             success = f"{values['successes']} / {values['tasks']}   {values['rate']:.1f}%"
             parts.append(text(col_x[3 + column] + 16, y, success, size=16, color=accent, weight=800))
-    return base_svg(1280, 40 + 56 * (len(USER_FIELD_RUNS) + 1) + 16, PAPER, "".join(parts))
+    return base_svg(1280, card_y + card_h + 16, PAPER, "".join(parts))
 
 
 def make_user_field_chart(*, english: bool) -> str:
